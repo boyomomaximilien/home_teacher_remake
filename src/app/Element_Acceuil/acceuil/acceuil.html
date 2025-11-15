@@ -1,0 +1,147 @@
+<div class="container p-lg-4 p-2">
+    <div class="row mb-3 mb-lg-5">
+        <div class="col-12 col-lg-6">
+            <img src="accueil.jpeg" alt="" class="img-fluid rounded shadow-lg" style="border:4px solid #2da2e1;">
+        </div>
+        <div class="col-12 col-lg-6 d-flex align-items-center">
+            <p class="display-4 text-center" style="color:#2da2e1;">
+                <b><b><b>bienvenu sur votre plateforme de cours de soutien</b></b></b>
+            </p>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-between g-3 mb-3">
+        <div class="col-lg-3 Myborder"
+            style="border-left: 2px #2da2e1 solid; border-right: 2px #2da2e1 solid; background:linear-gradient(120deg,#25273f 60%,#2da2e1 100%); border-radius:14px;">
+            <p class="display-3 text-white text-center"
+                style="background-color: #2da2e1; color:#25273f; border-radius:12px;"><b><b>1</b></b></p>
+            <p class="h4 text-center" style="color:#2da2e1;">Apprennez </p>
+            <ul style="color:#e8eef8;">
+                <li>Apprenez avec nous et dépassez vos limites !</li>
+                <li>Acquérez les connaissances et les compétences nécessaires pour réussir.</li>
+                <li>Nos cours de soutien sont conçus pour vous aider à comprendre et à maîtriser les matières
+                    difficiles.</li>
+                <li>Apprenez à votre rythme et selon vos besoins.</li>
+            </ul>
+        </div>
+        <div class="col-lg-3 Myborder"
+            style="border-left: 2px #e8eef8 solid; border-right: 2px #e8eef8 solid; background:linear-gradient(120deg,#2b2e4a 60%,#25273f 100%); border-radius:14px;">
+            <p class="display-3 text-white text-center"
+                style="background-color: #23759e; color:#fff; border-radius:12px;"><b><b>2</b></b></p>
+            <p class="h4 text-center" style="color:#23759e;">Comprennez </p>
+            <ul style="color:#e8eef8;">
+                <li>Comprenez enfin les concepts qui vous semblaient difficiles !</li>
+                <li>Nos enseignants expérimentés vous aideront à comprendre les notions complexes.</li>
+                <li>Avec nos cours de soutien, vous gagnerez en confiance et en compréhension.</li>
+                <li>Comprenez les matières scolaires de manière claire et précise.</li>
+            </ul>
+        </div>
+        <div class="col-lg-3 Myborder"
+            style="border-left: 2px #2da2e1 solid; border-right: 2px #2da2e1 solid; background:linear-gradient(120deg,#25273f 60%,#23759e 100%); border-radius:14px;">
+            <p class="display-3 text-white text-center"
+                style="background-color: #2b2e4a; color:#e8eef8; border-radius:12px;"><b><b>3</b></b></p>
+            <p class="h4 text-center" style="color:#2b2e4a;">Evoluez </p>
+            <ul style="color:#e8eef8;">
+                <li>Évoluez et atteignez vos objectifs scolaires !</li>
+                <li>Nos cours de soutien vous aideront à progresser et à atteindre vos buts.</li>
+                <li>Évoluez en tant qu'élève et en tant que personne.</li>
+                <li>Avec nos cours de soutien, vous serez prêt à relever les défis scolaires.</li>
+            </ul>
+        </div>
+    </div>
+    <hr class="my-5" style="border-color:#2da2e1;">
+    <div class="container">
+        <div class="row d-flex justify-content-lg-between">
+            <div class="col-12 py-lg-5 py-3">
+                <p class="display-6 text-center" style="color:#2da2e1;"><b><b>Assimiliez enfin les conceptes
+                            complexes</b></b></p>
+            </div>
+            @for(element of listeMatiere; track $index){
+            <div class="col-lg-2 d-flex align-items-center justify-content-center mb-3 focusMatiere">
+                <div class="rounded shadow-lg"
+                    style="background:linear-gradient(120deg,#25273f 60%,#2da2e1 100%); border-width:0px;">
+                    <div class="pb-4 pt-0 d-flex justify-content-center">
+                        <img src="{{element.icone}}" alt="" class="img-fluid w-100 rounded-top"
+                            style="background:#2b2e4a;">
+                    </div>
+                    <p class="text-center h3" style="color:#2da2e1;">{{element.name}}</p>
+                </div>
+            </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center"
+                    style="color: #e8eef8; background: linear-gradient(90deg,#25273f 60%,#2b2e4a 100%); border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.18); padding: 32px 0;">
+                    <b class="display-6" style="color:#2da2e1;"><b><b>Et bien d'autres</b></b></b>
+                    <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                        <span class="display-1 chargingpoint" style="color:#2da2e1;"><b><b>.</b></b></span>
+                        <span class="display-1 chargingpoint"
+                            style="animation-delay: 0.25s; color:#23759e;"><b><b>.</b></b></span>
+                        <span class="display-1 chargingpoint"
+                            style="animation-delay: 0.5s; color:#e8eef8;"><b><b>.</b></b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card border-0 shadow-lg h-100 text-center py-4"
+                    style="background:linear-gradient(120deg,#25273f 60%,#2b2e4a 100%); color:#e8eef8; border-radius:18px;">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check" style="font-size:2.5rem;color:#2da2e1;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2" style="color:#2da2e1;">Sécurité & Confiance</h5>
+                    <p class="mb-0 p-2">Vos données et échanges sont protégés. Les profils sont vérifiés pour garantir
+                        un environnement sûr.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card border-0 shadow-lg h-100 text-center py-4"
+                    style="background:linear-gradient(120deg,#2b2e4a 60%,#25273f 100%); color:#e8eef8; border-radius:18px;">
+                    <div class="mb-3">
+                        <i class="bi bi-lightbulb" style="font-size:2.5rem;color:#2da2e1;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2" style="color:#2da2e1;">Innovation pédagogique</h5>
+                    <p class="mb-0 p-2">Des outils interactifs, des ressources variées et des méthodes innovantes pour
+                        faciliter l'apprentissage.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card border-0 shadow-lg h-100 text-center py-4"
+                    style="background:linear-gradient(120deg,#25273f 60%,#23759e 100%); color:#e8eef8; border-radius:18px;">
+                    <div class="mb-3">
+                        <i class="bi bi-people" style="font-size:2.5rem;color:#23759e;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2" style="color:#23759e;">Communauté active</h5>
+                    <p class="mb-0 p-2">Échangez, partagez et progressez avec une communauté d'élèves, de parents et
+                        d'enseignants engagés.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 mb-5">
+            <div class="col-12 text-center">
+                <h4 class="fw-bold mb-3" style="color:#2da2e1;">Des outils pour faciliter votre réussite</h4>
+                <div class="d-flex flex-wrap justify-content-center gap-4">
+                    <div class="tool-feature px-4 py-3 rounded shadow-lg"
+                        style="background:linear-gradient(120deg,#25273f 60%,#2b2e4a 100%); color:#e8eef8; min-width:220px; border-radius:14px;">
+                        <i class="bi bi-calendar-range" style="font-size:2rem;color:#2da2e1;"></i>
+                        <p class="mb-1 fw-bold">Gestion de planning</p>
+                        <small>Organisez vos séances et recevez des rappels.</small>
+                    </div>
+                    <div class="tool-feature px-4 py-3 rounded shadow-lg"
+                        style="background:linear-gradient(120deg,#2da2e1 60%,#25273f 100%); color:#e8eef8; min-width:220px; border-radius:14px;">
+                        <i class="bi bi-chat-text" style="font-size:2rem;color:#2da2e1;"></i>
+                        <p class="mb-1 fw-bold">Messagerie sécurisée</p>
+                        <small>Discutez facilement avec votre enseignant ou vos élèves.</small>
+                    </div>
+                    <div class="tool-feature px-4 py-3 rounded shadow-lg text-white"
+                        style="background:linear-gradient(120deg,#25273f 60%,#23759e 100%); color:#e8eef8; min-width:220px; border-radius:14px;">
+                        <i class="bi bi-bar-chart-line" style="font-size:2rem;color:#23759e;"></i>
+                        <p class="mb-1 fw-bold ">Suivi de progression</p>
+                        <small>Visualisez vos progrès et recevez des conseils personnalisés.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

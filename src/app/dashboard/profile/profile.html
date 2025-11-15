@@ -1,0 +1,51 @@
+<div class="profile-container container my-4 py-4 shadow-lg rounded"
+    style="background:linear-gradient(120deg,#25273f 60%,#aeb2b4 100%); max-width:700px; color:#e8eef8;">
+
+    <form class="profile-form">
+        <div class="form-floating mb-4">
+            <input class="form-control" placeholder="" disabled value="Boyomo maximilien"
+                style="background:#2b2e4a;color:#e8eef8;">
+            <label>Nom et prénom</label>
+        </div>
+        <div class="form-floating mb-4">
+            <input class="form-control" placeholder="" disabled value="21/02/2000"
+                style="background:#2b2e4a;color:#e8eef8;">
+            <label>Date de naissance</label>
+        </div>
+        <div class="form-floating mb-4">
+            <input class="form-control" placeholder="" [disabled]="isActivate" type="password"
+                style="background:#2b2e4a;color:#e8eef8;">
+            <label>Mot de passe</label>
+        </div>
+        <div class="form-floating mb-4">
+            <input class="form-control" placeholder="" [disabled]="isActivate" type="password"
+                style="background:#2b2e4a;color:#e8eef8;">
+            <label>Confirmer mot de passe</label>
+        </div>
+        <div class="form-floating mb-4">
+            <input class="form-control" placeholder="" disabled value="000343883"
+                style="background:#2b2e4a;color:#e8eef8;">
+            <label>Nº CNI</label>
+        </div>
+        <div class="form-floating mb-4">
+            <input class="form-control" placeholder="" [disabled]="isActivate" value="Nkolda"
+                style="background:#2b2e4a;color:#e8eef8;">
+            <label>Quartier</label>
+        </div>
+        <div class="form-floating mb-4">
+            <input class="form-control" placeholder="" [disabled]="isActivate" value="656230506"
+                style="background:#2b2e4a;color:#e8eef8;">
+            <label>Contact (s)</label>
+        </div>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <button class="btn btn-info px-4 py-2 fw-bold">
+                <span class="d-none d-lg-inline">Sauvegarder</span>
+                <img src="images/menu/sauvegarder.png" class="ms-lg-1" alt="sauvegarder" style="max-height: 20px;">
+            </button>
+            <button class="btn btn-outline-info px-4 py-2 fw-bold" type="button" (click)="activeModification()">
+                <span class="d-none d-lg-inline">Modifier</span>
+                <img src="images/menu/modifier.png" class="ms-lg-1" alt="modifier" style="max-height: 20px;">
+            </button>
+        </div>
+    </form>
+</div>

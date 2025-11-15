@@ -1,0 +1,21 @@
+<div class="container py-4">
+    <h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Liste des Enseignants</h2>
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6" *ngFor="let teacher of teachers; index as i">
+            <div class="teacher-card d-flex align-items-center shadow-sm border-0 h-100 animate-contrat">
+                <img src="personne_icone.png" alt="Avatar" class="teacher-avatar animate-avatar">
+                <div class="teacher-info animate-fade-in">
+                    <div class="teacher-name">{{teacher.Name}}</div>
+                    <div class="teacher-status">
+                        <i class="bi bi-circle-fill animate-badge"
+                            [style.color]="teacher.IsConnected ? '#2da2e1' : '#e74c3c'"></i>
+                        {{teacher.IsConnected ? 'Connecté' : 'Déconnecté'}}
+                    </div>
+                    <div *ngIf="teacher.IsAdmin" class="teacher-admin animate-badge">
+                        <i class="bi bi-shield-lock"></i> Administrateur
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,238 @@
+.myposition {
+    position: absolute;
+    bottom: 1%;
+
+}
+
+.defilement {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.defilement::-webkit-scrollbar {
+    display: none;
+}
+
+.btnRetour {
+    background: linear-gradient(45deg, #2da2e1 50%, #093e5a 50%);
+    border-width: 0px;
+}
+
+.btnFleche {
+    transition: 0.5s;
+
+}
+
+.btnFleche:hover {
+    animation: flecheTranslate 0.5s ease-in-out infinite;
+}
+
+.btnRetour:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+
+@keyframes flecheTranslate {
+    0% {
+        transform: translateX(0px);
+    }
+
+    50% {
+        transform: translateX(3px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+
+}
+
+/* Animations modernes pour la boîte de discussion et les messages */
+.animate-chatbox {
+    animation: chatboxAppear 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes chatboxAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(40px);
+    }
+
+    60% {
+        opacity: 0.7;
+        transform: scale(1.03) translateY(-8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+.animate-message {
+    animation: messageFadeIn 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes messageFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    60% {
+        opacity: 0.7;
+        transform: translateY(-4px) scale(1.03);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+.animate-send {
+    animation: sendBtnAppear 1s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.animate-send:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.18);
+}
+
+@keyframes sendBtnAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+/* Modernisation du design sombre/bleu */
+.chat-container {
+    box-shadow: 0 6px 32px rgba(44, 62, 80, 0.12);
+    border-radius: 18px;
+    background: linear-gradient(120deg, #25273f 0%, #2da2e1 100%);
+    color: #e8eef8;
+}
+
+.chat-header {
+    background: #25273f;
+    border-bottom: 1px solid #23759e;
+    color: #e8eef8;
+}
+
+.chat-avatar {
+    border-radius: 50%;
+    border: 2px solid #23759e;
+    background: #2da2e1;
+}
+
+.chat-messages {
+    min-height: 320px;
+    max-height: 340px;
+    overflow-y: auto;
+    padding-bottom: 12px;
+}
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 18px;
+    position: relative;
+    margin-bottom: 2px;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    background: #2b2e4a;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+}
+
+.chat-bubble-left {
+    background: #2b2e4a;
+    color: #2da2e1;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
+.chat-bubble-right {
+    background: #2da2e1;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+}
+
+.chat-time {
+    font-size: 0.8rem;
+    color: #e8eef8;
+    position: static;
+    align-self: flex-end;
+    margin-top: 4px;
+    margin-right: 2px;
+}
+
+.chat-input-container {
+    border-top: 1px solid #23759e;
+    background: #25273f;
+    border-radius: 0 0 18px 18px;
+}
+
+.chat-input {
+    resize: none;
+    font-size: 1rem;
+    background: #2b2e4a;
+    border: 1px solid #23759e;
+    border-radius: 12px;
+    box-shadow: none;
+    color: #e8eef8;
+}
+
+.chat-input::placeholder {
+    color: #e8eef8;
+    opacity: 0.8;
+}
+
+.input-group .btn-primary {
+    background: linear-gradient(90deg, #2da2e1 60%, #23759e 100%);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: background .18s;
+    color: #e8eef8;
+}
+
+.input-group .btn-primary:hover {
+    background: linear-gradient(90deg, #23759e 60%, #2da2e1 100%);
+}
+
+@media (max-width: 600px) {
+    .chat-container {
+        max-width: 98vw;
+    }
+
+    .chat-header,
+    .chat-input-container {
+        padding: 8px 4px;
+    }
+
+    .chat-bubble {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+    }
+
+    .chat-avatar {
+        height: 28px;
+        width: 28px;
+    }
+}

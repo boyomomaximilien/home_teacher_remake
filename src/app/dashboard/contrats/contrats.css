@@ -1,0 +1,79 @@
+.contrat-card {
+    background: linear-gradient(120deg, #25273f 60%, #2da2e1 100%);
+    color: #e8eef8;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.18);
+    transition: box-shadow .18s, background .18s;
+}
+
+.contrat-card .btn {
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.12);
+}
+
+.contrat-card .btn-outline-info {
+    border-color: #2da2e1;
+    color: white;
+    background: transparent;
+}
+
+.contrat-card .btn-outline-info:hover {
+    background: #2da2e1;
+    color: #25273f;
+}
+
+.contrat-pricing {
+    color: #2da2e1;
+}
+
+@media (max-width: 600px) {
+    .contrat-card {
+        flex-direction: row;
+        min-height: 90px;
+        padding: 10px 6px;
+        box-shadow: 0 2px 12px rgba(44, 62, 80, 0.12);
+    }
+
+    .contrat-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .contrat-details,
+    .contrat-date {
+        display: none !important;
+    }
+
+    .contrat-details-mobile {
+        display: block;
+        background: #2b2e4a;
+        color: #e8eef8;
+        border-radius: 12px;
+        margin-top: 8px;
+        padding: 10px 12px;
+        box-shadow: 0 2px 8px rgba(44, 62, 80, 0.10);
+        animation: detailsExpand 0.3s ease;
+    }
+
+    .contrat-card.mobile-collapsed .contrat-details-mobile {
+        display: none !important;
+    }
+
+    .contrat-card.mobile-expanded .contrat-details-mobile {
+        display: block !important;
+    }
+}
+
+@keyframes detailsExpand {
+    from {
+        opacity: 0;
+        transform: scaleY(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="306pt" height="268pt" viewBox="0 0 306 268" version="1.1">
+<defs>
+<image id="image30" width="306" height="268" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATIAAAEMCAIAAADI1K1PAAAABmJLR0QA/wD/AP+gvaeTAAADIUlEQVR4nO3TIQEAIADAMKB/C4KCpwAXW4Kbz7MHkLJ+BwAvW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHHlpBjS8ixJeTYEnJsCTm2hBxbQo4tIceWkGNLyLEl5NgScmwJObaEHFtCji0hx5aQY0vIsSXk2BJybAk5toQcW0KOLSHnAmixA7qt1CV7AAAAAElFTkSuQmCC"/>
+<pattern id="pattern0" patternUnits="userSpaceOnUse" width="306" height="268" >
+  <use xlink:href="#image30"/>
+</pattern>
+</defs>
+<g id="surface26">
+<rect x="0" y="0" width="306" height="268" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
+<path style=" stroke:none;fill-rule:nonzero;fill:url(#pattern0);" d="M 285.75 39.09375 L 285.75 20.125 L 96.0625 20.125 L 96.0625 1.15625 L 1.21875 1.15625 L 1.21875 266.71875 L 304.5625 266.71875 L 304.71875 39.09375 L 285.75 39.09375 M 285.59375 247.59375 L 20.1875 247.59375 L 20.1875 20.125 L 77.09375 20.125 L 77.09375 58.0625 L 285.59375 58.0625 L 285.59375 247.59375 "/>
+</g>
+</svg>

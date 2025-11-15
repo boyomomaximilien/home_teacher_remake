@@ -1,0 +1,60 @@
+button {
+    background: linear-gradient(145deg, #478fb4 45%, #3f99c7);
+    border-width: 0;
+    transition: 0.5s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(145deg, #23759e 45%, #094969);
+}
+
+label {
+    color: #408bb0;
+}
+
+
+
+.line-back {
+    background: linear-gradient(45deg, transparent 75%, #23759e 75% 85%, transparent 85%);
+}
+
+/*---------------------------------- spinner autour des objets---------------------------------*/
+
+.customSpinner {
+    position: relative;
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+
+}
+
+.customSpinner::before {
+    content: '';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: -1;
+    top: -1%;
+    left: -2%;
+    width: 104%;
+    height: 102%;
+    border-radius: 5px;
+    background: conic-gradient(from var(--angle), transparent 0deg 310deg, #23759e 357deg);
+    animation: rotateColor 3s infinite linear;
+}
+
+@keyframes rotateColor {
+    0% {
+        --angle: 0deg;
+    }
+
+    100% {
+        --angle: 360deg;
+    }
+
+}

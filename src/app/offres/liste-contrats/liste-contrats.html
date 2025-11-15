@@ -1,0 +1,37 @@
+<div class="container py-4">
+    <h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Offres de Contrats</h2>
+    <div class="row g-4">
+        @for(contrat of contrats; track $index){
+        <div class="col-lg-4 col-md-6">
+            <div class="contrat-card card shadow-sm border-0 h-100 animate-contrat">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="personne_icone.png" alt="Élève" class="rounded-circle me-3 animate-avatar"
+                            style="height:48px;width:48px;">
+                        <div class="animate-fade-in">
+                            <h5 class="mb-0 text-primary">{{contrat.studentName}}</h5>
+                            <small class="text-muted">Classe : {{contrat.studentClasse}}</small>
+                        </div>
+                    </div>
+                    <p class="mb-1 animate-fade-in"><i class="bi bi-person-fill"></i> Parent :
+                        <b>{{contrat.parentName}}</b>
+                    </p>
+                    <p class="mb-1 animate-fade-in"><i class="bi bi-clock"></i> {{contrat.sessionTime}}H / séance</p>
+                    <p class="mb-1 animate-fade-in"><i class="bi bi-calendar-event"></i> Jours :
+                        @for(day of contrat.courseDay; track $index){
+                        <span class="badge bg-info text-dark mx-1 animate-badge">{{day}}</span>
+                        }
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-3 animate-fade-in">
+                        <span class="h5 text-success i4fw-bold"><i class="bi bi-cash-coin"></i> {{contrat.Prix}}
+                            XAF</span>
+                        <span class="text-secondary"><i class="bi bi-calendar-check"></i>
+                            {{contrat}}</span>
+                    </div>
+                    <button class="btn btn-outline-primary w-100 mt-3 animate-btn">Voir le détail</button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<nav class="p-3 mb-lg-5 mb-3">
+    <div class="row d-flex justify-content-lg-between">
+        <div class="col-12 col-lg-3 d-flex align-items-center">
+            <img src="site_logo.svg" alt="" class="img-fluid m-2" style="max-height: 50px;">
+            <p class="display-6 d-lg-inline text-white text-center"><b><b>Home Teacher</b></b></p>
+
+        </div>
+
+        <div
+            class="col-12 col-lg-8 d-flex flex-lg-row-reverse justify-content-center justify-content-lg-start align-items-center">
+            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="profile">Dashboard</button>
+            <button class="ms-lg-4 ms-3 position-relative contact-btn" (click)="toggleContactDropdown()">Contact
+                <div class="contact-dropdown animate-dropdown" *ngIf="showContactDropdown">
+                    <div class="dropdown-section">
+                        <h6 class="dropdown-title">Contacter l'équipe technique</h6>
+                        <p class="dropdown-info"><i class="bi bi-envelope"></i> hometeacher@gmail.com</p>
+                        <p class="dropdown-info"><i class="bi bi-telephone"></i> +237 6 56 23 05 06</p>
+                    </div>
+                    <hr class="dropdown-separator">
+                    <div class="dropdown-section">
+                        <h6 class="dropdown-title">Signaler un compte dangereux</h6>
+                        <p class="dropdown-info"><i class="bi bi-exclamation-triangle"></i> Envoyez un email à
+                            <b>report@hometeacher.com</b> ou contactez le support.
+                        </p>
+                        <button class="btn report-btn animate-report" (click)="reportAccount()">Signaler</button>
+                    </div>
+                </div>
+            </button>
+            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="/offres">Offres</button>
+            <button class="ms-lg-4 ms-3 " routerLinkActive="active" routerLink="accueil">Home</button>
+        </div>
+    </div>
+</nav>

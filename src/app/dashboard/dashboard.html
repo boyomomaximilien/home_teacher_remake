@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-2 d-flex justify-content-center mb-3">
+            <img src="personne_icone.png" alt="" class="img-fluid rounded-circle border p-2" style="max-height: 200px;">
+        </div>
+        <div class="col-lg-5 mb-3 d-flex align-items-center">
+            <div>
+                <div class="d-flex justify-content-center">
+                    <p class="display-6"> <b><b>Boyomo MAXIMILIEN S.</b></b></p>
+                </div>
+                <div>
+                    <p class="text-center text-secondary"> <i>Master En Droit International</i></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="container row rounded shadow-sm mt-lg-4 barMenu d-flex align-items-center justify-content-between">
+            <div class="col-3 d-flex justify-content-center">
+                <button class="rounded-circle btn increase" (click)="displayedDashboard('contrat')">
+                    <img src="images/menu/contrat2.png" class="img-fluid" style="max-height: 50px;">
+                </button>
+
+            </div>
+            <div class="col-3  d-flex justify-content-center" (click)="displayedDashboard('discussion')">
+                <button class="rounded-circle btn increase">
+                    <img src="images/menu/message.png" class="img-fluid " style="max-height: 50px;">
+                </button>
+
+            </div>
+            <div class="col-3  d-flex justify-content-center">
+                <button class="btn rounded-circle increase" (click)="displayedDashboard('profile')">
+                    <img src="images/menu/personne.png" class="img-fluid" style="max-height: 50px;">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @if(this.pageAffichee == 'contrat'){
+    <app-contrats></app-contrats>
+
+    }
+    @else if(this.pageAffichee == 'discussion'){
+
+    <app-discussion (showDiscussion)="displayedDashboard($event)"></app-discussion>
+
+    }
+    @else if(this.pageAffichee == 'message'){
+
+    <app-messages (retour)="displayedDashboard($event)"></app-messages>
+    }
+    @else{
+    <app-profile></app-profile>
+    }
+</div>
