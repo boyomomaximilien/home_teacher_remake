@@ -2,6 +2,8 @@ export class Teacher {
     public Id!: string;
     public Name!: string;
     public PassWord!: string;
+    public ListClientsUid: string[] = [];
+    public ListContratsUid: string[] = [];
     public Nature = 'teacher'
     public IsConnected!: boolean;
     public IsAdmin!: boolean;

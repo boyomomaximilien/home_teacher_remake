@@ -1,13 +1,13 @@
 import { AngularFireList, AngularFireDatabase } from '@angular/fire/compat/database';
 import { App } from '../app';
+import { inject } from '@angular/core';
 
 export class HandlerClient {
 
-    private readonly path = `/clients/${App.connectedUser?.Id}`;
-    clientRef: AngularFireList<any>;
+    private clientData = inject(AngularFireDatabase);
 
-    constructor(private dbClient: AngularFireDatabase) {
-        this.clientRef = this.dbClient.list(this.path);
+    constructor() {
+
     }
 
 }

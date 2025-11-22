@@ -7,7 +7,7 @@ export class AuthGuard {
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (App.connectedUser) {
+        if (App.connectedUserUid !== '') {
             return true;
         } else {
             this.router.navigate(['/login']);

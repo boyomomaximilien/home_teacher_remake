@@ -4,7 +4,7 @@ import { Discussion } from '../dashboard/discussion/discussion';
 
 export class HandlerDiscussion {
 
-    private readonly path = `/discussions/${App.connectedUser?.Id}`;
+    private readonly path = `/discussions/${App.connectedUserUid}`;
     discussionRef: AngularFireList<any>;
 
     constructor(private dbDiscussion: AngularFireDatabase) {

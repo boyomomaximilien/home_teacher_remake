@@ -16,7 +16,7 @@ export class Offres {
   }
 
   ngOnInit() {
-    if (App.connectedUser && App.connectedUser.Nature == 'teacher') {
+    if (App.connectedUserUid !== '') {
       this.isTeacher = true;
     }
     else {

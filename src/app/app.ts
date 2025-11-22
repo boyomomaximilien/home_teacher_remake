@@ -14,13 +14,9 @@ import { Client } from './Models/client';
 export class App implements OnInit {
 
   protected title = 'Home_Teacher';
-  public static connectedUser?: Teacher | Client;
+  public static connectedUserUid = '';
 
   constructor() {
-    // Simuler un utilisateur connecté (à remplacer par une logique réelle d'authentification)
-    const fakeTeacher = new Teacher('T001', 'Jean Dupont', 'password123', true, false);
-    const fakeClient = new Client('C001', 'Marie Client', 'clientpass', true);
-    App.connectedUser = fakeTeacher;
 
   }
 

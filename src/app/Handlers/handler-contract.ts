@@ -3,7 +3,7 @@ import { App } from '../app';
 
 export class HandlerContract {
 
-    private readonly path = `/contracts/${App.connectedUser?.Id}`;
+    private readonly path = `/contracts/${App.connectedUserUid}`;
     clientRef: AngularFireList<any>;
 
     constructor(private dbClient: AngularFireDatabase) {
