@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ListeContrats } from "./liste-contrats/liste-contrats";
 import { ListeEnseignants } from "./liste-enseignants/liste-enseignants";
 import { App } from '../app';
+import { Teacher } from '../Models/teacher';
 
 @Component({
   selector: 'app-offres',
@@ -16,7 +17,7 @@ export class Offres {
   }
 
   ngOnInit() {
-    if (App.connectedUserUid !== '') {
+    if (App.connectedUserDataBase?.Nature === 'teacher') {
       this.isTeacher = true;
     }
     else {

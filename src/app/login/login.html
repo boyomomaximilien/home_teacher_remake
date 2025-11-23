@@ -30,11 +30,11 @@
         </p>
 
         <div class="form-floating mb-3">
-            <input class="form-control" placeholder="" [maxLength]="50">
+            <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="nomUser">
             <label>nom </label>
         </div>
         <div class="form-floating mb-3">
-            <input class="form-control" placeholder="" [maxLength]="50">
+            <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="prenomUser">
             <label>Prenoms</label>
         </div>
         <div class="form-floating mb-3">
@@ -44,7 +44,7 @@
         <div class="container d-flex align-items-center justify-content-between">
             <p class="text-secondary me-2  p-2 border rounded">+237</p>
             <div class="form-floating mb-3">
-                <input class="form-control" placeholder="" [maxLength]="9">
+                <input class="form-control" placeholder="" [maxLength]="9" [(ngModel)]="contactUser">
                 <label>Numero de telephone </label>
             </div>
         </div>
@@ -59,16 +59,16 @@
             <label>confirmer mot de passe</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="choix" value="enseignant"
+            <input class="form-check-input" type="radio" name="choix" value="enseignant" [(ngModel)]="natureUser"
                 style="background-color: #23759e; border-width: 0;"> Donner cours
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="choix" value="client"
+            <input class="form-check-input" type="radio" name="choix" value="client" [(ngModel)]="natureUser"
                 style="background-color: #23759e; border-width: 0;">
             Besoin de cours
         </div>
         <div class="p-3 d-flex justify-content-center ">
-            <button class="btn opacity-75 text-white">
+            <button class="btn opacity-75 text-white" (click)="signUp(mailSignUp, passwordSignUp)">
                 enregistrer
             </button>
         </div>

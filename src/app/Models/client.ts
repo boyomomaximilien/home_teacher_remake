@@ -3,8 +3,8 @@ export class Client {
     public Name!: string;
     public PassWord!: string;
     public Contact!: string;
-    public ListTeacherUid!: string[];
-    public ListContratsUid!: string[];
+    public ListTeacherUid: string[] = [];
+    public ListContratsUid: string[] = [];
     public Email!: string;
     public Nature = 'client';
     public IsConnected!: boolean;

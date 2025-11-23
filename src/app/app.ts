@@ -15,6 +15,7 @@ export class App implements OnInit {
 
   protected title = 'Home_Teacher';
   public static connectedUserUid = '';
+  public static connectedUserDataBase: Teacher | Client | null = null;
 
   constructor() {
 

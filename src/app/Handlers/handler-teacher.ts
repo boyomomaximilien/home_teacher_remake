@@ -1,32 +1,46 @@
 import { AngularFireList, AngularFireDatabase } from '@angular/fire/compat/database';
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { App } from '../app';
 import { Teacher } from '../Models/teacher';
+import { Database, ref, get, set } from '@angular/fire/database';
+
+@Injectable({
+    providedIn: 'root'
+})
 
 export class HandlerTeacher {
 
-    private teacherData = inject(AngularFireDatabase);
+    private teacherData = inject(Database);
+    private pathTeacher!: string;
+    private refTeacherDatabase: any;
 
     constructor() {
 
     }
 
-    enregistrerTeacher(teacher: Teacher) {
-        return this.teacherData.list('/teachers').push(teacher);
+    initialiserTableTeacher() {
+        this.pathTeacher = `teacher/${App.connectedUserUid}`;
+        this.refTeacherDatabase = ref(this.teacherData, this.pathTeacher);
     }
 
 
-    modifierTeacher(teacher: Teacher) {
-        return this.teacherData.object(`/teachers/${teacher.Id}`).update(teacher);
+    async saveTeacher(enseignant: Teacher) {
+
+        debugger;
+        try {
+            await set(this.refTeacherDatabase, enseignant);
+            console.log(`Client sauvegardé avec succès : ${enseignant.Name}`);
+        }
+        catch (error) {
+            console.error('Erreur lors de la sauvegarde du client :', error);
+        }
     }
 
-    getTeacherInfo(teacherUid: string) {
-        return this.teacherData.object(`/teachers/${teacherUid}`).valueChanges();
-    }
+    async getTeacherInfo() {
+        this.initialiserTableTeacher()
+        const result = await get(this.refTeacherDatabase);
+        return result.val() as Teacher;
 
-
-    getMyClients() {
-        this.teacherData.list(`/teacher/${App.connectedUserUid}/clients`);
     }
 
 
