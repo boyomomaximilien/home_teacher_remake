@@ -1,10 +1,12 @@
-import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { HttpClient } from '@angular/common/http';
+import { inject } from '@angular/core';
 
 
 const firebaseConfig = {
@@ -17,6 +19,7 @@ const firebaseConfig = {
   appId: "1:1077402966645:web:a3ec307be13c3c8c69f63c",
   measurementId: "G-9WMLR057L8"
 };
+
 
 export const appConfig: ApplicationConfig = {
   providers: [

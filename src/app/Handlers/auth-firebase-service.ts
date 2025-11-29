@@ -15,6 +15,7 @@ export class AuthFirebaseService {
 
 
   async Enregistrement(email: string, password: string): Promise<User | null> {
+
     const UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
     if (UserCredential.user) {
       console.log('Utilisateur enregistré :', UserCredential.user);
@@ -26,18 +27,27 @@ export class AuthFirebaseService {
   }
 
   async Connexion(email: string, password: string): Promise<User | null> {
+
     try {
       const UserCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Utilisateur connecté :', UserCredential.user);
       return UserCredential.user;
     }
-    catch (error) {
+    catch (error: any) {
       console.error('Erreur lors de la connexion :', error);
       return null;
     }
-
-
   }
 
 
+  async deconnexion(): Promise<void> {
+    try {
+      await signOut(this.auth);
+      App.connectedUserDataBase = null;
+      App.connectedUserUid = '';
+      console.log('Utilisateur déconnecté');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+    }
+  }
 }

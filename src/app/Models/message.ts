@@ -5,6 +5,7 @@ export class Message {
     public SenderId!: string;
     public ReceiverId!: string;
     public DateTimeInfo!: Date;
+    public IdSuppresseurs!: string[]
 
     constructor(id: string, content: string, sender: string, receiver: string, dateAndTime: Date, discussionId: string) {
         this.Id = id;

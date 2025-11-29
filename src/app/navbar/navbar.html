@@ -8,9 +8,19 @@
 
         <div
             class="col-12 col-lg-8 d-flex flex-lg-row-reverse justify-content-center justify-content-lg-start align-items-center">
+            @if(estConnecte){
+            <button class="ms-lg-4 ms-3 " (click)="deconnexion()"
+                style="background: linear-gradient(120deg, #e12d2d 60%, #3f2525 100%);">Deconnexion</button>
             <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="profile">Dashboard</button>
+            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="/offres">Offres</button>
+
+            } @else {
+            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="login">Connexion</button>
+            }
+
             <button class="ms-lg-4 ms-3 position-relative contact-btn" (click)="toggleContactDropdown()">Contact
-                <div class="contact-dropdown animate-dropdown" *ngIf="showContactDropdown">
+                @if(showContactDropdown){
+                <div class="contact-dropdown animate-dropdown">
                     <div class="dropdown-section">
                         <h6 class="dropdown-title">Contacter l'équipe technique</h6>
                         <p class="dropdown-info"><i class="bi bi-envelope"></i> hometeacher@gmail.com</p>
@@ -25,8 +35,9 @@
                         <button class="btn report-btn animate-report" (click)="reportAccount()">Signaler</button>
                     </div>
                 </div>
+                }
+
             </button>
-            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="/offres">Offres</button>
             <button class="ms-lg-4 ms-3 " routerLinkActive="active" routerLink="accueil">Home</button>
         </div>
     </div>

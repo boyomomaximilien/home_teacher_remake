@@ -8,6 +8,10 @@ export class Client {
     public Email!: string;
     public Nature = 'client';
     public IsConnected!: boolean;
+    public DateNaissance!: string;
+    public Quartier!: string;
+    public NumeroCNI!: string;
+
 
     constructor(id: string, name: string, passWord: string, isConnected: boolean, contact: string, email: string) {
         this.Id = id;

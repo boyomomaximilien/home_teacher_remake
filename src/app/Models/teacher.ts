@@ -9,6 +9,9 @@ export class Teacher {
     public IsAdmin!: boolean;
     public Contact!: string;
     public Email!: string;
+    public DateNaissance!: string;
+    public Quartier!: string;
+    public NumeroCNI!: string;
 
     constructor(id: string, name: string, passWord: string, isConnected: boolean, isAdmin: boolean, contact: string, email: string) {
         this.Id = id;

@@ -3,24 +3,24 @@
     <div class="row g-4">
         @for(enseignant of enseignants; track $index){
         <div class="col-lg-4 col-md-6">
-            <div class="enseignant-card card shadow-sm border-0 h-100">
+            <div class="enseignant-card card shadow-sm border-0 h-100 enseignant-card-animated">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
                         <img src="{{enseignant.photo || 'public/enseignant.png'}}" alt="Enseignant"
-                            class="rounded-circle me-3" style="height:48px;width:48px;">
+                            class="rounded-circle me-3 profile-pic" style="height:48px;width:48px;">
                         <div>
-                            <h5 class="mb-0 text-success">{{enseignant.name}}</h5>
+                            <h5 class="mb-0 text-success teacher-name">{{enseignant.name}}</h5>
                             <small class="text-muted">Expérience : {{enseignant.experience}} ans</small>
                         </div>
                     </div>
                     <p class="mb-1"><i class="bi bi-book"></i> Matières :
                         @for(matiere of enseignant.matieres; track $index){
-                        <span class="badge bg-primary mx-1">{{matiere}}</span>
+                        <span class="badge bg-primary mx-1 subject-badge">{{matiere}}</span>
                         }
                     </p>
                     <p class="mb-1"><i class="bi bi-geo-alt"></i> Ville : {{enseignant.ville}}</p>
                     <p class="mb-1"><i class="bi bi-chat-dots"></i> À propos : {{enseignant.description}}</p>
-                    <button class="btn btn-outline-success w-100 mt-3">Contacter</button>
+                    <button class="btn w-100 mt-3 contact-button">Contacter</button>
                 </div>
             </div>
         </div>

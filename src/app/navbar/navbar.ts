@@ -1,15 +1,27 @@
-import { Component } from '@angular/core';
-import { RouterLinkActive, RouterLink } from "@angular/router";
-import { NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { RouterLinkActive, RouterLink, Router } from "@angular/router";
+import { App } from '../app';
+import { AuthFirebaseService } from '../Handlers/auth-firebase-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLinkActive, RouterLink, NgIf],
+  standalone: true,
+  imports: [RouterLinkActive, RouterLink, CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
 export class Navbar {
   showContactDropdown = false;
+
+  private authService = inject(AuthFirebaseService);
+  private router = inject(Router);
+
+  public get estConnecte(): boolean {
+    return App.connectedUserUid !== '';
+  }
+
+  constructor() { }
 
   toggleContactDropdown() {
     this.showContactDropdown = !this.showContactDropdown;
@@ -17,5 +29,10 @@ export class Navbar {
 
   reportAccount() {
     window.open('mailto:report@hometeacher.com?subject=Signalement%20compte%20dangereux', '_blank');
+  }
+
+  deconnexion() {
+    this.authService.deconnexion();
+    this.router.navigate(['/login']);
   }
 }

@@ -1,7 +1,7 @@
 import { AngularFireList } from '@angular/fire/compat/database';
 import { App } from '../app';
 import { inject, Injectable } from '@angular/core';
-import { ref, set, get, Database } from '@angular/fire/database';
+import { ref, set, get, Database, remove } from '@angular/fire/database';
 import { Client } from '../Models/client';
 
 
@@ -39,6 +39,11 @@ export class HandlerClient {
         const result = await get(this.clientRef);
         return result.val() as Client;
 
+    }
+
+    async supprimerClient() {
+        this.initialiserTable()
+        await remove(this.clientRef);
     }
 
 

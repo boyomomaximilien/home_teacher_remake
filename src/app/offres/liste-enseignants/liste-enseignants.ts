@@ -10,7 +10,7 @@ export class ListeEnseignants {
   enseignants = [
     {
       name: 'Jean Pierre',
-      photo: '',
+      photo: 'personne_icone.png',
       experience: 8,
       matieres: ['Mathématiques', 'Physique'],
       ville: 'Douala',

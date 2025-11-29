@@ -1,0 +1,141 @@
+/* General card styling */
+.enseignant-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated border */
+.enseignant-card-animated::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg,
+            #8359d7, #36396c, #2e96c7, #11a6d3);
+    z-index: 1;
+    transform-origin: center;
+    animation: rotate 5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.enseignant-card-animated:hover::before {
+    opacity: 1;
+}
+
+.enseignant-card-animated .card-body {
+    position: relative;
+    z-index: 2;
+    background-color: #ffffff;
+    border-radius: 12px;
+    margin: 3px;
+}
+
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hover effects for the card */
+.enseignant-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Profile picture animation */
+.profile-pic {
+    transition: transform 0.3s ease;
+}
+
+.enseignant-card:hover .profile-pic {
+    transform: scale(1.1);
+}
+
+/* Teacher name animation */
+.teacher-name {
+    transition: color 0.3s ease;
+}
+
+.enseignant-card:hover .teacher-name {
+    color: #007bff !important;
+    /* using !important to override bootstrap's text-success */
+}
+
+/* Subject badges animation */
+.subject-badge {
+    transition: all 0.2s ease;
+}
+
+.enseignant-card:hover .subject-badge {
+    animation: bounce 0.6s ease infinite alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-4px);
+    }
+}
+
+/* Staggered animation for badges on card hover */
+.enseignant-card:hover .subject-badge:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.enseignant-card:hover .subject-badge:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.enseignant-card:hover .subject-badge:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.enseignant-card:hover .subject-badge:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+/* Add more if a teacher can have more subjects */
+
+/* Contact button animation */
+.contact-button {
+    transition: all 0.3s ease;
+    color: #3b05aee6;
+    border-color: #3b05aee6;
+    border-width: 2px;
+}
+
+.contact-button:hover {
+    background-color: #3b05aee6;
+    /* Bootstrap success color */
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.contact-button::before {
+    content: "→";
+    position: absolute;
+    right: 15px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.contact-button:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+}

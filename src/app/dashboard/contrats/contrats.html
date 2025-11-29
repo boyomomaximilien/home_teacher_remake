@@ -1,3 +1,4 @@
+@if(Nature ==='teacher'){
 <div class="container mt-lg-4 mt-3 py-2" style="max-width: 80%; min-height: 120px;">
 
     @for (contract of Contracts; track $index){
@@ -62,3 +63,132 @@
     }
 
 </div>
+}
+@else {
+
+<div class="add-contract-container text-center py-4">
+
+    <!-- 1. État initial: Bouton pour démarrer la création -->
+    @if(!showAddContractForm && !createdContract){
+    <button class="add-contract-button" (click)="toggleAddContractForm()">
+        <i class="bi bi-plus-lg"></i>
+        Proposer un nouveau contrat
+    </button>
+    }
+
+    <!-- 2. État formulaire: Afficher le formulaire de création -->
+    @if(showAddContractForm){
+    <div class="container mt-4">
+        <div class="add-contract-card">
+            <div class="card-header">
+                <h3><i class="bi bi-file-earmark-plus-fill"></i> Créer un nouveau contrat</h3>
+                <p>Remplissez les informations ci-dessous pour soumettre une nouvelle proposition de contrat.</p>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <!-- Matière -->
+                        <div class="col-md-6 mb-3 form-group-animated">
+                            <label for="matiere" class="form-label"><i class="bi bi-book-fill"></i> Matière</label>
+                            <select id="matiere" class="form-select" formControlName="matiere">
+                                <option value="" disabled>Choisir une matière</option>
+                                @for (subject of subjects; track $index){
+                                <option [value]="subject">{{ subject }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Nom de l'élève -->
+                        <div class="col-md-6 mb-3 form-group-animated">
+                            <label for="studentName" class="form-label"><i class="bi bi-person-fill"></i> Nom de
+                                l'élève</label>
+                            <input type="text" id="studentName" class="form-control" formControlName="studentName">
+                        </div>
+
+                        <!-- Classe de l'élève -->
+                        <div class="col-md-6 mb-3 form-group-animated">
+                            <label for="studentClasse" class="form-label"><i class="bi bi-mortarboard-fill"></i>
+                                Classe de l'élève</label>
+                            <input type="text" id="studentClasse" class="form-control" formControlName="studentClasse">
+                        </div>
+
+                        <!-- Heures par séance -->
+                        <div class="col-md-6 mb-3 form-group-animated">
+                            <label for="sessionTime" class="form-label"><i class="bi bi-clock-fill"></i> Heures par
+                                séance</label>
+                            <input type="number" id="sessionTime" class="form-control" formControlName="sessionTime">
+                        </div>
+
+                        <!-- Prix -->
+                        <div class="col-md-12 mb-3 form-group-animated">
+                            <label for="prix" class="form-label"><i class="bi bi-cash-coin"></i> Prix (XAF)</label>
+                            <input type="number" id="prix" class="form-control" formControlName="prix">
+                        </div>
+
+                        <!-- Jours de cours -->
+                        <div class="col-md-12 mb-3 form-group-animated">
+                            <label class="form-label"><i class="bi bi-calendar-event-fill"></i> Jours de cours</label>
+                            <div class="days-checkbox-group">
+                                @for (day of daysOfWeek; track $index){
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" [id]="'day-' + $index"
+                                        [value]="day" (change)="onDayChange($event)">
+                                    <label class="form-check-label" [for]="'day-' + $index">{{ day }}</label>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4 form-group-animated">
+                        <button type="button" class="btn btn-secondary me-2" (click)="toggleAddContractForm()">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-submit" [disabled]="!contractForm.valid">
+                            <i class="bi bi-check-circle-fill"></i> Soumettre le contrat
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- 3. État résumé: Afficher le contrat nouvellement créé -->
+    @if(createdContract){
+    <div class="container mt-4">
+        <div class="contract-summary-card">
+            <button class="btn-close-summary" (click)="dismissSummary()">&times;</button>
+            <div class="summary-header">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <h3>Contrat proposé avec succès !</h3>
+                <p>Votre proposition a été enregistrée et est en attente de validation.</p>
+            </div>
+            <div class="summary-body">
+                <h4>Récapitulatif du contrat</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-person-fill"></i> Élève :</strong> {{ createdContract.studentName }}</p>
+                        <p><strong><i class="bi bi-mortarboard-fill"></i> Classe :</strong> {{ createdContract.studentClasse }}</p>
+                        <p><strong><i class="bi bi-book-fill"></i> Matière :</strong> {{ createdContract.matiere }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-clock-fill"></i> Heures/séance :</strong> {{ createdContract.sessionTime }}H</p>
+                        <p><strong><i class="bi bi-cash-coin"></i> Prix :</strong> {{ createdContract.prix | number }} XAF</p>
+                        <p><strong><i class="bi bi-calendar-event-fill"></i> Jours :</strong>
+                            <span *ngFor="let day of createdContract.courseDays" class="badge bg-info text-dark mx-1">{{ day }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-footer">
+                <button class="btn btn-primary" (click)="createNewContract()">
+                    <i class="bi bi-plus-circle-fill"></i> Proposer un autre contrat
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+
+</div>
+
+}

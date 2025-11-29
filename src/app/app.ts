@@ -7,6 +7,7 @@ import { Client } from './Models/client';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet, Navbar, Myfooter],
   templateUrl: './app.html',
   styleUrl: './app.css'

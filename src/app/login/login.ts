@@ -16,6 +16,8 @@ import { HandlerTeacher } from '../Handlers/handler-teacher';
 })
 export class Login {
 
+  afficherSpinner = false;
+
   mailLogin = '';
   passwordLogin = '';
   mailSignUp = '';
@@ -39,42 +41,66 @@ export class Login {
 
   //se connecter
   async logIn(mail: string, paswword: string) {
-    const IsAUth = await this.AuthentificationService.Connexion(mail, paswword);
-    if (IsAUth) {
+    debugger
 
-      App.connectedUserUid = IsAUth.uid
+    this.afficherSpinner = true;
+    try {
+      const IsAUth = await this.AuthentificationService.Connexion(mail, paswword);
+      if (IsAUth) {
 
-      //recherche des information dans les client et si rien n'est trouve dans les enseignants
-      this.utilisateur = await this.handlerClient.getClientInfo();
-      if (!this.utilisateur) {
-        this.utilisateur = await this.handlerEnseignant.getTeacherInfo();
+        App.connectedUserUid = IsAUth.uid
+
+        //recherche des information dans les client et si rien n'est trouve dans les enseignants
+        this.utilisateur = await this.handlerClient.getClientInfo();
+        if (!this.utilisateur) {
+          this.utilisateur = await this.handlerEnseignant.getTeacherInfo();
+        }
+        App.connectedUserDataBase = this.utilisateur;
+        this.laRoute.navigate(['/profile']);
+
+        this.afficherSpinner = false;
       }
-      App.connectedUserDataBase = this.utilisateur;
-      this.laRoute.navigate(['/profile']);
     }
+    catch (error) {
+      this.afficherSpinner = false;
+      console.error('Erreur lors de la connexion :', error);
+    }
+
+
   }
 
   //creer un nouveau compte
   async signUp(mail: string, password: string) {
+    debugger;
+    this.afficherSpinner = true;
 
-    if (this.passwordSignUp == this.passwordSignUpFirst) {
+    try {
+      if (this.passwordSignUp == this.passwordSignUpFirst) {
 
-      if (this.natureUser === 'client') {
-        const IsAUth = await this.AuthentificationService.Enregistrement(mail, password);
-        const client = new Client(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, true, this.contactUser, this.mailSignUp);
-        await this.handlerClient.saveClient(client);
-        this.laRoute.navigate(['/profile']);
+        if (this.natureUser === 'client') {
+          const IsAUth = await this.AuthentificationService.Enregistrement(mail, password);
+          const client = new Client(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, true, this.contactUser, this.mailSignUp);
+          await this.handlerClient.saveClient(client);
+          this.laRoute.navigate(['/profile']);
+        }
+        else if (this.natureUser === 'enseignant') {
+          const IsAUth = await this.AuthentificationService.Enregistrement(mail, password);
+          const enseignant = new Teacher(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, true, false, this.contactUser, this.mailSignUp);
+          await this.handlerEnseignant.saveTeacher(enseignant);
+          this.laRoute.navigate(['/profile']);
+        }
+        else {
+          console.log('veuilliez choisir la nuture de votre profile')
+        }
+
       }
-      else if (this.natureUser === 'enseignant') {
-        const IsAUth = await this.AuthentificationService.Enregistrement(mail, password);
-        const enseignant = new Teacher(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, true, false, this.contactUser, this.mailSignUp);
-        await this.handlerEnseignant.saveTeacher(enseignant);
-        this.laRoute.navigate(['/profile']);
-      }
-      else {
-        console.log('veuilliez choisir la nuture de votre profile')
-      }
+      this.afficherSpinner = false;
+    }
+    catch (error) {
+      this.afficherSpinner = false;
+      console.error('Erreur lors de la connexion :', error);
 
     }
+
   }
 }
