@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Contrats } from "./contrats/contrats";
 import { Messages } from "./discussion/messages/messages";
 import { Profile } from "./profile/profile";
-import { Discussion } from "./discussion/discussion";
+import { DiscussionTemplate } from "./discussion/discussion";
+import { Discussion } from '../Models/discussion';
 import { Teacher } from '../Models/teacher';
 import { Client } from '../Models/client';
 import { App } from '../app';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [Contrats, Profile, Discussion, Messages],
+  imports: [Contrats, Profile, DiscussionTemplate, Messages],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -18,6 +19,7 @@ export class Dashboard {
   public pageAffichee = 'contrat';
   message: any;
   public utilisateurActuel!: Teacher | Client | null;
+  public laDiscussion!: Discussion
 
 
   constructor() {
@@ -26,12 +28,17 @@ export class Dashboard {
 
   }
 
-  displayedDashboard(name: string, listeDiscussions?: string[]) {
+  displayedDashboard(data: string | { page: string, discussion: Discussion }) {
 
-    if (listeDiscussions != null) {
+    if (typeof data === 'string') {
+      this.pageAffichee = `${data}`
 
     }
-    this.pageAffichee = name
+    else {
+      this.pageAffichee = data.page
+      this.laDiscussion = data.discussion
+    }
+
 
   }
 

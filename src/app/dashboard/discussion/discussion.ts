@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { Discussion } from '../../Models/discussion';
 
 @Component({
   selector: 'app-discussion',
@@ -6,12 +7,18 @@ import { Component, Output, EventEmitter } from '@angular/core';
   templateUrl: './discussion.html',
   styleUrl: './discussion.css'
 })
-export class Discussion {
+export class DiscussionTemplate {
 
-  @Output() showDiscussion = new EventEmitter();
+  @Output() showDiscussion = new EventEmitter<{ page: string, discussion: Discussion }>();
+  public touteMesDiscussion!: Discussion[]
 
   openDiscussion() {
-    this.showDiscussion.emit('message');
+
+    const data = {
+      page: 'message',
+      discussion: this.touteMesDiscussion[0]
+    }
+    this.showDiscussion.emit(data);
   }
 
 }

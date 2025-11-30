@@ -1,7 +1,7 @@
 @if(Nature ==='teacher'){
 <div class="container mt-lg-4 mt-3 py-2" style="max-width: 80%; min-height: 120px;">
 
-    @for (contract of Contracts; track $index){
+    @for (element of tousMesContrats; track element.Id){
     <div class="contrat-card row align-items-center shadow-sm mb-4 p-3 rounded"
         [class.mobile-collapsed]="activeIndex !== $index && isMobile"
         [class.mobile-expanded]="activeIndex === $index && isMobile">
@@ -12,17 +12,17 @@
         <div class="col-lg-6 col-8">
             <div class="contrat-info">
                 <h5 class="mb-1 text-primary">
-                    <i class="bi bi-person-fill"></i> {{contrat.studentName}}
+                    <i class="bi bi-person-fill"></i> {{element.studentName}}
                 </h5>
                 <div class="contrat-details d-none d-lg-block">
                     <p class="mb-1 text-secondary"><i class="bi bi-people-fill"></i> Parent : <span
-                            class="fw-bold">{{contrat.parentName}}</span></p>
+                            class="fw-bold">{{element.parentName}}</span></p>
                     <p class="mb-1"><i class="bi bi-mortarboard-fill"></i> Classe : <span
-                            class="fw-bold">{{contrat.studentClasse}}</span></p>
-                    <p class="mb-1"><i class="bi bi-clock-fill"></i> {{contrat.sessionTime}}H par séance</p>
+                            class="fw-bold">{{element.studentClasse}}</span></p>
+                    <p class="mb-1"><i class="bi bi-clock-fill"></i> {{element.sessionTime}}H par séance</p>
                     <p class="mb-1"><i class="bi bi-calendar-event-fill"></i> Jours :
                         <span>
-                            @for(day of contrat.courseDay; track $index){
+                            @for(day of element.courseDay; track $index){
                             <span class="badge bg-info text-dark mx-1">{{day}}</span>
                             }
                         </span>
@@ -30,13 +30,13 @@
                 </div>
                 <div *ngIf="isMobile && activeIndex === $index" class="contrat-details-mobile mt-2 animate-details">
                     <p class="mb-1 text-secondary"><i class="bi bi-people-fill"></i> Parent : <span
-                            class="fw-bold">{{contrat.parentName}}</span></p>
+                            class="fw-bold">{{element.parentName}}</span></p>
                     <p class="mb-1"><i class="bi bi-mortarboard-fill"></i> Classe : <span
-                            class="fw-bold">{{contrat.studentClasse}}</span></p>
-                    <p class="mb-1"><i class="bi bi-clock-fill"></i> {{contrat.sessionTime}}H par séance</p>
+                            class="fw-bold">{{element.studentClasse}}</span></p>
+                    <p class="mb-1"><i class="bi bi-clock-fill"></i> {{element.sessionTime}}H par séance</p>
                     <p class="mb-1"><i class="bi bi-calendar-event-fill"></i> Jours :
                         <span>
-                            @for(day of contrat.courseDay; track $index){
+                            @for(day of element.courseDay; track $index){
                             <span class="badge bg-info text-dark mx-1">{{day}}</span>
                             }
                         </span>
@@ -47,17 +47,50 @@
         <div class="col-lg-4 col-12 d-flex flex-column align-items-lg-end align-items-center mt-3 mt-lg-0">
             <div class="contrat-pricing mb-2">
                 <span class="h5 text-info fw-bold">
-                    <i class="bi bi-cash-coin"></i> {{contrat.Prix}} XAF
+                    <i class="bi bi-cash-coin"></i> {{element.Prix}} XAF
                 </span>
             </div>
             <div class="contrat-date d-none d-lg-block">
                 <span class="h6 text-terciary">
-                    <i class="bi bi-calendar-check"></i> {{contrat.datePaiement.toDateString()}}
+                    <i class="bi bi-calendar-check"></i> {{element.datePaiement.toDateString()}}
                 </span>
             </div>
-            <button class="btn btn-outline-info mt-3 px-4 py-2 " (click)="toggleDetails($index)">
-                {{isMobile && activeIndex === $index ? 'Masquer' : 'Voir le détail'}}
-            </button>
+            <div class="d-flex flex-wrap justify-content-end mt-2">
+                <button class="btn btn-outline-info m-1" (click)="toggleDetails($index)">
+                    {{isMobile && activeIndex === $index ? 'Masquer' : 'Détail'}}
+                </button>
+                <button class="btn btn-outline-danger m-1" (click)="openDeleteModal(element)">
+                    <i class="bi bi-trash-fill"></i> Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Modal de confirmation de suppression -->
+    @if(showDeleteModal){
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de suppression</h5>
+                    <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer le contrat pour <strong>{{ contractToDelete?.studentName
+                            }}</strong> ?</p>
+                    <p class="text-danger">Cette action est irréversible.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
+                        Annuler
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+                        <i class="bi bi-trash-fill"></i> Confirmer la suppression
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     }
@@ -85,17 +118,20 @@
                 <p>Remplissez les informations ci-dessous pour soumettre une nouvelle proposition de contrat.</p>
             </div>
             <div class="card-body">
-                <form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
+                <form [formGroup]="contractForm" (ngSubmit)="enregistrerContrat()">
                     <div class="row">
                         <!-- Matière -->
                         <div class="col-md-6 mb-3 form-group-animated">
-                            <label for="matiere" class="form-label"><i class="bi bi-book-fill"></i> Matière</label>
-                            <select id="matiere" class="form-select" formControlName="matiere">
-                                <option value="" disabled>Choisir une matière</option>
+                            <label class="form-label"><i class="bi bi-book-fill"></i> Matières</label>
+                            <div class="subjects-checkbox-group">
                                 @for (subject of subjects; track $index){
-                                <option [value]="subject">{{ subject }}</option>
+                                <div class="form-check form-check-inline ">
+                                    <input class="form-check-input mb-2" type="checkbox" [id]="'subject-' + $index"
+                                        [value]="subject" (change)="onMatiereChange($event)">
+                                    <label class="form-check-label" [for]="'subject-' + $index">{{ subject }}</label>
+                                </div>
                                 }
-                            </select>
+                            </div>
                         </div>
 
                         <!-- Nom de l'élève -->
@@ -131,8 +167,8 @@
                             <div class="days-checkbox-group">
                                 @for (day of daysOfWeek; track $index){
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" [id]="'day-' + $index"
-                                        [value]="day" (change)="onDayChange($event)">
+                                    <input class="form-check-input" type="checkbox" [id]="'day-' + $index" [value]="day"
+                                        (change)="onDayChange($event)">
                                     <label class="form-check-label" [for]="'day-' + $index">{{ day }}</label>
                                 </div>
                                 }
@@ -140,10 +176,10 @@
                         </div>
                     </div>
                     <div class="text-center mt-4 form-group-animated">
-                        <button type="button" class="btn btn-secondary me-2" (click)="toggleAddContractForm()">
+                        <button type="button" class="btn btn-secondary me-2 mb-2" (click)="toggleAddContractForm()">
                             Annuler
                         </button>
-                        <button type="submit" class="btn btn-primary btn-submit" [disabled]="!contractForm.valid">
+                        <button type="submit" class="btn btn-primary btn-submit mb-2" [disabled]="!contractForm.valid">
                             <i class="bi bi-check-circle-fill"></i> Soumettre le contrat
                         </button>
                     </div>
@@ -154,7 +190,7 @@
     }
 
     <!-- 3. État résumé: Afficher le contrat nouvellement créé -->
-    @if(createdContract){
+    @for(element of tousMesContrats; track element.Id){
     <div class="container mt-4">
         <div class="contract-summary-card">
             <button class="btn-close-summary" (click)="dismissSummary()">&times;</button>
@@ -167,22 +203,35 @@
                 <h4>Récapitulatif du contrat</h4>
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong><i class="bi bi-person-fill"></i> Élève :</strong> {{ createdContract.studentName }}</p>
-                        <p><strong><i class="bi bi-mortarboard-fill"></i> Classe :</strong> {{ createdContract.studentClasse }}</p>
-                        <p><strong><i class="bi bi-book-fill"></i> Matière :</strong> {{ createdContract.matiere }}</p>
+                        <p><strong><i class="bi bi-person-fill"></i> Élève :</strong> {{ element.studentName }}
+                        </p>
+                        <p><strong><i class="bi bi-mortarboard-fill"></i> Classe :</strong> {{
+                            element.studentClasse }}</p>
+                        <p><strong><i class="bi bi-book-fill"></i> Matières :</strong>
+                            <span *ngFor="let subject of element.matieres" class="badge bg-primary text-white mx-1">{{
+                                subject }}</span>
+                        </p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong><i class="bi bi-clock-fill"></i> Heures/séance :</strong> {{ createdContract.sessionTime }}H</p>
-                        <p><strong><i class="bi bi-cash-coin"></i> Prix :</strong> {{ createdContract.prix | number }} XAF</p>
+                        <p><strong><i class="bi bi-clock-fill"></i> Heures/séance :</strong> {{
+                            element.sessionTime }}H</p>
+                        <p><strong><i class="bi bi-cash-coin"></i> Prix :</strong> {{ element.Prix| number }}
+                            XAF</p>
                         <p><strong><i class="bi bi-calendar-event-fill"></i> Jours :</strong>
-                            <span *ngFor="let day of createdContract.courseDays" class="badge bg-info text-dark mx-1">{{ day }}</span>
+                            @for(jour of element.courseDay; track $index){
+                            <span class="badge bg-info text-dark mx-1">{{jour }}</span>
+                            }
+
                         </p>
                     </div>
                 </div>
             </div>
             <div class="summary-footer">
-                <button class="btn btn-primary" (click)="createNewContract()">
-                    <i class="bi bi-plus-circle-fill"></i> Proposer un autre contrat
+                <button class="btn btn-warning m-1" (click)="createNewContract()">
+                    <i class="bi bi-plus-circle-fill"></i> Modifier
+                </button>
+                <button class="btn btn-danger m-1" (click)="createNewContract()">
+                    <i class="bi bi-plus-circle-fill"></i> Supprimer
                 </button>
             </div>
         </div>

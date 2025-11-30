@@ -31,8 +31,8 @@ export class Navbar {
     window.open('mailto:report@hometeacher.com?subject=Signalement%20compte%20dangereux', '_blank');
   }
 
-  deconnexion() {
-    this.authService.deconnexion();
-    this.router.navigate(['/login']);
+  async deconnexion() {
+    await this.authService.deconnexion();
+    await this.router.navigate(['/login']);
   }
 }

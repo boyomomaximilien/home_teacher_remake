@@ -4,13 +4,14 @@ export class Contract {
     public studentClasse!: string;
     public studentPicture: string = 'personne_icone.png';
     public courseDay!: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[];
-    public sessionTime!: 1 | 2 | 3 | 4 | 5 | 6
+    public sessionTime!: 1 | 2 | 3 | 4 | 5 | 6;
     public Prix!: number;
     public datePaiement !: Date;
     public parentName?: string = '-----';
+    public matieres!: string[];
 
-    constructor(id: string, student_Name: string, student_Picture: string, course_Day: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[], session_Time: 1 | 2 | 3 | 4 | 5 | 6, classe: string, prix: number, date: Date, parent_Name?: string) {
-        this.Id = id;
+    constructor(student_Name: string, student_Picture: string, course_Day: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[], session_Time: 1 | 2 | 3 | 4 | 5 | 6, classe: string, prix: number, date: Date, matieres: string[]) {
+
         this.studentName = student_Name;
         this.studentClasse = classe;
         this.studentPicture = student_Picture;
@@ -18,7 +19,7 @@ export class Contract {
         this.sessionTime = session_Time;
         this.Prix = prix;
         this.datePaiement = date;
-        this.parentName = parent_Name;
+        this.matieres = matieres;
 
     }
 }

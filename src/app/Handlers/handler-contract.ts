@@ -1,4 +1,4 @@
-import { get, ref, set, remove, Database } from '@angular/fire/database';
+import { get, ref, set, remove, Database, push } from '@angular/fire/database';
 import { inject, Injectable } from '@angular/core';
 import { App } from '../app';
 import { Contract } from '../Models/contract';
@@ -12,6 +12,7 @@ export class HandlerContract {
 
 
     constructor() {
+
     }
 
     InitialiserTable(cleContrat?: string) {
@@ -27,7 +28,9 @@ export class HandlerContract {
     async sauvegarderContrat(contrat: Contract) {
         this.InitialiserTable();
         try {
-            await this.refTableContrat.push(contrat);
+            const nouvelleRef = await push(this.refTableContrat)
+            contrat.Id = `${nouvelleRef.key}`;
+            await set(nouvelleRef, contrat);
             console.log(`Contrat sauvegardé avec succès : ${contrat.Id}`);
         }
         catch (error) {
@@ -35,9 +38,10 @@ export class HandlerContract {
         }
     }
 
-    async obtenirContrats(): Promise<Record<string, Contract> | null> {
+    async obtenirContrats(): Promise<Contract[]> {
         this.InitialiserTable();
-        const result = (await get(this.refTableContrat)).val() as Record<string, Contract> | null;
+        const resultintermediaire = (await get(this.refTableContrat)).val() as Record<string, Contract>;
+        const result = Object.values(resultintermediaire);
         return result;
     }
 

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Contract } from '../../Models/contract';
 import { CommonModule } from '@angular/common';
 import { App } from '../../app';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HandlerContract } from '../../Handlers/handler-contract';
 
 
 @Component({
@@ -12,8 +13,8 @@ import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } fr
   styleUrl: './contrats.css'
 })
 export class Contrats {
-  Contracts: Contract[] = [];
-  contrat = new Contract('kdfd7dm', 'Bekono Ange', 'Bekono Jean', ['dimanche', 'lundi', 'samedi'], 2, '4 eme', 65000, new Date('2025-12-20'));
+  private handlerContract = inject(HandlerContract);
+  public tousMesContrats!: Contract[];
 
   isMobile = false;
   activeIndex: number | null = null;
@@ -26,25 +27,48 @@ export class Contrats {
   showAddContractForm = false;
   createdContract: any | null = null;
 
+  showDeleteModal = false;
+  contractToDelete: Contract | null = null;
+
   constructor(private fb: FormBuilder) {
-    this.Contracts.push(this.contrat);
-    this.Contracts.push(this.contrat);
-    this.Contracts.push(this.contrat);
-    this.Contracts.push(this.contrat);
+
     this.checkMobile();
 
     this.contractForm = this.fb.group({
-      matiere: ['', Validators.required],
+      matieres: this.fb.array([], Validators.required),
       studentName: ['', Validators.required],
       studentClasse: ['', Validators.required],
       courseDays: this.fb.array([], Validators.required),
       sessionTime: ['', [Validators.required, Validators.min(1)]],
-      prix: ['', [Validators.required, Validators.min(1000)]]
+      prix: ['', [Validators.required, Validators.min(1000)]],
     });
+  }
+
+  async ngOnInit() {
+    this.tousMesContrats = await this.handlerContract.obtenirContrats();
+    this.recupererContrat()
+
+  }
+
+
+  async recupererContrat() {
+    // 
+    this.tousMesContrats = await this.handlerContract.obtenirContrats()
   }
 
   toggleAddContractForm() {
     this.showAddContractForm = !this.showAddContractForm;
+  }
+
+  onMatiereChange(event: any) {
+    const matieres: FormArray = this.contractForm.get('matieres') as FormArray;
+
+    if (event.target.checked) {
+      matieres.push(this.fb.control(event.target.value));
+    } else {
+      const index = matieres.controls.findIndex(x => x.value === event.target.value);
+      matieres.removeAt(index);
+    }
   }
 
   onDayChange(event: any) {
@@ -58,12 +82,27 @@ export class Contrats {
     }
   }
 
-  onSubmit() {
+  async enregistrerContrat() {
+
     if (this.contractForm.valid) {
-      this.createdContract = this.contractForm.value;
+      const formValue = this.contractForm.value;
+      const contrat = new Contract(
+        formValue.studentName,
+        'personne_icone.png', // Image par défaut
+        formValue.courseDays,
+        formValue.sessionTime,
+        formValue.studentClasse,
+        formValue.prix,
+        new Date(), // Date actuelle pour le paiement
+        formValue.matieres
+      );
+
+      await this.handlerContract.sauvegarderContrat(contrat)
+      this.tousMesContrats.push(contrat)
       this.showAddContractForm = false;
       this.contractForm.reset();
       // Reset the FormArray
+      (this.contractForm.get('matieres') as FormArray).clear();
       (this.contractForm.get('courseDays') as FormArray).clear();
     } else {
       console.log('Le formulaire contient des erreurs.');
@@ -79,6 +118,26 @@ export class Contrats {
     this.createdContract = null;
   }
 
+  openDeleteModal(contract: Contract) {
+    this.contractToDelete = contract;
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.contractToDelete = null;
+  }
+
+  async confirmDelete() {
+    if (this.contractToDelete) {
+      await this.handlerContract.supprimerContrat(this.contractToDelete.Id);
+      this.tousMesContrats = this.tousMesContrats.filter(c => c.Id !== this.contractToDelete!.Id);
+      this.closeDeleteModal();
+    }
+  }
+
+
+
 
   checkMobile() {
     this.isMobile = window.innerWidth < 600;
@@ -91,5 +150,5 @@ export class Contrats {
     this.activeIndex = this.activeIndex === index ? null : index;
   }
 
-  ngOnInit() { }
+
 }

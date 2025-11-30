@@ -17,13 +17,19 @@
     </div>
     <div class="chat-messages defilement px-2 py-3">
         <!-- Exemple de messages, à remplacer par une boucle Angular -->
+        @for(element of discussionSelect.Messages; track element.Id){
         <div class="d-flex mb-3 align-items-end animate-message">
             <img src="personne_icone.png" alt="Avatar" class="chat-avatar me-2" style="height:32px; width:32px;">
-            <div class="chat-bubble chat-bubble-left">
-                <p class="mb-0">je suis bien arrivé</p>
-                <span class="chat-time">10:12</span>
+            <div [class]="{
+                'chat-bubble' : true,
+                'chat-bubble-left': element.SenderId === idUtilisateur,
+                'chat-bubble-right': element.SenderId !== idUtilisateur}">
+                <p class="mb-0">{{element.Content}}</p>
+                <span class="chat-time">{{element.DateTimeInfo.getDate()}} {{element.DateTimeInfo.getTime()}}</span>
             </div>
         </div>
+        }
+
         <div class="d-flex mb-3 flex-row-reverse align-items-end animate-message">
             <img src="enseignant.png" alt="Avatar" class="chat-avatar ms-2" style="height:32px; width:32px;">
             <div class="chat-bubble chat-bubble-right">

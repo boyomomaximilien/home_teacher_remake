@@ -48,7 +48,7 @@
     }
     @else if(this.pageAffichee == 'message'){
 
-    <app-messages (retour)="displayedDashboard($event)"></app-messages>
+    <app-messages [discussionSelect]="laDiscussion" (retour)="displayedDashboard($event)"></app-messages>
     }
     @else{
     <app-profile></app-profile>

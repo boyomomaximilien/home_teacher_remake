@@ -41,8 +41,6 @@ export class Login {
 
   //se connecter
   async logIn(mail: string, paswword: string) {
-    debugger
-
     this.afficherSpinner = true;
     try {
       const IsAUth = await this.AuthentificationService.Connexion(mail, paswword);
