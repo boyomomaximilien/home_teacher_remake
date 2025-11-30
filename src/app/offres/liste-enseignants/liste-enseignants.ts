@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Teacher } from '../../Models/teacher';
 
 @Component({
   selector: 'app-liste-enseignants',
@@ -7,6 +8,8 @@ import { Component } from '@angular/core';
   styleUrl: './liste-enseignants.css'
 })
 export class ListeEnseignants {
+
+  @Input() listeEnseignants!: Teacher[]
   enseignants = [
     {
       name: 'Jean Pierre',

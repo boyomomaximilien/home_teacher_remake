@@ -37,6 +37,14 @@ export class HandlerDiscussion {
         await newRef.set(laDiscussion)
     }
 
+    async obtenirToutesLesDiscussions(): Promise<Discussion[]> {
+        this.InitialiserTable();
+        const resultIntermediaire = (await get(this.RefTableDiscussion)).val();
+        const result = Object.values<Discussion>(resultIntermediaire);
+        return result;
+
+    }
+
     async obtenirUneDiscussion(laCle: string): Promise<Discussion> {
         this.InitialiserTable(laCle);
         const result = (await get(this.RefTableDiscussion)).val() as Discussion;

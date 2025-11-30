@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { Contract } from '../../Models/contract';
+import { HandlerDiscussion } from '../../Handlers/handler-discussion';
+import { Discussion } from '../../Models/discussion';
+import { App } from '../../app';
 
 @Component({
   selector: 'app-liste-contrats',
@@ -7,6 +11,8 @@ import { Component } from '@angular/core';
   styleUrl: './liste-contrats.css'
 })
 export class ListeContrats {
+  @Input() listeContrat!: Contract[];
+  discussion = inject(HandlerDiscussion)
   contrats = [
     {
       studentName: 'Alice Mbappe',
@@ -37,4 +43,9 @@ export class ListeContrats {
       datePaiement: new Date('2025-10-25')
     }
   ];
+
+  contacterClient(IdClient: string) {
+    const laDiscussion = new Discussion([`${IdClient}`, `${App.connectedUserUid}`])
+    this.discussion.sauvegarderDiscussion(laDiscussion)
+  }
 }

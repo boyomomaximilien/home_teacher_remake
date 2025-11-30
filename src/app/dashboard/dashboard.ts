@@ -23,7 +23,6 @@ export class Dashboard {
 
 
   constructor() {
-    debugger;
     this.utilisateurActuel = App.connectedUserDataBase;
 
   }

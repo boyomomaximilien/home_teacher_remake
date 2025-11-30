@@ -1,7 +1,7 @@
 <div class="container py-4">
     <h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Offres de Contrats</h2>
     <div class="row g-4">
-        @for(contrat of contrats; track $index){
+        @for(contrat of listeContrat; track contrat.Id){
         <div class="col-lg-4 col-md-6">
             <div class="contrat-card card shadow-sm border-0 h-100 animate-contrat">
                 <div class="card-body">
@@ -28,7 +28,9 @@
                         <span class="text-secondary"><i class="bi bi-calendar-check"></i>
                             {{contrat}}</span>
                     </div>
-                    <button class="btn btn-outline-primary w-100 mt-3 animate-btn">Voir le détail</button>
+                    <button class="btn btn-outline-primary w-100 mt-3 animate-btn"
+                        (click)="contacterClient(contrat.IdCreator)">Voir le
+                        détail</button>
                 </div>
             </div>
         </div>

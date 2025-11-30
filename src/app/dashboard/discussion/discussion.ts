@@ -1,5 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { Discussion } from '../../Models/discussion';
+import { HandlerDiscussion } from '../../Handlers/handler-discussion';
 
 @Component({
   selector: 'app-discussion',
@@ -11,7 +12,11 @@ export class DiscussionTemplate {
 
   @Output() showDiscussion = new EventEmitter<{ page: string, discussion: Discussion }>();
   public touteMesDiscussion!: Discussion[]
+  gestionnaireDiscussion = inject(HandlerDiscussion)
 
+  async ngOnInit() {
+    this.touteMesDiscussion = await this.gestionnaireDiscussion.obtenirToutesLesDiscussions()
+  }
   openDiscussion() {
 
     const data = {

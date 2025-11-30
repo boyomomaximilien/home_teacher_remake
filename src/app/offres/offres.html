@@ -1,8 +1,6 @@
 @if(isTeacher){
-<app-liste-contrats></app-liste-contrats>
-
+<app-liste-contrats [listeContrat]="contratsAffiche "></app-liste-contrats>
 }
 @else{
-<app-liste-enseignants></app-liste-enseignants>
-
+<app-liste-enseignants [listeEnseignants]="enseignantsAffiche"></app-liste-enseignants>
 }

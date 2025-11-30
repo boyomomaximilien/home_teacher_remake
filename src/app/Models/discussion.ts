@@ -8,11 +8,9 @@ export class Discussion {
     public IdInterlocuteur!: string[]
     public IdSuppresseurs!: string[]
 
-    constructor(id: string, messages: Message[], interlocuteurs: string[], idSuppresseur: string[]) {
-        this.Id = id;
-        this.Messages = messages;
+    constructor(interlocuteurs: string[]) {
+
         this.IdInterlocuteur = interlocuteurs;
-        this.IdSuppresseurs = idSuppresseur;
 
     }
 }
