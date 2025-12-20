@@ -11,66 +11,52 @@
             <div class="d-flex align-items-center">
                 <img src="personne_icone.png" alt="Avatar" class="rounded-circle border me-2"
                     style="height:38px; width:38px; background:#2da2e1; border:2px solid #23759e;">
-                <span class="h5 mb-0" style="color:#2da2e1;">Jean Pierre</span>
+                <span class="h5 mb-0" style="color:#2da2e1;">
+                    @if(discussionSelect.NomInterlocuteur !== utilisateurConnecte?.Name){
+                    {{ discussionSelect.NomInterlocuteur}}
+                    }
+                    @else {
+                    {{ discussionSelect.NomCreateur}}
+                    }
+                </span>
             </div>
         </div>
     </div>
     <div class="chat-messages defilement px-2 py-3">
         <!-- Exemple de messages, à remplacer par une boucle Angular -->
         @for(element of discussionSelect.Messages; track element.Id){
-        <div class="d-flex mb-3 align-items-end animate-message">
-            <img src="personne_icone.png" alt="Avatar" class="chat-avatar me-2" style="height:32px; width:32px;">
+        <div class="">
             <div [class]="{
+                 'justify-content-end':element.SenderId === utilisateurConnecte?.Id,
+                 'col-12':true,
+                 'd-flex':true,
+                 'mb-3':true,
+                 'align-items-end':true,
+                 'animate-message':true}">
+
+                <img src="personne_icone.png" alt="Avatar" class="chat-avatar me-2" style="height:32px; width:32px;">
+
+                <div [class]="{
                 'chat-bubble' : true,
-                'chat-bubble-left': element.SenderId === idUtilisateur,
-                'chat-bubble-right': element.SenderId !== idUtilisateur}">
-                <p class="mb-0">{{element.Content}}</p>
-                <span class="chat-time">{{element.DateTimeInfo.getDate()}} {{element.DateTimeInfo.getTime()}}</span>
+                'chat-bubble-left': element.SenderId === utilisateurConnecte?.Id,
+                'chat-bubble-right': element.SenderId !== utilisateurConnecte?.Id}">
+
+                    <p class="mb-0">{{element.Content}}</p>
+                    <span class="chat-time">{{element.Date}} {{element.Heure}}</span>
+                </div>
             </div>
         </div>
+
         }
 
-        <div class="d-flex mb-3 flex-row-reverse align-items-end animate-message">
-            <img src="enseignant.png" alt="Avatar" class="chat-avatar ms-2" style="height:32px; width:32px;">
-            <div class="chat-bubble chat-bubble-right">
-                <p class="mb-0">Super, à tout à l'heure !</p>
-                <span class="chat-time">10:13</span>
-            </div>
-        </div>
-        <div class="d-flex mb-3 align-items-end animate-message">
-            <img src="personne_icone.png" alt="Avatar" class="chat-avatar me-2" style="height:32px; width:32px;">
-            <div class="chat-bubble chat-bubble-left">
-                <p class="mb-0">As-tu reçu mon dernier message ?</p>
-                <span class="chat-time">10:14</span>
-            </div>
-        </div>
-        <div class="d-flex mb-3 flex-row-reverse align-items-end animate-message">
-            <img src="enseignant.png" alt="Avatar" class="chat-avatar ms-2" style="height:32px; width:32px;">
-            <div class="chat-bubble chat-bubble-right">
-                <p class="mb-0">Oui, je prépare les documents.</p>
-                <span class="chat-time">10:15</span>
-            </div>
-        </div>
-        <div class="d-flex mb-3 align-items-end animate-message">
-            <img src="personne_icone.png" alt="Avatar" class="chat-avatar me-2" style="height:32px; width:32px;">
-            <div class="chat-bubble chat-bubble-left">
-                <p class="mb-0">Parfait, merci !</p>
-                <span class="chat-time">10:16</span>
-            </div>
-        </div>
-        <div class="d-flex mb-3 flex-row-reverse align-items-end animate-message">
-            <img src="enseignant.png" alt="Avatar" class="chat-avatar ms-2" style="height:32px; width:32px;">
-            <div class="chat-bubble chat-bubble-right">
-                <p class="mb-0">À tout à l'heure alors !</p>
-                <span class="chat-time">10:17</span>
-            </div>
-        </div>
     </div>
     <div class="chat-input-container container py-2 mb-2" style="background:#25273f;">
         <div class="input-group">
-            <textarea class="form-control chat-input border rounded px-3" rows="2" placeholder="Saisir un message"
+            <textarea class="form-control chat-input border rounded px-3" [(ngModel)]="textMessage" rows="2"
+                placeholder="Saisir un message"
                 style="background:#2b2e4a; color:#e8eef8; border:1px solid #23759e;"></textarea>
-            <button class="btn btn-primary ms-2 px-4 animate-send">Envoyer</button>
+            <button class="btn btn-primary ms-2 px-4 animate-send"
+                (click)="envoyerMessage(discussionSelect)">Envoyer</button>
         </div>
     </div>
 </div>

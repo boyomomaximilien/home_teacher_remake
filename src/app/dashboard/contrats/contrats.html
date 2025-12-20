@@ -1,6 +1,7 @@
 @if(Nature ==='teacher'){
 <div class="container mt-lg-4 mt-3 py-2" style="max-width: 80%; min-height: 120px;">
 
+    @if(tousMesContrats.length !=0){
     @for (element of tousMesContrats; track element.Id){
     <div class="contrat-card row align-items-center shadow-sm mb-4 p-3 rounded"
         [class.mobile-collapsed]="activeIndex !== $index && isMobile"
@@ -66,6 +67,14 @@
         </div>
     </div>
     }
+    }@else {
+    <div class="container my-5">
+        <p class="h4 text-center text-secondary">
+            Aucun contrat pour le momment
+        </p>
+    </div>
+    }
+
 
     <!-- Modal de confirmation de suppression -->
     @if(showDeleteModal){
@@ -190,6 +199,7 @@
     }
 
     <!-- 3. État résumé: Afficher le contrat nouvellement créé -->
+    @if(tousMesContrats.length !=0){
     @for(element of tousMesContrats; track element.Id){
     <div class="container mt-4">
         <div class="contract-summary-card">
@@ -237,6 +247,14 @@
         </div>
     </div>
     }
+    }@else {
+    <div class="container my-5">
+        <p class="h4 text-center text-secondary">
+            Aucun contrat pour le momment
+        </p>
+    </div>
+    }
+
 
 </div>
 

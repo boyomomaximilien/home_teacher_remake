@@ -24,6 +24,8 @@ export class Profile {
   Quartier!: string;
   Contact!: string;
   NumeroCNI!: string;
+  Description!: string;
+  anneesExperience!: number;
 
   constructor() {
 
@@ -32,15 +34,27 @@ export class Profile {
   }
 
   ngOnInit() {
-    debugger;
-    this.Nom = this.currentUser?.Name || '';
-    this.DateNaissance = this.currentUser?.DateNaissance || '';
-    this.MotDePasse = this.currentUser?.PassWord || '';
-    this.Quartier = this.currentUser?.Quartier || '';
-    this.Contact = this.currentUser?.Contact || '';
-    this.NumeroCNI = this.currentUser?.NumeroCNI || '';
+    if (typeof (this.currentUser) === typeof (Teacher)) {
+      const user = this.currentUser as Teacher
+      this.Nom = user.Name || '';
+      this.DateNaissance = user.DateNaissance || '';
+      this.MotDePasse = user.PassWord || '';
+      this.Quartier = user.Quartier || '';
+      this.Contact = user.Contact || '';
+      this.NumeroCNI = user.NumeroCNI || '';
+      this.Description = user.Description;
+      this.anneesExperience = user.Experience
+    }
+    else {
+      const user = this.currentUser as Client
+      this.Nom = user.Name || '';
+      this.DateNaissance = user.DateNaissance || '';
+      this.MotDePasse = user.PassWord || '';
+      this.Quartier = user.Quartier || '';
+      this.Contact = user.Contact || '';
+      this.NumeroCNI = user.NumeroCNI || '';
 
-
+    }
   }
 
   activeModification() {

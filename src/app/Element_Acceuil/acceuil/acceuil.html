@@ -55,18 +55,30 @@
                 <p class="display-6 text-center" style="color:#2da2e1;"><b><b>Assimiliez enfin les conceptes
                             complexes</b></b></p>
             </div>
-            @for(element of listeMatiere; track $index){
-            <div class="col-lg-2 d-flex align-items-center justify-content-center mb-3 focusMatiere">
-                <div class="rounded shadow-lg"
-                    style="background:linear-gradient(120deg,#25273f 60%,#2da2e1 100%); border-width:0px;">
-                    <div class="pb-4 pt-0 d-flex justify-content-center">
-                        <img src="{{element.icone}}" alt="" class="img-fluid w-100 rounded-top"
-                            style="background:#2b2e4a;">
+
+            <div class="col-12 position-relative px-4 ">
+                <button class="btn btn-dark  position-absolute top-50 start-0" style="z-index: 1;">Next</button>
+                <button class="btn btn-dark position-absolute top-50 end-0" style="z-index: 1;">Prev</button>
+                <div class="scroll-x">
+
+                    @for(element of listeMatiere; track $index){
+                    <div class="d-flex align-items-center justify-content-center mb-3 focusMatiere">
+                        <div class="rounded shadow-lg"
+                            style="background:linear-gradient(120deg,#25273f 60%,#2da2e1 100%); border-width:0px;">
+                            <div class="pb-4 pt-0 d-flex justify-content-center">
+                                <img src="{{element.icone}}" alt="" class="img-fluid w-100 rounded-top"
+                                    style="background:#2b2e4a; min-height: 250px; min-width: 200px;">
+                            </div>
+                            <p class="text-center h3" style="color:#2da2e1;">{{element.name}}</p>
+                        </div>
                     </div>
-                    <p class="text-center h3" style="color:#2da2e1;">{{element.name}}</p>
+                    }
                 </div>
             </div>
-            }
+
+
+
+
         </div>
         <div class="row">
             <div class="col-12">

@@ -1,3 +1,4 @@
+@if(listeContrat !== undefined ){
 <div class="container py-4">
     <h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Offres de Contrats</h2>
     <div class="row g-4">
@@ -16,17 +17,20 @@
                     <p class="mb-1 animate-fade-in"><i class="bi bi-person-fill"></i> Parent :
                         <b>{{contrat.parentName}}</b>
                     </p>
-                    <p class="mb-1 animate-fade-in"><i class="bi bi-clock"></i> {{contrat.sessionTime}}H / séance</p>
+                    <p class="mb-1 animate-fade-in"><i class="bi bi-clock"></i> {{contrat.sessionTime}}H par séance.</p>
                     <p class="mb-1 animate-fade-in"><i class="bi bi-calendar-event"></i> Jours :
                         @for(day of contrat.courseDay; track $index){
                         <span class="badge bg-info text-dark mx-1 animate-badge">{{day}}</span>
                         }
                     </p>
+                    <p class="mb-1 animate-fade-in"><i class="bi bi-calendar-event"></i> Matieres :
+                        @for(matiere of contrat.matieres; track $index){
+                        <span class="badge bg-info text-dark mx-1 animate-badge">{{matiere}}</span>
+                        }
+                    </p>
                     <div class="d-flex justify-content-between align-items-center mt-3 animate-fade-in">
                         <span class="h5 text-success i4fw-bold"><i class="bi bi-cash-coin"></i> {{contrat.Prix}}
                             XAF</span>
-                        <span class="text-secondary"><i class="bi bi-calendar-check"></i>
-                            {{contrat}}</span>
                     </div>
                     <button class="btn btn-outline-primary w-100 mt-3 animate-btn"
                         (click)="contacterClient(contrat.IdCreator)">Voir le
@@ -37,3 +41,13 @@
         }
     </div>
 </div>
+}
+
+@else {
+<div class="container my-5">
+    <p class="display-4 text-center text-secondary">
+        <b><b>Aucun contrat disponible pour le momment !</b></b>
+    </p>
+    <p class="text-secondary text-center h5">verifiez votre connexion ou reessayez ulterieurement</p>
+</div>
+}

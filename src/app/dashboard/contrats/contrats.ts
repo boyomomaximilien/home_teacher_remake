@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Contract } from '../../Models/contract';
 import { CommonModule } from '@angular/common';
 import { App } from '../../app';
@@ -14,7 +14,7 @@ import { HandlerContract } from '../../Handlers/handler-contract';
 })
 export class Contrats {
   private handlerContract = inject(HandlerContract);
-  public tousMesContrats!: Contract[];
+  @Input() tousMesContrats!: Contract[];
 
   isMobile = false;
   activeIndex: number | null = null;
@@ -97,6 +97,8 @@ export class Contrats {
         formValue.matieres
       );
 
+      contrat.IdCreator = App.connectedUserUid;
+
       await this.handlerContract.sauvegarderContrat(contrat)
       this.tousMesContrats.push(contrat)
       this.showAddContractForm = false;
@@ -105,7 +107,6 @@ export class Contrats {
       (this.contractForm.get('matieres') as FormArray).clear();
       (this.contractForm.get('courseDays') as FormArray).clear();
     } else {
-      console.log('Le formulaire contient des erreurs.');
     }
   }
 

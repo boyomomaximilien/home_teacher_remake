@@ -1,3 +1,22 @@
+.scroll-x {
+    display: flex;
+    gap: 12px;
+    /* espace entre les items */
+    overflow-x: auto;
+    /* défilement horizontal */
+    padding: 12px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* défilement fluide */
+}
+
+.scroll-x::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Edge moderne */
+}
+
+
 img {
     max-height: 500px;
 }

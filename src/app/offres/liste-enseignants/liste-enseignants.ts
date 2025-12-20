@@ -1,5 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { Teacher } from '../../Models/teacher';
+import { Discussion } from '../../Models/discussion';
+import { HandlerTeacher } from '../../Handlers/handler-teacher';
+import { HandlerDiscussion } from '../../Handlers/handler-discussion';
+import { App } from '../../app';
+import { Client } from '../../Models/client';
+import { HandlerClient } from '../../Handlers/handler-client';
 
 @Component({
   selector: 'app-liste-enseignants',
@@ -9,31 +15,28 @@ import { Teacher } from '../../Models/teacher';
 })
 export class ListeEnseignants {
 
-  @Input() listeEnseignants!: Teacher[]
-  enseignants = [
-    {
-      name: 'Jean Pierre',
-      photo: 'personne_icone.png',
-      experience: 8,
-      matieres: ['Mathématiques', 'Physique'],
-      ville: 'Douala',
-      description: 'Passionné par la pédagogie, j’aide les élèves à progresser avec des méthodes adaptées.'
-    },
-    {
-      name: 'Fatou Ndiaye',
-      photo: '',
-      experience: 5,
-      matieres: ['Français', 'Anglais'],
-      ville: 'Yaoundé',
-      description: 'Enseignante dynamique, spécialisée dans l’accompagnement personnalisé.'
-    },
-    {
-      name: 'M. Nguema',
-      photo: '',
-      experience: 12,
-      matieres: ['SVT', 'Chimie'],
-      ville: 'Libreville',
-      description: 'Expert en sciences, je rends les matières accessibles et motivantes.'
-    }
-  ];
+  @Input() listeEnseignants!: Teacher[];
+  gestionnaireEnseignant = inject(HandlerTeacher)
+  gestionnaireDiscussion = inject(HandlerDiscussion)
+  gestionnaireClient = inject(HandlerClient)
+
+
+  constructor() {
+
+  }
+
+  async contactEnseignant(teacher: Teacher) {
+    var discussion = new Discussion(teacher.Id);
+    discussion.IdCreateur = App.connectedUserUid;
+    discussion.NomCreateur = `${App.connectedUserDataBase?.Name}`;
+    discussion.NomInterlocuteur = teacher.Name;
+    discussion.IdInterlocuteur = teacher.Id;
+    const saveDiscussion = await this.gestionnaireDiscussion.sauvegarderDiscussion(discussion);
+    App.connectedUserDataBase?.ListDiscussionsUid.push(saveDiscussion.Id)
+    await this.gestionnaireClient.updateClient(App.connectedUserDataBase as Client)
+    const enseignant = await this.gestionnaireEnseignant.getTeacherInfo(teacher.Id)
+    enseignant.ListDiscussionsUid.push(discussion.Id)
+    await this.gestionnaireEnseignant.saveTeacher(enseignant)
+
+  }
 }

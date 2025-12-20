@@ -3,6 +3,9 @@ import { Contract } from '../../Models/contract';
 import { HandlerDiscussion } from '../../Handlers/handler-discussion';
 import { Discussion } from '../../Models/discussion';
 import { App } from '../../app';
+import { HandlerTeacher } from '../../Handlers/handler-teacher';
+import { Teacher } from '../../Models/teacher';
+import { HandlerClient } from '../../Handlers/handler-client';
 
 @Component({
   selector: 'app-liste-contrats',
@@ -11,41 +14,41 @@ import { App } from '../../app';
   styleUrl: './liste-contrats.css'
 })
 export class ListeContrats {
+
   @Input() listeContrat!: Contract[];
   discussion = inject(HandlerDiscussion)
-  contrats = [
-    {
-      studentName: 'Alice Mbappe',
-      parentName: 'Mme. Mbappe',
-      studentClasse: 'Terminale S',
-      sessionTime: 2,
-      matieres: ['Mathématiques', 'Physique'],
-      ville: 'Douala',
-      quartier: 'Bonanjo',
-      montant: 40000
-    },
-    {
-      studentName: 'Yann Nguema',
-      parentName: 'M. Nguema',
-      studentClasse: 'Première ES',
-      sessionTime: 1.5,
-      courseDay: ['Mardi', 'Vendredi'],
-      Prix: 6500,
-      datePaiement: new Date('2025-10-20')
-    },
-    {
-      studentName: 'Fatou Diallo',
-      parentName: 'Mme. Diallo',
-      studentClasse: 'Seconde',
-      sessionTime: 2,
-      courseDay: ['Mercredi'],
-      Prix: 7000,
-      datePaiement: new Date('2025-10-25')
-    }
-  ];
+  teacher = inject(HandlerTeacher)
+  client = inject(HandlerClient)
 
-  contacterClient(IdClient: string) {
-    const laDiscussion = new Discussion([`${IdClient}`, `${App.connectedUserUid}`])
-    this.discussion.sauvegarderDiscussion(laDiscussion)
+
+  async contacterClient(IdClient: string) {
+    const clientValue = await this.client.getClientInfo(IdClient)
+    const laDiscussion = new Discussion(`${IdClient}`)
+    laDiscussion.NomInterlocuteur = clientValue.Name
+    laDiscussion.IdCreateur = App.connectedUserUid
+    laDiscussion.NomCreateur = `${App.connectedUserDataBase?.Name}`
+    const discussion = await this.discussion.sauvegarderDiscussion(laDiscussion)
+
+    if (clientValue.ListDiscussionsUid === undefined) {
+      clientValue.ListDiscussionsUid = []
+    }
+    if (!clientValue.ListDiscussionsUid.find(i => i === discussion.Id)) {
+      clientValue.ListDiscussionsUid.push(discussion.Id)
+    }
+
+    this.client.updateClient(clientValue)
+
+    if (App.connectedUserDataBase) {
+      if (App.connectedUserDataBase.ListDiscussionsUid === undefined) {
+        App.connectedUserDataBase.ListDiscussionsUid = []
+      }
+      const listDiscussions = App.connectedUserDataBase as Teacher
+      if (!listDiscussions.ListDiscussionsUid.find(i => i === discussion.Id)) {
+        listDiscussions.ListDiscussionsUid.push(discussion.Id)
+      }
+
+      this.teacher.saveTeacher(listDiscussions)
+      App.connectedUserDataBase = listDiscussions
+    }
   }
 }

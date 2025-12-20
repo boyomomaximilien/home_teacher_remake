@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { ListeContrats } from "./liste-contrats/liste-contrats";
 import { ListeEnseignants } from "./liste-enseignants/liste-enseignants";
 import { App } from '../app';
 import { Teacher } from '../Models/teacher';
 import { Contract } from '../Models/contract';
 import { Database, ref, get } from '@angular/fire/database';
+import { HandlerContract } from '../Handlers/handler-contract';
+import { HandlerTeacher } from '../Handlers/handler-teacher';
 
 @Component({
   selector: 'app-offres',
@@ -16,25 +18,23 @@ export class Offres {
   isTeacher!: boolean;
   contratsAffiche !: Contract[]
   enseignantsAffiche !: Teacher[]
-  dataBase = inject(Database)
-  refDataBase: any;
+  tableContrat = inject(HandlerContract)
+  tableEnseignant = inject(HandlerTeacher)
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
 
   }
 
   async ngOnInit() {
-
     if (App.connectedUserDataBase?.Nature === 'teacher') {
       this.isTeacher = true;
-      this.refDataBase = ref(this.dataBase, 'contracts');
-      this.contratsAffiche = Object.values<Contract>((await get(this.refDataBase)).val())
+      this.contratsAffiche = await this.tableContrat.obtenirTousLesContratsDisponibles()
     }
     else {
       this.isTeacher = false;
-      this.refDataBase = ref(this.dataBase, 'teacher')
-      this.enseignantsAffiche = Object.values<Teacher>((await get(this.refDataBase)).val())
+      this.enseignantsAffiche = await this.tableEnseignant.getTousLesEnseignants()
     }
+    this.cdr.detectChanges();
   }
 
 

@@ -1,26 +1,27 @@
 <div class="container py-4">
     <h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Nos Enseignants</h2>
     <div class="row g-4">
-        @for(enseignant of enseignants; track $index){
+        @for(enseignant of listeEnseignants; track enseignant.Id){
         <div class="col-lg-4 col-md-6">
             <div class="enseignant-card card shadow-sm border-0 h-100 enseignant-card-animated">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="{{enseignant.photo || 'public/enseignant.png'}}" alt="Enseignant"
+                        <img src="{{enseignant.Image || 'public/enseignant.png'}}" alt="Enseignant"
                             class="rounded-circle me-3 profile-pic" style="height:48px;width:48px;">
                         <div>
-                            <h5 class="mb-0 text-success teacher-name">{{enseignant.name}}</h5>
-                            <small class="text-muted">Expérience : {{enseignant.experience}} ans</small>
+                            <h5 class="mb-0 text-success teacher-name">{{enseignant.Name}}</h5>
+                            <small class="text-muted">Expérience : {{enseignant.Experience}} ans</small>
                         </div>
                     </div>
                     <p class="mb-1"><i class="bi bi-book"></i> Matières :
-                        @for(matiere of enseignant.matieres; track $index){
+                        @for(matiere of enseignant.ListMatiereDePredilection; track $index){
                         <span class="badge bg-primary mx-1 subject-badge">{{matiere}}</span>
                         }
                     </p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Ville : {{enseignant.ville}}</p>
-                    <p class="mb-1"><i class="bi bi-chat-dots"></i> À propos : {{enseignant.description}}</p>
-                    <button class="btn w-100 mt-3 contact-button">Contacter</button>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Ville : {{enseignant.Ville}}</p>
+                    <p class="mb-1"><i class="bi bi-chat-dots"></i> À propos : {{enseignant.Description}}</p>
+                    <button class="btn w-100 mt-3 contact-button"
+                        (click)="contactEnseignant(enseignant)">Contacter</button>
                 </div>
             </div>
         </div>

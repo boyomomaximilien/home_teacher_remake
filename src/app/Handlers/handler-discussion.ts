@@ -1,4 +1,4 @@
-import { Database, get, remove, set, ref, update } from '@angular/fire/database';
+import { Database, get, set, ref, update, push, DataSnapshot } from '@angular/fire/database';
 import { inject, Injectable } from '@angular/core';
 import { App } from '../app';
 import { Discussion } from '../Models/discussion';
@@ -10,6 +10,7 @@ import { Message } from '../Models/message';
 
 export class HandlerDiscussion {
     private tableDiscussion = inject(Database);
+    pathDiscussion!: string;
     RefTableDiscussion: any;
     laDiscussion !: Discussion;
 
@@ -20,43 +21,48 @@ export class HandlerDiscussion {
     InitialiserTable(cleDiscussion?: string) {
         //definition de la reference 
         if (cleDiscussion) {
-            this.RefTableDiscussion = ref(this.tableDiscussion, `discussions/${App.connectedUserUid}/${cleDiscussion}`);
+            this.pathDiscussion = 'discussions/' + cleDiscussion;
+            this.RefTableDiscussion = ref(this.tableDiscussion, this.pathDiscussion);
         }
         else {
-            this.RefTableDiscussion = ref(this.tableDiscussion, `discussions/${App.connectedUserUid}`);
+            this.pathDiscussion = 'discussions'
+            this.RefTableDiscussion = ref(this.tableDiscussion, this.pathDiscussion);
         }
     }
 
-    async sauvegarderDiscussion(laDiscussion: Discussion) {
-
+    async sauvegarderDiscussion(laDiscussion: Discussion): Promise<Discussion> {
         this.InitialiserTable()
         //creation et recuperation de la cle de la discussion
-        const newRef = await this.RefTableDiscussion.push()
-        laDiscussion.Id = newRef.apiKey
-        //sauvegarde de la discussion
-        await newRef.set(laDiscussion)
+        const newRef = await push(this.RefTableDiscussion)
+        laDiscussion.Id = `${newRef.key}`
+        await set(newRef, laDiscussion)
+        return laDiscussion
     }
 
-    async obtenirToutesLesDiscussions(): Promise<Discussion[]> {
-        this.InitialiserTable();
-        const resultIntermediaire = (await get(this.RefTableDiscussion)).val();
-        const result = Object.values<Discussion>(resultIntermediaire);
+    async obtenirToutesLesDiscussions(discussionsId: string[]): Promise<Discussion[]> {
+        var result: Discussion[] = []
+        for (const element of discussionsId) {
+            this.InitialiserTable(element)
+            const laDiscussion = await (await get(this.RefTableDiscussion)).val() as Discussion
+            result.push(laDiscussion)
+        }
         return result;
-
     }
 
     async obtenirUneDiscussion(laCle: string): Promise<Discussion> {
         this.InitialiserTable(laCle);
-        const result = (await get(this.RefTableDiscussion)).val() as Discussion;
+        const result = await (await get(this.RefTableDiscussion)).val() as Discussion;
         return result;
     }
 
-    async miseAJourDiscussion(laCle: string, leMessage: Message): Promise<Discussion> {
+    async miseAJourDiscussion(discussion: Discussion, leMessage: Message): Promise<Discussion> {
         //recuperation de la discussion
-        this.laDiscussion = await this.obtenirUneDiscussion(laCle);
-
-        this.laDiscussion.Messages.push(leMessage)
-        await update(this.RefTableDiscussion, this.laDiscussion)
+        this.InitialiserTable(discussion.Id)
+        if (!discussion.Messages) {
+            discussion.Messages = []
+        }
+        discussion.Messages.push(leMessage)
+        await set(this.RefTableDiscussion, discussion)
         return this.laDiscussion
     }
 

@@ -21,6 +21,10 @@ export class Navbar {
     return App.connectedUserUid !== '';
   }
 
+  public get laNature(): boolean {
+    return App.connectedUserDataBase?.Nature === 'client'
+  }
+
   constructor() { }
 
   toggleContactDropdown() {

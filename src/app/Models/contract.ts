@@ -12,7 +12,7 @@ export class Contract {
     public datePaiement !: Date;
     public matieres!: string[];
     public parentName?: string = '-----';
-    public IdAttributedTo?: string;
+    public IdAttributedTo: string = '';
 
 
     constructor(student_Name: string, student_Picture: string, course_Day: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[], session_Time: 1 | 2 | 3 | 4 | 5 | 6, classe: string, prix: number, date: Date, matieres: string[]) {

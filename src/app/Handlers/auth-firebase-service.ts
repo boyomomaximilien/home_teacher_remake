@@ -9,6 +9,7 @@ import { App } from '../app';
 export class AuthFirebaseService {
 
   private auth: Auth = inject(Auth);
+
   constructor() {
 
   }
@@ -18,7 +19,6 @@ export class AuthFirebaseService {
 
     const UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
     if (UserCredential.user) {
-      console.log('Utilisateur enregistré :', UserCredential.user);
       App.connectedUserUid = UserCredential.user.uid;
       return UserCredential.user;
 
@@ -30,11 +30,9 @@ export class AuthFirebaseService {
 
     try {
       const UserCredential = await signInWithEmailAndPassword(this.auth, email, password);
-      console.log('Utilisateur connecté :', UserCredential.user);
       return UserCredential.user;
     }
     catch (error: any) {
-      console.error('Erreur lors de la connexion :', error);
       return null;
     }
   }
@@ -45,9 +43,7 @@ export class AuthFirebaseService {
       await signOut(this.auth);
       App.connectedUserDataBase = null;
       App.connectedUserUid = '';
-      console.log('Utilisateur déconnecté');
     } catch (error) {
-      console.error('Erreur lors de la déconnexion :', error);
     }
   }
 }

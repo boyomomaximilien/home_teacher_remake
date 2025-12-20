@@ -49,7 +49,7 @@ export class Login {
         App.connectedUserUid = IsAUth.uid
 
         //recherche des information dans les client et si rien n'est trouve dans les enseignants
-        this.utilisateur = await this.handlerClient.getClientInfo();
+        this.utilisateur = await this.handlerClient.getClientInfo() as Client;
         if (!this.utilisateur) {
           this.utilisateur = await this.handlerEnseignant.getTeacherInfo();
         }
@@ -61,7 +61,6 @@ export class Login {
     }
     catch (error) {
       this.afficherSpinner = false;
-      console.error('Erreur lors de la connexion :', error);
     }
 
 
@@ -69,26 +68,27 @@ export class Login {
 
   //creer un nouveau compte
   async signUp(mail: string, password: string) {
-    debugger;
     this.afficherSpinner = true;
-
     try {
       if (this.passwordSignUp == this.passwordSignUpFirst) {
 
         if (this.natureUser === 'client') {
           const IsAUth = await this.AuthentificationService.Enregistrement(mail, password);
-          const client = new Client(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, true, this.contactUser, this.mailSignUp);
+          const client = new Client(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, this.contactUser, this.mailSignUp);
+
           await this.handlerClient.saveClient(client);
+          App.connectedUserDataBase = client
           this.laRoute.navigate(['/profile']);
         }
         else if (this.natureUser === 'enseignant') {
           const IsAUth = await this.AuthentificationService.Enregistrement(mail, password);
-          const enseignant = new Teacher(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, true, false, this.contactUser, this.mailSignUp);
+          const enseignant = new Teacher(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, false, this.contactUser, this.mailSignUp);
           await this.handlerEnseignant.saveTeacher(enseignant);
+          App.connectedUserDataBase = enseignant
           this.laRoute.navigate(['/profile']);
         }
         else {
-          console.log('veuilliez choisir la nuture de votre profile')
+
         }
 
       }
@@ -96,7 +96,6 @@ export class Login {
     }
     catch (error) {
       this.afficherSpinner = false;
-      console.error('Erreur lors de la connexion :', error);
 
     }
 
