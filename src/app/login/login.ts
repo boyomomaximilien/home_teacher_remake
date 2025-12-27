@@ -28,12 +28,21 @@ export class Login {
   contactUser = '';
   natureUser!: 'client' | 'enseignant';
 
-  private AuthentificationService = inject(AuthFirebaseService);
-  private handlerClient = inject(HandlerClient);
-  private handlerEnseignant = inject(HandlerTeacher);
+  private AuthentificationService;
+  private handlerClient;
+  private handlerEnseignant;
+
   formConnection = true;
   laRoute = new Router();
   utilisateur!: Teacher | Client;
+
+  constructor() {
+
+    this.AuthentificationService = inject(AuthFirebaseService);
+    this.handlerClient = inject(HandlerClient);
+    this.handlerEnseignant = inject(HandlerTeacher);
+
+  }
 
   alternerConnectionInscription() {
     this.formConnection = !this.formConnection;

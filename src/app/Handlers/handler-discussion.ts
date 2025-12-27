@@ -9,12 +9,13 @@ import { Message } from '../Models/message';
 })
 
 export class HandlerDiscussion {
-    private tableDiscussion = inject(Database);
+    private tableDiscussion;
     pathDiscussion!: string;
     RefTableDiscussion: any;
     laDiscussion !: Discussion;
 
     constructor() {
+        this.tableDiscussion = inject(Database)
 
     }
 

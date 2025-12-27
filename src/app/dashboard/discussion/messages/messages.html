@@ -7,8 +7,8 @@
                 <img src="images/menu/retourW.png" class="btnFleche" style="height:30px;">
             </button>
         </div>
-        <div class="col-10 d-flex align-items-center justify-content-center">
-            <div class="d-flex align-items-center">
+        <div class="col-10 d-flex align-items-center justify-content-center position-relative">
+            <div class="d-flex align-items-center ">
                 <img src="personne_icone.png" alt="Avatar" class="rounded-circle border me-2"
                     style="height:38px; width:38px; background:#2da2e1; border:2px solid #23759e;">
                 <span class="h5 mb-0" style="color:#2da2e1;">
@@ -19,7 +19,15 @@
                     {{ discussionSelect.NomCreateur}}
                     }
                 </span>
+
             </div>
+            @if(utilisateurConnecte?.Nature === 'client'){
+            <button class="btn position-absolute end-0 top-25" style="background-color: #ffd166;"
+                (click)="AttribuerContrat()">
+                valider
+            </button>
+            }
+
         </div>
     </div>
     <div class="chat-messages defilement px-2 py-3">

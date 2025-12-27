@@ -8,13 +8,14 @@ import { Contrats } from '../dashboard/contrats/contrats';
     providedIn: 'root'
 })
 export class HandlerContract {
-    tableContrat = inject(Database);
+    tableContrat;
     pathContrat!: string;
     refTableContrat: any;
     lesContratDisponibles: Contract[] = []
 
 
     constructor() {
+        this.tableContrat = inject(Database)
 
     }
     // initialiser les information pour la reference sur firebase
@@ -61,6 +62,14 @@ export class HandlerContract {
     async supprimerContrat(cleContrat: string) {
         this.InitialiserTable(cleContrat);
         await remove(this.refTableContrat);
+    }
+
+    async updateContrat(contrat: Contract) {
+        if (!contrat.Id) {
+            return;
+        }
+        this.InitialiserTable(contrat.Id);
+        await set(this.refTableContrat, contrat);
     }
 
     async obtenirTousLesContratsDisponibles(): Promise<Contract[]> {

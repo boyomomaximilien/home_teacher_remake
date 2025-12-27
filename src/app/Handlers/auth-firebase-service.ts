@@ -8,9 +8,10 @@ import { App } from '../app';
 })
 export class AuthFirebaseService {
 
-  private auth: Auth = inject(Auth);
+  private auth: Auth;
 
   constructor() {
+    this.auth = inject(Auth);
 
   }
 

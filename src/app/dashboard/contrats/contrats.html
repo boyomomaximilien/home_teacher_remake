@@ -1,261 +1,195 @@
 @if(Nature ==='teacher'){
-<div class="container mt-lg-4 mt-3 py-2" style="max-width: 80%; min-height: 120px;">
-
-    @if(tousMesContrats.length !=0){
-    @for (element of tousMesContrats; track element.Id){
-    <div class="contrat-card row align-items-center shadow-sm mb-4 p-3 rounded"
-        [class.mobile-collapsed]="activeIndex !== $index && isMobile"
-        [class.mobile-expanded]="activeIndex === $index && isMobile">
-        <div class="col-lg-2 col-4 d-flex justify-content-center align-items-center">
-            <img src="personne_icone.png" alt="Photo élève" class="img-fluid rounded-circle border border-2"
-                style="max-height: 90px; background: #2b2e4a;">
-        </div>
-        <div class="col-lg-6 col-8">
-            <div class="contrat-info">
-                <h5 class="mb-1 text-primary">
-                    <i class="bi bi-person-fill"></i> {{element.studentName}}
-                </h5>
-                <div class="contrat-details d-none d-lg-block">
-                    <p class="mb-1 text-secondary"><i class="bi bi-people-fill"></i> Parent : <span
-                            class="fw-bold">{{element.parentName}}</span></p>
-                    <p class="mb-1"><i class="bi bi-mortarboard-fill"></i> Classe : <span
-                            class="fw-bold">{{element.studentClasse}}</span></p>
-                    <p class="mb-1"><i class="bi bi-clock-fill"></i> {{element.sessionTime}}H par séance</p>
-                    <p class="mb-1"><i class="bi bi-calendar-event-fill"></i> Jours :
-                        <span>
+    <div class="container-fluid mt-lg-4 mt-3 py-2" >
+    
+        @if(tousMesContrats.length !=0){
+        @for (element of tousMesContrats; track element.Id){
+        <div class="card contract-card mb-4 shadow-sm">
+            <div class="row g-0">
+                <div class="col-md-2 d-flex justify-content-center align-items-center p-3">
+                    <img src="personne_icone.png" class="img-fluid rounded-circle avatar" alt="Photo élève">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary fw-bold">{{element.studentName}}</h5>
+                        <p class="card-text text-secondary mb-1">
+                            <i class="bi bi-people-fill me-2"></i>Parent : <span class="fw-bold">{{element.parentName}}</span>
+                        </p>
+                        <p class="card-text mb-1">
+                            <i class="bi bi-mortarboard-fill me-2"></i>Classe : <span class="fw-bold">{{element.studentClasse}}</span>
+                        </p>
+                        <p class="card-text mb-1">
+                            <i class="bi bi-clock-fill me-2"></i>{{element.sessionTime}}H par séance
+                        </p>
+                        <div class="d-flex flex-wrap align-items-center">
+                            <i class="bi bi-calendar-event-fill me-2"></i>
                             @for(day of element.courseDay; track $index){
                             <span class="badge bg-info text-dark mx-1">{{day}}</span>
                             }
-                        </span>
-                    </p>
+                        </div>
+                    </div>
                 </div>
-                <div *ngIf="isMobile && activeIndex === $index" class="contrat-details-mobile mt-2 animate-details">
-                    <p class="mb-1 text-secondary"><i class="bi bi-people-fill"></i> Parent : <span
-                            class="fw-bold">{{element.parentName}}</span></p>
-                    <p class="mb-1"><i class="bi bi-mortarboard-fill"></i> Classe : <span
-                            class="fw-bold">{{element.studentClasse}}</span></p>
-                    <p class="mb-1"><i class="bi bi-clock-fill"></i> {{element.sessionTime}}H par séance</p>
-                    <p class="mb-1"><i class="bi bi-calendar-event-fill"></i> Jours :
-                        <span>
-                            @for(day of element.courseDay; track $index){
-                            <span class="badge bg-info text-dark mx-1">{{day}}</span>
-                            }
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-12 d-flex flex-column align-items-lg-end align-items-center mt-3 mt-lg-0">
-            <div class="contrat-pricing mb-2">
-                <span class="h5 text-info fw-bold">
-                    <i class="bi bi-cash-coin"></i> {{element.Prix}} XAF
-                </span>
-            </div>
-            <div class="contrat-date d-none d-lg-block">
-                <span class="h6 text-terciary">
-                    <i class="bi bi-calendar-check"></i> {{element.datePaiement.toDateString()}}
-                </span>
-            </div>
-            <div class="d-flex flex-wrap justify-content-end mt-2">
-                <button class="btn btn-outline-info m-1" (click)="toggleDetails($index)">
-                    {{isMobile && activeIndex === $index ? 'Masquer' : 'Détail'}}
-                </button>
-                <button class="btn btn-outline-danger m-1" (click)="openDeleteModal(element)">
-                    <i class="bi bi-trash-fill"></i> Supprimer
-                </button>
-            </div>
-        </div>
-    </div>
-    }
-    }@else {
-    <div class="container my-5">
-        <p class="h4 text-center text-secondary">
-            Aucun contrat pour le momment
-        </p>
-    </div>
-    }
-
-
-    <!-- Modal de confirmation de suppression -->
-    @if(showDeleteModal){
-    <div class="modal-backdrop fade show"></div>
-    <div class="modal fade show d-block" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmation de suppression</h5>
-                    <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Êtes-vous sûr de vouloir supprimer le contrat pour <strong>{{ contractToDelete?.studentName
-                            }}</strong> ?</p>
-                    <p class="text-danger">Cette action est irréversible.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
-                        Annuler
-                    </button>
-                    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
-                        <i class="bi bi-trash-fill"></i> Confirmer la suppression
-                    </button>
+                <div class="col-md-4 d-flex flex-column justify-content-between p-3">
+                    <div class="text-md-end mb-2">
+                        <span class="h5 text-info fw-bold">{{element.Prix | number}} XAF</span>
+                        <p class="text-muted small">
+                            <i class="bi bi-calendar-check me-1"></i>{{element.datePaiement.toDateString()}}
+                        </p>
+                    </div>
+                    <div class="d-flex flex-md-column flex-wrap justify-content-center align-items-stretch">
+                        <button class="btn btn-outline-primary m-1 flex-grow-1" (click)="openEditModal(element)">
+                            <i class="bi bi-pencil-fill me-1"></i> Modifier
+                        </button>
+                        <button class="btn btn-outline-danger m-1 flex-grow-1" (click)="openDeleteModal(element)">
+                            <i class="bi bi-trash-fill me-1"></i> Supprimer
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+        }
+        }@else {
+        <div class="container my-5">
+            <div class="text-center p-5 bg-light rounded-3">
+                <i class="bi bi-journal-x" style="font-size: 3rem; color: #6c757d;"></i>
+                <p class="h4 text-center text-secondary mt-3">
+                    Aucun contrat pour le moment
+                </p>
+                <p class="text-muted">Vos contrats actifs ou en attente s'afficheront ici.</p>
+            </div>
+        </div>
+        }
+    
+        <!-- Modal de confirmation de suppression -->
+        @if(showDeleteModal){
+        <div class="modal-backdrop fade show"></div>
+        <div class="modal fade show d-block" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation de suppression</h5>
+                        <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Êtes-vous sûr de vouloir supprimer le contrat pour <strong>{{ contractToDelete?.studentName
+                                }}</strong> ?</p>
+                        <p class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Cette action est irréversible.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
+                            Annuler
+                        </button>
+                        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+                            <i class="bi bi-trash-fill"></i> Confirmer la suppression
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    
     </div>
-    }
-
-</div>
 }
 @else {
 
-<div class="add-contract-container text-center py-4">
-
-    <!-- 1. État initial: Bouton pour démarrer la création -->
-    @if(!showAddContractForm && !createdContract){
-    <button class="add-contract-button" (click)="toggleAddContractForm()">
-        <i class="bi bi-plus-lg"></i>
-        Proposer un nouveau contrat
-    </button>
-    }
-
-    <!-- 2. État formulaire: Afficher le formulaire de création -->
-    @if(showAddContractForm){
-    <div class="container mt-4">
-        <div class="add-contract-card">
-            <div class="card-header">
-                <h3><i class="bi bi-file-earmark-plus-fill"></i> Créer un nouveau contrat</h3>
-                <p>Remplissez les informations ci-dessous pour soumettre une nouvelle proposition de contrat.</p>
-            </div>
-            <div class="card-body">
-                <form [formGroup]="contractForm" (ngSubmit)="enregistrerContrat()">
-                    <div class="row">
-                        <!-- Matière -->
-                        <div class="col-md-6 mb-3 form-group-animated">
-                            <label class="form-label"><i class="bi bi-book-fill"></i> Matières</label>
-                            <div class="subjects-checkbox-group">
-                                @for (subject of subjects; track $index){
-                                <div class="form-check form-check-inline ">
-                                    <input class="form-check-input mb-2" type="checkbox" [id]="'subject-' + $index"
-                                        [value]="subject" (change)="onMatiereChange($event)">
-                                    <label class="form-check-label" [for]="'subject-' + $index">{{ subject }}</label>
-                                </div>
-                                }
-                            </div>
-                        </div>
-
-                        <!-- Nom de l'élève -->
-                        <div class="col-md-6 mb-3 form-group-animated">
-                            <label for="studentName" class="form-label"><i class="bi bi-person-fill"></i> Nom de
-                                l'élève</label>
-                            <input type="text" id="studentName" class="form-control" formControlName="studentName">
-                        </div>
-
-                        <!-- Classe de l'élève -->
-                        <div class="col-md-6 mb-3 form-group-animated">
-                            <label for="studentClasse" class="form-label"><i class="bi bi-mortarboard-fill"></i>
-                                Classe de l'élève</label>
-                            <input type="text" id="studentClasse" class="form-control" formControlName="studentClasse">
-                        </div>
-
-                        <!-- Heures par séance -->
-                        <div class="col-md-6 mb-3 form-group-animated">
-                            <label for="sessionTime" class="form-label"><i class="bi bi-clock-fill"></i> Heures par
-                                séance</label>
-                            <input type="number" id="sessionTime" class="form-control" formControlName="sessionTime">
-                        </div>
-
-                        <!-- Prix -->
-                        <div class="col-md-12 mb-3 form-group-animated">
-                            <label for="prix" class="form-label"><i class="bi bi-cash-coin"></i> Prix (XAF)</label>
-                            <input type="number" id="prix" class="form-control" formControlName="prix">
-                        </div>
-
-                        <!-- Jours de cours -->
-                        <div class="col-md-12 mb-3 form-group-animated">
-                            <label class="form-label"><i class="bi bi-calendar-event-fill"></i> Jours de cours</label>
-                            <div class="days-checkbox-group">
-                                @for (day of daysOfWeek; track $index){
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" [id]="'day-' + $index" [value]="day"
-                                        (change)="onDayChange($event)">
-                                    <label class="form-check-label" [for]="'day-' + $index">{{ day }}</label>
-                                </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mt-4 form-group-animated">
-                        <button type="button" class="btn btn-secondary me-2 mb-2" (click)="toggleAddContractForm()">
-                            Annuler
-                        </button>
-                        <button type="submit" class="btn btn-primary btn-submit mb-2" [disabled]="!contractForm.valid">
-                            <i class="bi bi-check-circle-fill"></i> Soumettre le contrat
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    }
-
-    <!-- 3. État résumé: Afficher le contrat nouvellement créé -->
-    @if(tousMesContrats.length !=0){
-    @for(element of tousMesContrats; track element.Id){
-    <div class="container mt-4">
-        <div class="contract-summary-card">
-            <button class="btn-close-summary" (click)="dismissSummary()">&times;</button>
-            <div class="summary-header">
-                <i class="bi bi-check-circle-fill text-success"></i>
-                <h3>Contrat proposé avec succès !</h3>
-                <p>Votre proposition a été enregistrée et est en attente de validation.</p>
-            </div>
-            <div class="summary-body">
-                <h4>Récapitulatif du contrat</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong><i class="bi bi-person-fill"></i> Élève :</strong> {{ element.studentName }}
-                        </p>
-                        <p><strong><i class="bi bi-mortarboard-fill"></i> Classe :</strong> {{
-                            element.studentClasse }}</p>
-                        <p><strong><i class="bi bi-book-fill"></i> Matières :</strong>
-                            <span *ngFor="let subject of element.matieres" class="badge bg-primary text-white mx-1">{{
-                                subject }}</span>
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong><i class="bi bi-clock-fill"></i> Heures/séance :</strong> {{
-                            element.sessionTime }}H</p>
-                        <p><strong><i class="bi bi-cash-coin"></i> Prix :</strong> {{ element.Prix| number }}
-                            XAF</p>
-                        <p><strong><i class="bi bi-calendar-event-fill"></i> Jours :</strong>
-                            @for(jour of element.courseDay; track $index){
-                            <span class="badge bg-info text-dark mx-1">{{jour }}</span>
-                            }
-
-                        </p>
-                    </div>
+    <div class="add-contract-container text-center py-5">
+    
+        <!-- 1. État initial: Bouton pour démarrer la création -->
+        @if(!showAddContractForm && tousMesContrats.length === 0){
+            <div class="container my-5">
+                <div class="text-center p-5 bg-light rounded-3">
+                    <i class="bi bi-journal-plus" style="font-size: 3rem; color: #6c757d;"></i>
+                    <p class="h4 text-center text-secondary mt-3">
+                        Vous n'avez pas encore de contrat.
+                    </p>
+                    <p class="text-muted">Proposez un nouveau contrat pour commencer.</p>
+                    <button class="add-contract-button mt-4" (click)="toggleAddContractForm()">
+                        <i class="bi bi-plus-lg"></i>
+                        Proposer un nouveau contrat
+                    </button>
                 </div>
             </div>
-            <div class="summary-footer">
-                <button class="btn btn-warning m-1" (click)="createNewContract()">
-                    <i class="bi bi-plus-circle-fill"></i> Modifier
-                </button>
-                <button class="btn btn-danger m-1" (click)="createNewContract()">
-                    <i class="bi bi-plus-circle-fill"></i> Supprimer
-                </button>
+        }
+    
+        <!-- 2. État formulaire: Afficher le formulaire de création -->
+        @if(showAddContractForm){
+        <div class="container mt-4">
+            <div class="add-contract-card">
+                <div class="card-header text-center">
+                    <h3><i class="bi bi-file-earmark-plus-fill me-2"></i> Créer un nouveau contrat</h3>
+                    <p>Remplissez les informations ci-dessous pour soumettre une nouvelle proposition de contrat.</p>
+                </div>
+                <app-formulaire-contrat (save)="enregistrerContrat($event)"
+                    (cancel)="toggleAddContractForm()"></app-formulaire-contrat>
             </div>
         </div>
+        }
+    
+        <!-- 3. État résumé: Afficher le contrat nouvellement créé -->
+        @if(tousMesContrats.length !=0 && !showAddContractForm){
+        @for(element of tousMesContrats; track element.Id){
+        <div class="container mt-4">
+            <div class="contract-summary-card">
+                <div class="summary-header">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <h3>Contrat proposé avec succès !</h3>
+                    <p>Votre proposition a été enregistrée et est en attente de validation par l'enseignant.</p>
+                </div>
+                <div class="summary-body">
+                    <h4>Récapitulatif du contrat</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-person-fill me-2"></i> Élève :</strong> {{ element.studentName }}
+                            </p>
+                            <p><strong><i class="bi bi-mortarboard-fill me-2"></i> Classe :</strong> {{
+                                element.studentClasse }}</p>
+                            <p><strong><i class="bi bi-book-fill me-2"></i> Matières :</strong>
+                                @for(subject of element.matieres; track $index){
+                                <span class="badge bg-primary text-white mx-1">{{ subject }}</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-clock-fill me-2"></i> Heures/séance :</strong> {{
+                                element.sessionTime }}H</p>
+                            <p><strong><i class="bi bi-cash-coin me-2"></i> Prix :</strong> {{ element.Prix | number }}
+                                XAF</p>
+                            <p><strong><i class="bi bi-calendar-event-fill me-2"></i> Jours :</strong>
+                                @for(jour of element.courseDay; track $index){
+                                <span class="badge bg-info text-dark mx-1">{{jour }}</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary-footer">
+                    <button class="btn btn-outline-primary m-1" (click)="openEditModal(element)">
+                        <i class="bi bi-pencil-fill"></i> Modifier
+                    </button>
+                    <button class="btn btn-outline-danger m-1" (click)="openDeleteModal(element)">
+                        <i class="bi bi-trash-fill"></i> Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+        }
+        }
+    
     </div>
-    }
-    }@else {
-    <div class="container my-5">
-        <p class="h4 text-center text-secondary">
-            Aucun contrat pour le momment
-        </p>
+    
+}
+    
+<!-- Modal de modification de contrat -->
+@if(isEditModalOpen){
+<div class="modal-overlay" (click)="closeEditModal()">
+    <div class="modal-container card" (click)="$event.stopPropagation()">
+        <div class="card-header modal-header">
+            <h3><i class="bi bi-pencil-square"></i> Modifier le contrat</h3>
+            <button class="btn-close" (click)="closeEditModal()"></button>
+        </div>
+        <div class="card-body modal-body">
+            <app-formulaire-contrat [contract]="selectedContract" (save)="updateContract($event)"
+                (cancel)="closeEditModal()"></app-formulaire-contrat>
+        </div>
     </div>
-    }
-
-
 </div>
-
 }

@@ -9,11 +9,12 @@ import { Client } from '../Models/client';
 })
 export class HandlerClient {
 
-    private clientTable = inject(Database);
+    private clientTable;
     private pathClient!: string;
     clientRef: any;
 
     constructor() {
+        this.clientTable = inject(Database)
 
     }
 

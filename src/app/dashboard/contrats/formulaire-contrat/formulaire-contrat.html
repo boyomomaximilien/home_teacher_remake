@@ -1,0 +1,68 @@
+<div class="card-body">
+  <form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <!-- Matière -->
+      <div class="col-md-6 mb-3 form-group-animated">
+        <label class="form-label"><i class="bi bi-book-fill"></i> Matières</label>
+        <div class="subjects-checkbox-group">
+          @for (subject of subjects; track $index){
+          <div class="form-check form-check-inline">
+            <input class="form-check-input mb-2" type="checkbox" [id]="'subject-' + $index" [value]="subject"
+              (change)="onMatiereChange($event)" [checked]="isMatiereChecked(subject)">
+            <label class="form-check-label" [for]="'subject-' + $index">{{ subject }}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Nom de l'élève -->
+      <div class="col-md-6 mb-3 form-group-animated">
+        <label for="studentName" class="form-label"><i class="bi bi-person-fill"></i> Nom de
+          l'élève</label>
+        <input type="text" id="studentName" class="form-control" formControlName="studentName">
+      </div>
+
+      <!-- Classe de l'élève -->
+      <div class="col-md-6 mb-3 form-group-animated">
+        <label for="studentClasse" class="form-label"><i class="bi bi-mortarboard-fill"></i>
+          Classe de l'élève</label>
+        <input type="text" id="studentClasse" class="form-control" formControlName="studentClasse">
+      </div>
+
+      <!-- Heures par séance -->
+      <div class="col-md-6 mb-3 form-group-animated">
+        <label for="sessionTime" class="form-label"><i class="bi bi-clock-fill"></i> Heures par
+          séance</label>
+        <input type="number" id="sessionTime" class="form-control" formControlName="sessionTime">
+      </div>
+
+      <!-- Prix -->
+      <div class="col-md-12 mb-3 form-group-animated">
+        <label for="prix" class="form-label"><i class="bi bi-cash-coin"></i> Prix (XAF)</label>
+        <input type="number" id="prix" class="form-control" formControlName="prix">
+      </div>
+
+      <!-- Jours de cours -->
+      <div class="col-md-12 mb-3 form-group-animated">
+        <label class="form-label"><i class="bi bi-calendar-event-fill"></i> Jours de cours</label>
+        <div class="days-checkbox-group">
+          @for (day of daysOfWeek; track $index){
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" [id]="'day-' + $index" [value]="day"
+              (change)="onDayChange($event)" [checked]="isDayChecked(day)">
+            <label class="form-check-label" [for]="'day-' + $index">{{ day }}</label>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4 form-group-animated">
+      <button type="button" class="btn btn-secondary me-2 mb-2" (click)="onCancel()">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-warning bg-opacity-50 btn-submit mb-2" [disabled]="!contractForm.valid">
+        <i class="bi bi-check-circle-fill"></i> Enregistrer
+      </button>
+    </div>
+  </form>
+</div>

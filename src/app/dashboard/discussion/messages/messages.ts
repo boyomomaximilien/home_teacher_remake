@@ -52,4 +52,8 @@ export class AfficherMessages {
     this.textMessage = ''
   }
 
+  AttribuerContrat() {
+
+  }
+
 }

@@ -10,12 +10,13 @@ import { Contract } from '../Models/contract';
 
 export class HandlerTeacher {
 
-    private teacherData = inject(Database);
+    private teacherData;
     private pathTeacher!: string;
     private refTeacherDatabase: any;
     tousLesEnseignants: Teacher[] = []
 
     constructor() {
+        this.teacherData = inject(Database)
 
     }
 

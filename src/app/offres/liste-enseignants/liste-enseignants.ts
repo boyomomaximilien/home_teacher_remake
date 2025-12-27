@@ -35,6 +35,9 @@ export class ListeEnseignants {
     App.connectedUserDataBase?.ListDiscussionsUid.push(saveDiscussion.Id)
     await this.gestionnaireClient.updateClient(App.connectedUserDataBase as Client)
     const enseignant = await this.gestionnaireEnseignant.getTeacherInfo(teacher.Id)
+    if (enseignant.ListDiscussionsUid == undefined) {
+      enseignant.ListDiscussionsUid = []
+    }
     enseignant.ListDiscussionsUid.push(discussion.Id)
     await this.gestionnaireEnseignant.saveTeacher(enseignant)
 
