@@ -12,7 +12,7 @@ import { Contract } from '../../../Models/contract';
 })
 export class FormulaireContratComponent implements OnChanges {
   @Input() contract: Contract | null = null;
-  @Output() save = new EventEmitter<any>();
+  @Output() save = new EventEmitter<Contract>();
   @Output() cancel = new EventEmitter<void>();
 
   contractForm: FormGroup;
@@ -78,7 +78,27 @@ export class FormulaireContratComponent implements OnChanges {
 
   onSubmit(): void {
     if (this.contractForm.valid) {
-      this.save.emit(this.contractForm.value);
+      const formValue = this.contractForm.value;
+      
+      const contract = new Contract(
+        formValue.studentName,
+        (this.contract && this.contract.studentPicture) ? this.contract.studentPicture : 'personne_icone.png',
+        formValue.courseDays,
+        formValue.sessionTime,
+        formValue.studentClasse,
+        formValue.prix,
+        (this.contract && this.contract.datePaiement) ? this.contract.datePaiement : new Date(),
+        formValue.matieres
+      );
+
+      if (this.contract) {
+        contract.Id = this.contract.Id;
+        contract.IdCreator = this.contract.IdCreator;
+        contract.IdAttributedTo = this.contract.IdAttributedTo;
+        contract.parentName = this.contract.parentName;
+      }
+
+      this.save.emit(contract);
     }
   }
 

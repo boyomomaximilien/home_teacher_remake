@@ -56,29 +56,12 @@ export class Contrats {
     this.showAddContractForm = false;
   }
 
-  async updateContract(formValue: any) {
+  async updateContract(contrat: Contract) {
     if (!this.selectedContract) return;
 
-    const updatedContract = new Contract(
-      formValue.studentName,
-      'personne_icone.png',
-      formValue.courseDays,
-      formValue.sessionTime,
-      formValue.studentClasse,
-      formValue.prix,
-      this.selectedContract.datePaiement,
-      formValue.matieres
-    );
-    updatedContract.Id = this.selectedContract.Id;
-    updatedContract.IdCreator = this.selectedContract.IdCreator;
-
-    await this.handlerContract;
-
-    const index = this.tousMesContrats.findIndex(c => c.Id === this.selectedContract!.Id);
-    if (index > -1) {
-      this.tousMesContrats[index] = updatedContract;
-    }
-
+    await this.handlerContract.updateContrat(contrat)
+    const index = this.tousMesContrats.findIndex(i => i.Id === contrat.Id)
+    this.tousMesContrats[index] = contrat
     this.closeEditModal();
   }
 

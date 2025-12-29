@@ -1,183 +1,212 @@
 @if(Nature ==='teacher'){
-    <div class="container-fluid mt-lg-4 mt-3 py-2" >
-    
-        @if(tousMesContrats.length !=0){
-        @for (element of tousMesContrats; track element.Id){
-        <div class="card contract-card mb-4 shadow-sm">
-            <div class="row g-0">
-                <div class="col-md-2 d-flex justify-content-center align-items-center p-3">
-                    <img src="personne_icone.png" class="img-fluid rounded-circle avatar" alt="Photo élève">
-                </div>
-                <div class="col-md-6">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary fw-bold">{{element.studentName}}</h5>
-                        <p class="card-text text-secondary mb-1">
-                            <i class="bi bi-people-fill me-2"></i>Parent : <span class="fw-bold">{{element.parentName}}</span>
-                        </p>
-                        <p class="card-text mb-1">
-                            <i class="bi bi-mortarboard-fill me-2"></i>Classe : <span class="fw-bold">{{element.studentClasse}}</span>
-                        </p>
-                        <p class="card-text mb-1">
-                            <i class="bi bi-clock-fill me-2"></i>{{element.sessionTime}}H par séance
-                        </p>
-                        <div class="d-flex flex-wrap align-items-center">
-                            <i class="bi bi-calendar-event-fill me-2"></i>
-                            @for(day of element.courseDay; track $index){
-                            <span class="badge bg-info text-dark mx-1">{{day}}</span>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex flex-column justify-content-between p-3">
-                    <div class="text-md-end mb-2">
-                        <span class="h5 text-info fw-bold">{{element.Prix | number}} XAF</span>
-                        <p class="text-muted small">
-                            <i class="bi bi-calendar-check me-1"></i>{{element.datePaiement.toDateString()}}
-                        </p>
-                    </div>
-                    <div class="d-flex flex-md-column flex-wrap justify-content-center align-items-stretch">
-                        <button class="btn btn-outline-primary m-1 flex-grow-1" (click)="openEditModal(element)">
-                            <i class="bi bi-pencil-fill me-1"></i> Modifier
-                        </button>
-                        <button class="btn btn-outline-danger m-1 flex-grow-1" (click)="openDeleteModal(element)">
-                            <i class="bi bi-trash-fill me-1"></i> Supprimer
-                        </button>
+<div class="container-fluid mt-lg-4 mt-3 py-2">
+
+    @if(tousMesContrats.length !=0){
+    @for (element of tousMesContrats; track element.Id){
+    <div class="card contract-card mb-4 shadow-sm">
+        <div class="row g-0">
+            <div class="col-md-2 d-flex justify-content-center align-items-center p-3">
+                <img src="personne_icone.png" class="img-fluid rounded-circle avatar" alt="Photo élève">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h5 class="card-title text-primary fw-bold">{{element.studentName}}</h5>
+                    <p class="card-text text-secondary mb-1">
+                        <i class="bi bi-people-fill me-2"></i>Parent : <span
+                            class="fw-bold">{{element.parentName}}</span>
+                    </p>
+                    <p class="card-text mb-1">
+                        <i class="bi bi-mortarboard-fill me-2"></i>Classe : <span
+                            class="fw-bold">{{element.studentClasse}}</span>
+                    </p>
+                    <p class="card-text mb-1">
+                        <i class="bi bi-clock-fill me-2"></i>{{element.sessionTime}}H par séance
+                    </p>
+                    <div class="d-flex flex-wrap align-items-center">
+                        <i class="bi bi-calendar-event-fill me-2"></i>
+                        @for(day of element.courseDay; track $index){
+                        <span class="badge bg-info text-dark mx-1">{{day}}</span>
+                        }
                     </div>
                 </div>
             </div>
-        </div>
-        }
-        }@else {
-        <div class="container my-5">
-            <div class="text-center p-5 bg-light rounded-3">
-                <i class="bi bi-journal-x" style="font-size: 3rem; color: #6c757d;"></i>
-                <p class="h4 text-center text-secondary mt-3">
-                    Aucun contrat pour le moment
-                </p>
-                <p class="text-muted">Vos contrats actifs ou en attente s'afficheront ici.</p>
-            </div>
-        </div>
-        }
-    
-        <!-- Modal de confirmation de suppression -->
-        @if(showDeleteModal){
-        <div class="modal-backdrop fade show"></div>
-        <div class="modal fade show d-block" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirmation de suppression</h5>
-                        <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Êtes-vous sûr de vouloir supprimer le contrat pour <strong>{{ contractToDelete?.studentName
-                                }}</strong> ?</p>
-                        <p class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Cette action est irréversible.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
-                            Annuler
-                        </button>
-                        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
-                            <i class="bi bi-trash-fill"></i> Confirmer la suppression
-                        </button>
-                    </div>
+            <div class="col-md-4 d-flex flex-column justify-content-between p-3">
+                <div class="text-md-end mb-2">
+                    <span class="h5 text-info fw-bold">{{element.Prix | number}} XAF</span>
+                    <p class="text-muted small">
+                        <i class="bi bi-calendar-check me-1"></i>{{element.datePaiement.toDateString()}}
+                    </p>
+                </div>
+                <div class="d-flex flex-md-column flex-wrap justify-content-center align-items-stretch">
+                    <button class="btn btn-outline-primary m-1 flex-grow-1" (click)="openEditModal(element)">
+                        <i class="bi bi-pencil-fill me-1"></i> Modifier
+                    </button>
+                    <button class="btn btn-outline-danger m-1 flex-grow-1" (click)="openDeleteModal(element)">
+                        <i class="bi bi-trash-fill me-1"></i> Supprimer
+                    </button>
                 </div>
             </div>
         </div>
-        }
-    
     </div>
+    }
+    }@else {
+    <div class="container my-5">
+        <div class="text-center p-5 bg-light rounded-3">
+            <i class="bi bi-journal-x" style="font-size: 3rem; color: #6c757d;"></i>
+            <p class="h4 text-center text-secondary mt-3">
+                Aucun contrat pour le moment
+            </p>
+            <p class="text-muted">Vos contrats actifs ou en attente s'afficheront ici.</p>
+        </div>
+    </div>
+    }
+
+    <!-- Modal de confirmation de suppression -->
+    @if(showDeleteModal){
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de suppression</h5>
+                    <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer le contrat pour <strong>{{ contractToDelete?.studentName
+                            }}</strong> ?</p>
+                    <p class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Cette action est
+                        irréversible.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
+                        Annuler
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+                        <i class="bi bi-trash-fill"></i> Confirmer la suppression
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+</div>
 }
 @else {
 
-    <div class="add-contract-container text-center py-5">
-    
-        <!-- 1. État initial: Bouton pour démarrer la création -->
-        @if(!showAddContractForm && tousMesContrats.length === 0){
-            <div class="container my-5">
-                <div class="text-center p-5 bg-light rounded-3">
-                    <i class="bi bi-journal-plus" style="font-size: 3rem; color: #6c757d;"></i>
-                    <p class="h4 text-center text-secondary mt-3">
-                        Vous n'avez pas encore de contrat.
-                    </p>
-                    <p class="text-muted">Proposez un nouveau contrat pour commencer.</p>
-                    <button class="add-contract-button mt-4" (click)="toggleAddContractForm()">
-                        <i class="bi bi-plus-lg"></i>
-                        Proposer un nouveau contrat
-                    </button>
-                </div>
-            </div>
-        }
-    
-        <!-- 2. État formulaire: Afficher le formulaire de création -->
-        @if(showAddContractForm){
-        <div class="container mt-4">
-            <div class="add-contract-card">
-                <div class="card-header text-center">
-                    <h3><i class="bi bi-file-earmark-plus-fill me-2"></i> Créer un nouveau contrat</h3>
-                    <p>Remplissez les informations ci-dessous pour soumettre une nouvelle proposition de contrat.</p>
-                </div>
-                <app-formulaire-contrat (save)="enregistrerContrat($event)"
-                    (cancel)="toggleAddContractForm()"></app-formulaire-contrat>
-            </div>
+<div class="add-contract-container text-center py-5">
+
+    <!-- 1. État initial: Bouton pour démarrer la création -->
+    @if(!showAddContractForm && tousMesContrats.length === 0){
+    <div class="container my-5">
+        <div class="text-center p-5 bg-light rounded-3">
+            <i class="bi bi-journal-plus" style="font-size: 3rem; color: #6c757d;"></i>
+            <p class="h4 text-center text-secondary mt-3">
+                Vous n'avez pas encore de contrat.
+            </p>
+            <p class="text-muted">Proposez un nouveau contrat pour commencer.</p>
+            <button class="add-contract-button mt-4" (click)="toggleAddContractForm()">
+                <i class="bi bi-plus-lg"></i>
+                Proposer un nouveau contrat
+            </button>
         </div>
-        }
-    
-        <!-- 3. État résumé: Afficher le contrat nouvellement créé -->
-        @if(tousMesContrats.length !=0 && !showAddContractForm){
-        @for(element of tousMesContrats; track element.Id){
-        <div class="container mt-4">
-            <div class="contract-summary-card">
-                <div class="summary-header">
-                    <i class="bi bi-check-circle-fill text-success"></i>
-                    <h3>Contrat proposé avec succès !</h3>
-                    <p>Votre proposition a été enregistrée et est en attente de validation par l'enseignant.</p>
-                </div>
-                <div class="summary-body">
-                    <h4>Récapitulatif du contrat</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong><i class="bi bi-person-fill me-2"></i> Élève :</strong> {{ element.studentName }}
-                            </p>
-                            <p><strong><i class="bi bi-mortarboard-fill me-2"></i> Classe :</strong> {{
-                                element.studentClasse }}</p>
-                            <p><strong><i class="bi bi-book-fill me-2"></i> Matières :</strong>
-                                @for(subject of element.matieres; track $index){
-                                <span class="badge bg-primary text-white mx-1">{{ subject }}</span>
-                                }
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong><i class="bi bi-clock-fill me-2"></i> Heures/séance :</strong> {{
-                                element.sessionTime }}H</p>
-                            <p><strong><i class="bi bi-cash-coin me-2"></i> Prix :</strong> {{ element.Prix | number }}
-                                XAF</p>
-                            <p><strong><i class="bi bi-calendar-event-fill me-2"></i> Jours :</strong>
-                                @for(jour of element.courseDay; track $index){
-                                <span class="badge bg-info text-dark mx-1">{{jour }}</span>
-                                }
-                            </p>
-                        </div>
+    </div>
+    }
+
+    <!-- 2. État formulaire: Afficher le formulaire de création -->
+    @if(showAddContractForm){
+    <div class="container mt-4">
+        <div class="add-contract-card">
+            <div class="card-header text-center">
+                <h3><i class="bi bi-file-earmark-plus-fill me-2"></i> Créer un nouveau contrat</h3>
+                <p>Remplissez les informations ci-dessous pour soumettre une nouvelle proposition de contrat.</p>
+            </div>
+            <app-formulaire-contrat (save)="enregistrerContrat($event)"
+                (cancel)="toggleAddContractForm()"></app-formulaire-contrat>
+        </div>
+    </div>
+    }
+
+    <!-- 3. État résumé: Afficher le contrat nouvellement créé -->
+    @if(tousMesContrats.length !=0 && !showAddContractForm){
+    @for(element of tousMesContrats; track element.Id){
+    <div class="container mt-4">
+        <div class="contract-summary-card">
+            <div class="summary-header">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <h3>Contrat proposé avec succès !</h3>
+                <p>Votre proposition a été enregistrée et est en attente de validation par l'enseignant.</p>
+            </div>
+            <div class="summary-body">
+                <h4>Récapitulatif du contrat</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-person-fill me-2"></i> Élève :</strong> {{ element.studentName }}
+                        </p>
+                        <p><strong><i class="bi bi-mortarboard-fill me-2"></i> Classe :</strong> {{
+                            element.studentClasse }}</p>
+                        <p><strong><i class="bi bi-book-fill me-2"></i> Matières :</strong>
+                            @for(subject of element.matieres; track $index){
+                            <span class="badge bg-primary text-white mx-1">{{ subject }}</span>
+                            }
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-clock-fill me-2"></i> Heures/séance :</strong> {{
+                            element.sessionTime }}H</p>
+                        <p><strong><i class="bi bi-cash-coin me-2"></i> Prix :</strong> {{ element.Prix | number }}
+                            XAF</p>
+                        <p><strong><i class="bi bi-calendar-event-fill me-2"></i> Jours :</strong>
+                            @for(jour of element.courseDay; track $index){
+                            <span class="badge bg-info text-dark mx-1">{{jour }}</span>
+                            }
+                        </p>
                     </div>
                 </div>
-                <div class="summary-footer">
-                    <button class="btn btn-outline-primary m-1" (click)="openEditModal(element)">
-                        <i class="bi bi-pencil-fill"></i> Modifier
-                    </button>
-                    <button class="btn btn-outline-danger m-1" (click)="openDeleteModal(element)">
-                        <i class="bi bi-trash-fill"></i> Supprimer
-                    </button>
-                </div>
+            </div>
+            <div class="summary-footer">
+                <button class="btn btn-outline-primary m-1" (click)="openEditModal(element)">
+                    <i class="bi bi-pencil-fill"></i> Modifier
+                </button>
+                <button class="btn btn-outline-danger m-1" (click)="openDeleteModal(element)">
+                    <i class="bi bi-trash-fill"></i> Supprimer
+                </button>
             </div>
         </div>
-        }
-        }
-    
     </div>
-    
+    }
+    }
+
+</div>
+<!-- Modal de confirmation de suppression -->
+@if(showDeleteModal){
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer le contrat pour <strong>{{ contractToDelete?.studentName
+                        }}</strong> ?</p>
+                <p class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Cette action est irréversible.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
+                    Annuler
+                </button>
+                <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+                    <i class="bi bi-trash-fill"></i> Confirmer la suppression
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 }
-    
+
 <!-- Modal de modification de contrat -->
 @if(isEditModalOpen){
 <div class="modal-overlay" (click)="closeEditModal()">
@@ -192,4 +221,6 @@
         </div>
     </div>
 </div>
+}
+
 }

@@ -1,10 +1,8 @@
-import { Client } from "./client";
 import { Message } from "./message";
-import { Teacher } from "./teacher";
 
 export class Discussion {
     public Id: string = ''
-    public IdContratObjet: 'contact direct' | string = ''
+    public IdContratObjet: 'contact direct' | string = 'contact direct'
     public Messages: Message[] = []
     public NomInterlocuteur!: string
     public IdInterlocuteur: string = '';
