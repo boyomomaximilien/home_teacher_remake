@@ -8,44 +8,47 @@
             <label>Nom et prénom</label>
         </div>
         <div class="form-floating mb-4">
-            <input class="form-control" placeholder="YYYY/MM/DD" disabled="{{isActivate}}" [(ngModel)]="DateNaissance"
+            <input class="form-control" placeholder="YYYY/MM/DD" [disabled]="!isActivate" [(ngModel)]="DateNaissance"
                 [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
             <label>Date de naissance</label>
         </div>
         <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" disabled="{{isActivate}}" [(ngModel)]="MotDePasse"
+            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="MotDePasse"
                 [ngModelOptions]="{standalone: true}" type="password" style="background:#2b2e4a;color:#e8eef8;">
             <label>Mot de passe</label>
         </div>
         <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" disabled="{{isActivate}}" type="password"
+            <input class="form-control" placeholder="" [disabled]="!isActivate" type="password"
                 style="background:#2b2e4a;color:#e8eef8;">
             <label>Confirmer mot de passe</label>
         </div>
         <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" disabled="{{isActivate}}" [(ngModel)]="NumeroCNI"
+            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="NumeroCNI"
                 [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
             <label>Nº CNI</label>
         </div>
         <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" disabled="{{isActivate}}" [(ngModel)]="Quartier"
+            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="Quartier"
                 [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
             <label>Quartier</label>
         </div>
         <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" disabled="{{isActivate}}" [(ngModel)]="Contact"
+            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="Contact"
                 [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
             <label>Contact (s)</label>
         </div>
 
+        @if(currentUser?.Nature==='teacher'){
         <div class="form-floating mb-4">
-            <textarea class="form-control" placeholder="" disabled="{{isActivate}}" [(ngModel)]="Description"
+            <textarea class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="Description"
                 [ngModelOptions]="{standalone: true}"
                 style="background:#2b2e4a;color:#e8eef8; height: 120px;"></textarea>
             <label>Description</label>
         </div>
+        }
+
         <div class="form-floating mb-4">
-            <input class="form-control" type="number" placeholder="" disabled="{{isActivate}}"
+            <input class="form-control" type="number" placeholder="" [disabled]="!isActivate"
                 [(ngModel)]="anneesExperience" [ngModelOptions]="{standalone: true}"
                 style="background:#2b2e4a;color:#e8eef8;">
             <label>Experience professionnelle (en Annee)</label>
@@ -63,3 +66,29 @@
         </div>
     </form>
 </div>
+
+<!-- Confirmation Modal -->
+@if(showConfirmationModal){
+<div class="modal-overlay ">
+    <div class="modal-content">
+        <p>Voulez-vous vraiment sauvegarder les modifications ?</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <button class="btn btn-success" (click)="confirmSaveChanges()">Confirmer</button>
+            <button class="btn btn-danger" (click)="cancelSaveChanges()">Annuler</button>
+        </div>
+    </div>
+</div>
+}
+
+
+<!-- Success Modal -->
+@if(showSuccessModal){
+<div class="modal-overlay ">
+    <div class="modal-content">
+        <p class="text-center">Modifications sauvegardées avec succès !</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <button class="btn btn-primary" (click)="closeSuccessModal()">OK</button>
+        </div>
+    </div>
+</div>
+}

@@ -14,11 +14,16 @@
             <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="passwordLogin" type="password">
             <label>mot de passe</label>
         </div>
+
+        @if(afficherErreurConnexion()){
+        <div class="text-danger text-center h6 py-3">nom d'utilisateur ou mot de passe incorrecte</div>
+        }
+
         <div class="p-3 d-flex justify-content-center ">
             <button class="btn opacity-75 text-white  d-flex justify-content-center align-items-center"
                 (click)="logIn(mailLogin, passwordLogin)">
 
-                @if(afficherSpinner){
+                @if(afficherSpinner()){
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
@@ -77,7 +82,7 @@
         <div class="p-3 d-flex justify-content-center ">
             <button class="btn opacity-75 text-white d-flex justify-content-center align-items-center"
                 (click)="signUp(mailSignUp, passwordSignUp)">
-                @if(afficherSpinner){
+                @if(afficherSpinner()){
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>

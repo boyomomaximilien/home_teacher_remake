@@ -1,21 +1,22 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { App } from '../../app';
 import { Teacher } from '../../Models/teacher';
 import { Client } from '../../Models/client';
 import { FormsModule } from '@angular/forms';
 import { HandlerClient } from '../../Handlers/handler-client';
 import { HandlerTeacher } from '../../Handlers/handler-teacher';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
 export class Profile {
   currentUser!: Teacher | Client | null
-  handlerClient = Inject(HandlerClient);
-  handlerTeacher = Inject(HandlerTeacher);
+  handlerClient = inject(HandlerClient);
+  handlerTeacher = inject(HandlerTeacher);
 
   isActivate = false
   Nom!: string;
@@ -27,42 +28,51 @@ export class Profile {
   Description!: string;
   anneesExperience!: number;
 
+  showConfirmationModal = false;
+  showSuccessModal = false;
+
   constructor() {
-
     this.currentUser = App.connectedUserDataBase
-
   }
 
   ngOnInit() {
-    if (typeof (this.currentUser) === typeof (Teacher)) {
-      const user = this.currentUser as Teacher
-      this.Nom = user.Name || '';
-      this.DateNaissance = user.DateNaissance || '';
-      this.MotDePasse = user.PassWord || '';
-      this.Quartier = user.Quartier || '';
-      this.Contact = user.Contact || '';
-      this.NumeroCNI = user.NumeroCNI || '';
-      this.Description = user.Description;
-      this.anneesExperience = user.Experience
-    }
-    else {
-      const user = this.currentUser as Client
-      this.Nom = user.Name || '';
-      this.DateNaissance = user.DateNaissance || '';
-      this.MotDePasse = user.PassWord || '';
-      this.Quartier = user.Quartier || '';
-      this.Contact = user.Contact || '';
-      this.NumeroCNI = user.NumeroCNI || '';
-
+    if (this.currentUser) {
+      if (this.currentUser.Nature === 'teacher') {
+        const user = this.currentUser as Teacher;
+        this.Nom = user.Name || '';
+        this.DateNaissance = user.DateNaissance || '';
+        this.MotDePasse = user.PassWord || '';
+        this.Quartier = user.Quartier || '';
+        this.Contact = user.Contact || '';
+        this.NumeroCNI = user.NumeroCNI || '';
+        this.Description = user.Description;
+        this.anneesExperience = user.Experience;
+      }
+      else {
+        const user = this.currentUser as Client;
+        this.Nom = user.Name || '';
+        this.DateNaissance = user.DateNaissance || '';
+        this.MotDePasse = user.PassWord || '';
+        this.Quartier = user.Quartier || '';
+        this.Contact = user.Contact || '';
+        this.NumeroCNI = user.NumeroCNI || '';
+      }
     }
   }
 
   activeModification() {
-    this.isActivate = !this.isActivate
+    this.isActivate = !this.isActivate;
   }
 
   SauvegarderModifications() {
-    debugger
+    this.showConfirmationModal = true;
+  }
+
+  cancelSaveChanges() {
+    this.showConfirmationModal = false;
+  }
+
+  confirmSaveChanges() {
     if (this.currentUser) {
       this.currentUser.DateNaissance = this.DateNaissance;
       this.currentUser.PassWord = this.MotDePasse;
@@ -71,16 +81,24 @@ export class Profile {
       this.currentUser.NumeroCNI = this.NumeroCNI;
 
       if (this.currentUser.Nature === 'client') {
-        this.handlerClient.saveClient(this.currentUser);
+        const client = this.currentUser as Client;
+        this.handlerClient.updateClient(client);
         App.connectedUserDataBase = this.currentUser;
-        alert('Modifications sauvegardées avec succès !');
+        this.showSuccessModal = true;
       }
       else if (this.currentUser.Nature === 'teacher') {
-        this.handlerTeacher.saveTeacher(this.currentUser);
+        const teacher = this.currentUser as Teacher;
+        teacher.Description = this.Description
+        this.handlerTeacher.saveTeacher(teacher);
         App.connectedUserDataBase = this.currentUser;
-        alert('Modifications sauvegardées avec succès !');
+        this.showSuccessModal = true;
       }
     }
+    this.showConfirmationModal = false;
+    this.isActivate = false;
   }
 
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+  }
 }

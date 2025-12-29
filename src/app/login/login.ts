@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, HostListener, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthFirebaseService } from '../Handlers/auth-firebase-service';
@@ -16,7 +16,8 @@ import { HandlerTeacher } from '../Handlers/handler-teacher';
 })
 export class Login {
 
-  afficherSpinner = false;
+  afficherSpinner = signal(false);
+  afficherErreurConnexion = signal(false);
 
   mailLogin = '';
   passwordLogin = '';
@@ -33,15 +34,22 @@ export class Login {
   private handlerEnseignant;
 
   formConnection = true;
-  laRoute = new Router();
+  laRoute;
   utilisateur!: Teacher | Client;
 
   constructor() {
-
+    this.laRoute = inject(Router);
     this.AuthentificationService = inject(AuthFirebaseService);
     this.handlerClient = inject(HandlerClient);
     this.handlerEnseignant = inject(HandlerTeacher);
 
+  }
+
+  @HostListener('document:keydown.enter')
+  onEnter() {
+    if (this.formConnection && !this.afficherSpinner) {
+      this.logIn(this.mailLogin, this.passwordLogin);
+    }
   }
 
   alternerConnectionInscription() {
@@ -50,11 +58,11 @@ export class Login {
 
   //se connecter
   async logIn(mail: string, paswword: string) {
-    this.afficherSpinner = true;
+    this.afficherSpinner.set(true)
     try {
       const IsAUth = await this.AuthentificationService.Connexion(mail, paswword);
       if (IsAUth) {
-
+        this.afficherErreurConnexion.set(false)
         App.connectedUserUid = IsAUth.uid
 
         //recherche des information dans les client et si rien n'est trouve dans les enseignants
@@ -64,20 +72,20 @@ export class Login {
         }
         App.connectedUserDataBase = this.utilisateur;
         this.laRoute.navigate(['/profile']);
-
-        this.afficherSpinner = false;
+      }
+      else {
+        this.afficherErreurConnexion.set(true)
       }
     }
     catch (error) {
-      this.afficherSpinner = false;
     }
-
+    this.afficherSpinner.set(false)
 
   }
 
   //creer un nouveau compte
   async signUp(mail: string, password: string) {
-    this.afficherSpinner = true;
+    this.afficherSpinner.set(true)
     try {
       if (this.passwordSignUp == this.passwordSignUpFirst) {
 
@@ -101,12 +109,11 @@ export class Login {
         }
 
       }
-      this.afficherSpinner = false;
     }
     catch (error) {
-      this.afficherSpinner = false;
 
     }
+    this.afficherSpinner.set(false)
 
   }
 }

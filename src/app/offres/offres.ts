@@ -18,10 +18,12 @@ export class Offres {
   isTeacher!: boolean;
   contratsAffiche !: Contract[]
   enseignantsAffiche !: Teacher[]
-  tableContrat = inject(HandlerContract)
-  tableEnseignant = inject(HandlerTeacher)
+  tableContrat;
+  tableEnseignant;
 
   constructor(private cdr: ChangeDetectorRef) {
+    this.tableContrat = inject(HandlerContract)
+    this.tableEnseignant = inject(HandlerTeacher)
 
   }
 

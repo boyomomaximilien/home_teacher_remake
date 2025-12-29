@@ -34,7 +34,7 @@ export class AuthFirebaseService {
       return UserCredential.user;
     }
     catch (error: any) {
-      return null;
+      return null
     }
   }
 

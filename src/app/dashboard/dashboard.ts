@@ -20,20 +20,19 @@ import { Contract } from '../Models/contract';
 export class Dashboard {
 
   public pageAffichee = 'profile';
-  message: any;
   public utilisateurActuel!: Teacher | Client | null;
   public laDiscussion!: Discussion
 
   touteMesDiscussion!: Discussion[];
   tousMesContrats!: Contract[];
 
-  gestionnaireDiscussion = inject(HandlerDiscussion)
-  handlerContract = inject(HandlerContract)
+  gestionnaireDiscussion;
+  handlerContract;
 
 
   constructor() {
-
-
+    this.gestionnaireDiscussion = inject(HandlerDiscussion)
+    this.handlerContract = inject(HandlerContract)
   }
 
   async ngOnInit() {
