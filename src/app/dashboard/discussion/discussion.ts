@@ -15,7 +15,7 @@ import { Subscription, timer } from 'rxjs';
 export class DiscussionTemplate implements OnDestroy {
 
   @Output() showDiscussion = new EventEmitter<{ page: string, discussion: Discussion }>();
-  @Input() touteMesDiscussion!: Discussion[];
+  @Input() touteMesDiscussion?: Discussion[];
   gestionnaireDiscussion = inject(HandlerDiscussion)
   public utilisateurConnecte!: Client | Teacher;
   private discussionSubscription: Subscription;
@@ -24,10 +24,11 @@ export class DiscussionTemplate implements OnDestroy {
     this.discussionSubscription = timer(0, 20000).subscribe(() => this.recupererMesDiscussions());
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (App.connectedUserDataBase?.ListDiscussionsUid !== undefined) {
       this.utilisateurConnecte = App.connectedUserDataBase;
     }
+    await this.recupererMesDiscussions()
   }
 
   async recupererMesDiscussions() {
@@ -39,12 +40,10 @@ export class DiscussionTemplate implements OnDestroy {
   }
 
 
-
-
   openDiscussion(Id: string) {
     const data = {
       page: 'message',
-      discussion: this.touteMesDiscussion.find(discussion => discussion.Id === Id) as Discussion
+      discussion: this.touteMesDiscussion?.find(discussion => discussion.Id === Id) as Discussion
     }
     this.showDiscussion.emit(data);
   }

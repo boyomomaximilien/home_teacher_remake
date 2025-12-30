@@ -15,7 +15,7 @@ import { HandlerClient } from '../../Handlers/handler-client';
 })
 export class ListeEnseignants {
 
-  @Input() listeEnseignants!: Teacher[];
+  @Input() listeEnseignants?: Teacher[];
   gestionnaireEnseignant = inject(HandlerTeacher)
   gestionnaireDiscussion = inject(HandlerDiscussion)
   gestionnaireClient = inject(HandlerClient)

@@ -9,7 +9,7 @@
                     <p class="display-6"> <b><b>{{utilisateurActuel?.Name}}</b></b></p>
                 </div>
                 <div>
-                    <p class="text-center text-secondary"> <i>Master En Droit International</i></p>
+                    <p class="text-center text-secondary"> <i>{{utilisateurActuel?.Description}}</i></p>
                 </div>
             </div>
 
@@ -38,6 +38,7 @@
 
 <div class="container">
     @if(this.pageAffichee == 'contrat'){
+
     <app-contrats [tousMesContrats]="tousMesContrats"></app-contrats>
 
     }

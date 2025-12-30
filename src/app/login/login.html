@@ -79,6 +79,11 @@
                 style="background-color: #23759e; border-width: 0;">
             Besoin d'un Enseignant
         </div>
+
+        @if(afficherErreurInscription()){
+        <div class="text-danger text-center h6 py-3">veuillez remplir tous les champs</div>
+        }
+
         <div class="p-3 d-flex justify-content-center ">
             <button class="btn opacity-75 text-white d-flex justify-content-center align-items-center"
                 (click)="signUp(mailSignUp, passwordSignUp)">

@@ -18,6 +18,7 @@ export class Login {
 
   afficherSpinner = signal(false);
   afficherErreurConnexion = signal(false);
+  afficherErreurInscription = signal(false);
 
   mailLogin = '';
   passwordLogin = '';
@@ -85,10 +86,13 @@ export class Login {
 
   //creer un nouveau compte
   async signUp(mail: string, password: string) {
-    this.afficherSpinner.set(true)
-    try {
-      if (this.passwordSignUp == this.passwordSignUpFirst) {
 
+    this.afficherSpinner.set(true)
+
+    try {
+      if (this.passwordSignUp == this.passwordSignUpFirst && this.mailSignUp !== '' && this.passwordSignUp !== '') {
+
+        this.afficherErreurInscription.set(false)
         if (this.natureUser === 'client') {
           const IsAUth = await this.AuthentificationService.Enregistrement(mail, password);
           const client = new Client(`${IsAUth?.uid}`, `${this.nomUser.toLowerCase()} ${this.prenomUser.toLowerCase()}`, password, this.contactUser, this.mailSignUp);
@@ -104,13 +108,12 @@ export class Login {
           App.connectedUserDataBase = enseignant
           this.laRoute.navigate(['/profile']);
         }
-        else {
-
-        }
 
       }
     }
     catch (error) {
+
+      this.afficherErreurInscription.set(true)
 
     }
     this.afficherSpinner.set(false)

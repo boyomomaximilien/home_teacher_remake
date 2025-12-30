@@ -8,6 +8,7 @@ export class Client {
     public ListDiscussionsUid: string[] = [];
     public Email!: string;
     public Nature = 'client';
+    public Description: string = '';
     public DateNaissance: string = '';
     public Quartier: string = '';
     public NumeroCNI: string = '';

@@ -15,10 +15,17 @@ import { HandlerClient } from '../../Handlers/handler-client';
 })
 export class ListeContrats {
 
-  @Input() listeContrat!: Contract[];
-  discussion = inject(HandlerDiscussion)
-  teacher = inject(HandlerTeacher)
-  client = inject(HandlerClient)
+  @Input() listeContrat?: Contract[];
+  discussion;
+  teacher;
+  client;
+
+  constructor() {
+    this.discussion = inject(HandlerDiscussion);
+    this.teacher = inject(HandlerTeacher);
+    this.client = inject(HandlerClient)
+
+  }
 
 
   async contacterClient(IdClient: string) {

@@ -1,4 +1,5 @@
-@if(touteMesDiscussion.length != 0){
+@if(touteMesDiscussion !== undefined)
+{
 @for(discussion of touteMesDiscussion;track discussion.Id){
 <div class="container  my-lg-2 d-flex justify-content-center">
     <div class="row mb-3 rounded shadow-lg d-flex justify-content-lg-between w-50 discussion-item animate-discussion"
@@ -31,10 +32,11 @@
 </div>
 }
 }
-@else {
+@else
+{
 <div class="container my-5">
     <p class="h4 text-center text-secondary">
-        Aucune discussion pour le momment
+        Aucune discussion pour le momment Merci
     </p>
 </div>
 }

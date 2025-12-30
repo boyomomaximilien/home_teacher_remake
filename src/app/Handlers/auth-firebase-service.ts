@@ -17,13 +17,19 @@ export class AuthFirebaseService {
 
 
   async Enregistrement(email: string, password: string): Promise<User | null> {
+    try {
+      const UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      if (UserCredential.user) {
+        App.connectedUserUid = UserCredential.user.uid;
+        return UserCredential.user;
 
-    const UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-    if (UserCredential.user) {
-      App.connectedUserUid = UserCredential.user.uid;
-      return UserCredential.user;
+      }
 
+    } catch (error) {
+
+      return null;
     }
+
     return null;
   }
 

@@ -1,6 +1,7 @@
+<h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Offres de Contrats</h2>
+
 @if(listeContrat !== undefined ){
 <div class="container py-4">
-    <h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Offres de Contrats</h2>
     <div class="row g-4">
         @for(contrat of listeContrat; track contrat.Id){
         <div class="col-lg-4 col-md-6">
@@ -42,7 +43,6 @@
     </div>
 </div>
 }
-
 @else {
 <div class="container my-5">
     <p class="display-4 text-center text-secondary">
