@@ -25,7 +25,7 @@ export class DiscussionTemplate implements OnDestroy {
   }
 
   async ngOnInit() {
-    if (App.connectedUserDataBase?.ListDiscussionsUid !== undefined) {
+    if (App.connectedUserDataBase!== null) {
       this.utilisateurConnecte = App.connectedUserDataBase;
     }
     await this.recupererMesDiscussions()

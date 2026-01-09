@@ -31,7 +31,6 @@ export class HandlerClient {
 
     //Sauvegarder client
     async saveClient(client: Client) {
-        debugger
         this.initialiserTable()
         try {
             await set(this.clientRef, client);

@@ -30,7 +30,6 @@ export class Contrats {
   }
 
   async ngOnInit() {
-    this.tousMesContrats = await this.handlerContract.obtenirContrats();
   }
 
   toggleAddContractForm() {
@@ -38,16 +37,7 @@ export class Contrats {
   }
 
   async enregistrerContrat(formValue: any) {
-    const contrat = new Contract(
-      formValue.studentName,
-      'personne_icone.png', // Image par défaut
-      formValue.courseDays,
-      formValue.sessionTime,
-      formValue.studentClasse,
-      formValue.prix,
-      new Date(), // Date actuelle pour le paiement
-      formValue.matieres
-    );
+    const contrat = formValue as Contract;
 
     contrat.IdCreator = App.connectedUserUid;
 

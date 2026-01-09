@@ -42,12 +42,19 @@ export class HandlerDiscussion {
 
     async obtenirToutesLesDiscussions(discussionsId: string[]): Promise<Discussion[]> {
         var result: Discussion[] = []
-        for (const element of discussionsId) {
+        try{
+            for (const element of discussionsId) {
             this.InitialiserTable(element)
             const laDiscussion = await (await get(this.RefTableDiscussion)).val() as Discussion
             result.push(laDiscussion)
         }
         return result;
+        }
+        catch(error){
+            return result;
+        }
+        
+        
     }
 
     async obtenirUneDiscussion(laCle: string): Promise<Discussion> {

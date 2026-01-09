@@ -1,5 +1,5 @@
-import { Injectable, OnInit, inject } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User, user } from '@angular/fire/auth';
+import { Injectable, inject } from '@angular/core';
+import { Auth, signInWithEmailAndPassword,onAuthStateChanged, createUserWithEmailAndPassword, signOut, User, setPersistence, browserLocalPersistence} from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { App } from '../app';
 
@@ -13,6 +13,20 @@ export class AuthFirebaseService {
   constructor() {
     this.auth = inject(Auth);
 
+  }
+
+  async getUserState(): Promise<User | null> {
+    return new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(this.auth, (user: User | null) => {
+        unsubscribe();
+        if (user) {
+          console.log(`L'utilisateur ${user.email} est connecté. Redirection vers la page d'accueil.`);
+          resolve(user);
+        } else {
+          resolve(null);
+        }
+      });
+    });
   }
 
 
@@ -36,6 +50,8 @@ export class AuthFirebaseService {
   async Connexion(email: string, password: string): Promise<User | null> {
 
     try {
+
+      await setPersistence(this.auth, browserLocalPersistence)      
       const UserCredential = await signInWithEmailAndPassword(this.auth, email, password);
       return UserCredential.user;
     }

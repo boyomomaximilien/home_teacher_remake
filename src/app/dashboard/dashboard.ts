@@ -36,7 +36,6 @@ export class Dashboard {
   }
 
   async ngOnInit() {
-    debugger
     this.utilisateurActuel = App.connectedUserDataBase;
     await this.recupererMesDiscussions()
     await this.recupererContrat()
@@ -49,7 +48,7 @@ export class Dashboard {
       this.touteMesDiscussion = await this.gestionnaireDiscussion.obtenirToutesLesDiscussions(listDiscussions); 4
 
     }
-    if (this.touteMesDiscussion.length === 0) {
+    if (this.touteMesDiscussion === undefined) {
       this.touteMesDiscussion = []
     }
   }

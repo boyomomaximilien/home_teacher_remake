@@ -33,7 +33,6 @@ export class AfficherMessages {
     this.retour.emit('discussion')
   }
   envoyerMessage(discussion: Discussion) {
-    debugger
     if (!discussion.Messages) {
       discussion.Messages = []
     }
