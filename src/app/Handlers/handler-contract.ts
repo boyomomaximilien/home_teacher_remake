@@ -1,4 +1,4 @@
-import { get, ref, set, remove, Database, push, onValue } from '@angular/fire/database';
+import { get, ref, set, remove, Database, push, update } from '@angular/fire/database';
 import { inject, Injectable } from '@angular/core';
 import { App } from '../app';
 import { Contract } from '../Models/contract';
@@ -19,13 +19,18 @@ export class HandlerContract {
 
     }
     // initialiser les information pour la reference sur firebase
-    InitialiserTable(cleContrat?: string) {
-        if (cleContrat) {
+    InitialiserTable(cleContrat?: string, absolutePath?: string) {
+        if (cleContrat && cleContrat.trim() != '') {
             this.pathContrat = `contrats/${App.connectedUserUid}/${cleContrat}`;
             this.refTableContrat = ref(this.tableContrat, this.pathContrat);
         }
         else {
             this.pathContrat = `contrats/${App.connectedUserUid}`;
+            this.refTableContrat = ref(this.tableContrat, this.pathContrat);
+        }
+
+        if (absolutePath) {
+            this.pathContrat = `contrats/${absolutePath}`;
             this.refTableContrat = ref(this.tableContrat, this.pathContrat);
         }
 
@@ -53,8 +58,8 @@ export class HandlerContract {
         return [];
     }
 
-    async obtenirUnContrat(cleContrat: string): Promise<Contract | null> {
-        this.InitialiserTable(cleContrat);
+    async obtenirUnContrat(cleContrat?: string, absolutePath?: string): Promise<Contract | null> {
+        this.InitialiserTable(cleContrat,absolutePath);
         const result = await (await get(this.refTableContrat)).val() as Contract | null;
         return result;
     }
@@ -64,12 +69,16 @@ export class HandlerContract {
         await remove(this.refTableContrat);
     }
 
-    async updateContrat(contrat: Contract) {
+    async updateContrat(contrat: Contract, absolutePath?: string) {
         if (!contrat.Id) {
             return;
         }
-        this.InitialiserTable(contrat.Id);
-        await set(this.refTableContrat, contrat);
+        if (absolutePath) {
+            this.InitialiserTable(undefined, absolutePath);
+        }else {
+            this.InitialiserTable(contrat.Id);
+        }
+        await update(this.refTableContrat, contrat);
     }
 
     async obtenirTousLesContratsDisponibles(): Promise<Contract[]> {
@@ -78,17 +87,23 @@ export class HandlerContract {
         const resultatBrute = await (await get(this.refTableContrat)).val() as Record<string, Record<string, Contract>>
         if (resultatBrute) {
             const resultatIntermediaire = Object.values(resultatBrute)
-            resultatIntermediaire.forEach(element => {
-                const leContrat = Object.values(element)[0]
-                if (!this.lesContratDisponibles.find(contrat => contrat.Id == leContrat.Id)) {
-                    this.lesContratDisponibles.push(leContrat)
-                }
-                else {
-                    const index = this.lesContratDisponibles.findIndex(contrat => contrat.Id == leContrat.Id)
-                    this.lesContratDisponibles[index] = leContrat
-                }
 
-            })
+            for(let element of resultatIntermediaire){
+
+                const contratsUnClient = Object.values(element)
+
+                    contratsUnClient.forEach(leContrat => {
+                        if (!this.lesContratDisponibles.find(contrat => contrat.Id == leContrat.Id)) {
+                            this.lesContratDisponibles.push(leContrat)
+                        }
+                        else {
+                        const index = this.lesContratDisponibles.findIndex(contrat => contrat.Id == leContrat.Id)
+                            this.lesContratDisponibles[index] = leContrat
+                        }
+                
+                })               
+
+            }
 
         }
         return this.lesContratDisponibles

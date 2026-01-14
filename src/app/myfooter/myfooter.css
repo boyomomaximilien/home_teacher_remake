@@ -125,9 +125,10 @@
     color: #fff;
 }
 
-.newsletter-form button {
+.newsletter-form a {
     padding: 10px 16px;
     border-radius: 8px;
+    text-decoration: inherit;
     border: none;
     background: #ffd166;
     color: #111;
@@ -136,7 +137,7 @@
     transition: transform .12s ease;
 }
 
-.newsletter-form button:hover {
+.newsletter-form a:hover {
     transform: translateY(-2px);
 }
 

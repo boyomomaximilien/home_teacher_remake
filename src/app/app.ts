@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Injector } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from "./navbar/navbar";
 import { Myfooter } from "./myfooter/myfooter";
@@ -22,22 +22,27 @@ export class App implements OnInit {
   public static connectedUserDataBase: Teacher | Client | null = null;
   private authenticatorChecker;
   private laRoute;
+  private injector;
+  handlerClient: HandlerClient | null = null;
+  handlerEnseignant: HandlerTeacher | null = null;
 
   constructor() {
     this.authenticatorChecker = inject(AuthFirebaseService);
     this.laRoute = inject(Router);
+    this.injector = inject(Injector);
   }
 
   async ngOnInit(){
     // Initialisation à faire au démarrage du composant
-    const handlerClient = inject(HandlerClient);
-    const handlerEnseignant = inject(HandlerTeacher);
+    this.handlerClient = this.injector.get(HandlerClient);
+    this.handlerEnseignant = this.injector.get(HandlerTeacher);
+    
     const user = await this.authenticatorChecker.getUserState();
     if(user){// Le mot de passe est vide car l'utilisateur est déjà authentifié
       App.connectedUserUid = user.uid;
-      App.connectedUserDataBase = await handlerClient.getClientInfo() as Client;
+      App.connectedUserDataBase = await this.handlerClient.getClientInfo() as Client;
         if (!App.connectedUserDataBase) {
-          App.connectedUserDataBase = await handlerEnseignant.getTeacherInfo();
+          App.connectedUserDataBase = await this.handlerEnseignant.getTeacherInfo();
         }
         this.laRoute.navigate(['/profile']);
     }

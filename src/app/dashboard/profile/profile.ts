@@ -21,6 +21,7 @@ export class Profile {
   isActivate = false
   Nom!: string;
   DateNaissance!: string;
+  Ville!: string;
   MotDePasse!: string;
   Quartier!: string;
   Contact!: string;
@@ -47,6 +48,7 @@ export class Profile {
         this.NumeroCNI = user.NumeroCNI || '';
         this.Description = user.Description;
         this.anneesExperience = user.Experience;
+        this.Ville = user.Ville || '';
       }
       else {
         const user = this.currentUser as Client;
@@ -89,6 +91,8 @@ export class Profile {
       else if (this.currentUser.Nature === 'teacher') {
         const teacher = this.currentUser as Teacher;
         teacher.Description = this.Description
+        teacher.Experience = this.anneesExperience;
+        teacher.Ville = this.Ville;
         this.handlerTeacher.saveTeacher(teacher);
         App.connectedUserDataBase = this.currentUser;
         this.showSuccessModal = true;

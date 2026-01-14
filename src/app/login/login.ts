@@ -20,6 +20,7 @@ export class Login {
   afficherErreurConnexion = signal(false);
   afficherErreurInscription = signal(false);
 
+  keepConnected = false;
   mailLogin = '';
   passwordLogin = '';
   mailSignUp = '';
@@ -61,7 +62,7 @@ export class Login {
   async logIn(mail: string, paswword: string) {
     this.afficherSpinner.set(true)
     try {
-      const IsAUth = await this.AuthentificationService.Connexion(mail, paswword);
+      const IsAUth = await this.AuthentificationService.Connexion(mail, paswword, this.keepConnected);
       if (IsAUth) {
         this.afficherErreurConnexion.set(false)
         App.connectedUserUid = IsAUth.uid

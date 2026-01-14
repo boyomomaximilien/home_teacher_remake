@@ -1,7 +1,8 @@
+<!-- 2. Zone de contrat pour les enseignants-->
 @if(Nature ==='teacher'){
 <div class="container-fluid mt-lg-4 mt-3 py-2">
 
-    @if(tousMesContrats !== undefined){
+    @if(tousMesContrats !== undefined && tousMesContrats.length > 0){
     @for (element of tousMesContrats; track element.Id){
     <div class="card contract-card mb-4 shadow-sm">
         <div class="row g-0">
@@ -22,7 +23,7 @@
                     <p class="card-text mb-1">
                         <i class="bi bi-clock-fill me-2"></i>{{element.sessionTime}}H par séance
                     </p>
-                    <div class="d-flex flex-wrap align-items-center">
+                    <div class="d-flex flex-wrap align-items-center justify-content-lg-start justify-content-center">
                         <i class="bi bi-calendar-event-fill me-2"></i>
                         @for(day of element.courseDay; track $index){
                         <span class="badge bg-info text-dark mx-1">{{day}}</span>
@@ -34,17 +35,24 @@
                 <div class="text-md-end mb-2">
                     <span class="h5 text-info fw-bold">{{element.Prix | number}} XAF</span>
                     <p class="text-muted small">
-                        <i class="bi bi-calendar-check me-1"></i>{{element.datePaiement.toDateString()}}
+                        <i class="bi bi-calendar-check me-1"></i> Le {{element.datePaiement}} de Chaque mois
                     </p>
                 </div>
-                <div class="d-flex flex-md-column flex-wrap justify-content-center align-items-stretch">
-                    <button class="btn btn-outline-primary m-1 flex-grow-1" (click)="openEditModal(element)">
-                        <i class="bi bi-pencil-fill me-1"></i> Modifier
-                    </button>
-                    <button class="btn btn-outline-danger m-1 flex-grow-1" (click)="openDeleteModal(element)">
-                        <i class="bi bi-trash-fill me-1"></i> Supprimer
-                    </button>
-                </div>
+                
+                    <div class="d-flex flex-md-column flex-wrap justify-content-center align-items-stretch">
+                        @if(!element.isAccepted){
+                        <button class="btn btn-outline-success m-1 flex-grow-1" (click)="AccepterContrat(element)">
+                            <i class="bi bi-check-circle-fill me-1"></i> Accepter
+                        </button>
+                        <button class="btn btn-outline-danger m-1 flex-grow-1" (click)="RefuserContrat(element)">
+                            <i class="bi bi-trash-fill me-1"></i> Refuser
+                        </button>
+                        }
+                        @else {
+                            <p class="text-success h4"><i class="bi bi-check-circle-fill me-1"></i> Contrat Accepté</p>
+                        }
+                    </div>
+                
             </div>
         </div>
     </div>
@@ -92,6 +100,7 @@
 
 </div>
 }
+<!-- 2. Zone de contrat pour les clients-->
 @else {
 
 <div class="add-contract-container text-center py-5">
@@ -168,13 +177,32 @@
                     </div>
                 </div>
             </div>
+            
             <div class="summary-footer">
-                <button class="btn btn-outline-primary m-1" (click)="openEditModal(element)">
-                    <i class="bi bi-pencil-fill"></i> Modifier
-                </button>
-                <button class="btn btn-outline-danger m-1" (click)="openDeleteModal(element)">
-                    <i class="bi bi-trash-fill"></i> Supprimer
-                </button>
+                @if(element.IdAttributedTo === ''){
+                    <button class="btn btn-outline-success m-1" (click)="attribuerContrat(element)">
+                        <i class="bi bi-check-circle-fill"></i> Attribuer
+                    </button>
+                    <button class="btn btn-outline-warning m-1" (click)="openEditModal(element)">
+                        <i class="bi bi-pencil-fill"></i> Modifier
+                    </button>
+                    <button class="btn btn-outline-danger m-1" (click)="openDeleteModal(element)">
+                        <i class="bi bi-trash-fill"></i> Supprimer
+                    </button> 
+                }
+                @else {
+                    <div class="container">
+                        @if(element.isAccepted){
+                            <p class="h4 text-success">Contrat Conclu !</p>
+
+                        }@else {
+                            <p class="h4 text-danger">Ce contrat est deja attribue et ne peut plus etre modifie !</p>
+                            <p class="text-danger">en attente d'acceptation...</p>
+                        }
+                        
+                    </div>
+                    
+                }              
             </div>
         </div>
     </div>
@@ -210,7 +238,29 @@
     </div>
 </div>
 }
-
+<!-- Modal d'attribution de contrat -->
+@if(showAssignModal){
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Attribuer le contrat</h5>
+                <button type="button" class="btn-close" (click)="closeAssignModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Saisissez l'ID de l'enseignant pour attribuer le contrat de <strong>{{ contractToAssign?.studentName }}</strong> :</p>
+                <input class="form-control" placeholder="ID de l'enseignant" [(ngModel)]="assignTeacherId">
+                <p class="text-danger small mt-2" *ngIf="assignError">{{ assignError }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeAssignModal()">Annuler</button>
+                <button type="button" class="btn btn-success" (click)="confirmAssign()">Attribuer</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
 <!-- Modal de modification de contrat -->
 @if(isEditModalOpen){
 <div class="modal-overlay" (click)="closeEditModal()">

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Discussion } from '../../../Models/discussion';
 import { App } from '../../../app';
 import { Message } from '../../../Models/message';
@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HandlerDiscussion } from '../../../Handlers/handler-discussion';
 import { Teacher } from '../../../Models/teacher';
 import { Client } from '../../../Models/client';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
@@ -18,15 +19,18 @@ export class AfficherMessages {
   @Input() discussionSelect!: Discussion;
   @Output() retour = new EventEmitter()
   textMessage!: string;
-  tableDiscussion = inject(HandlerDiscussion)
+  tableDiscussion;
   public utilisateurConnecte!: Client | Teacher | null;
+  private discussionSubscription: Subscription;
 
-  constructor() {
+  constructor( private cdr: ChangeDetectorRef) {
+    this.tableDiscussion = inject(HandlerDiscussion)
+    this.discussionSubscription = timer(0, 5000).subscribe(() => {this.actualiserMessages(); console.log('les messages sont mises à jour');this.cdr.detectChanges() ;});
+    
   }
 
   ngOnInit() {
     this.utilisateurConnecte = App.connectedUserDataBase
-
   }
 
   retourClicked() {
@@ -53,6 +57,18 @@ export class AfficherMessages {
 
   AttribuerContrat() {
 
+  }
+
+  async actualiserMessages() {
+    const discussionUpdated = await this.tableDiscussion.obtenirUneDiscussion(this.discussionSelect.Id)
+    this.discussionSelect = discussionUpdated
+
+  }
+
+  ngOnDestroy() {
+    if (this.discussionSubscription) {
+      this.discussionSubscription.unsubscribe();
+    }
   }
 
 }

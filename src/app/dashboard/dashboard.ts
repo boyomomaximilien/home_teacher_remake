@@ -24,6 +24,7 @@ export class Dashboard {
   public laDiscussion!: Discussion
 
   touteMesDiscussion!: Discussion[];
+  public static touteMesDiscussionGlobal: Discussion[];
   tousMesContrats!: Contract[];
 
   gestionnaireDiscussion;
@@ -45,17 +46,33 @@ export class Dashboard {
   async recupererMesDiscussions() {
     if (App.connectedUserDataBase?.ListDiscussionsUid !== undefined) {
       const listDiscussions = App.connectedUserDataBase?.ListDiscussionsUid;
-      this.touteMesDiscussion = await this.gestionnaireDiscussion.obtenirToutesLesDiscussions(listDiscussions); 4
-
+      this.touteMesDiscussion = await this.gestionnaireDiscussion.obtenirToutesLesDiscussions(listDiscussions);
+      Dashboard.touteMesDiscussionGlobal = this.touteMesDiscussion
     }
     if (this.touteMesDiscussion === undefined) {
       this.touteMesDiscussion = []
+      Dashboard.touteMesDiscussionGlobal = this.touteMesDiscussion
     }
   }
 
   async recupererContrat() {
     // 
-    this.tousMesContrats = await this.handlerContract.obtenirContrats()
+    debugger
+    if (App.connectedUserDataBase?.Nature=== 'client') {
+      this.tousMesContrats = await this.handlerContract.obtenirContrats()
+    }
+    else if (App.connectedUserDataBase?.Nature === 'teacher') {
+      if(App.connectedUserDataBase?.ListContratsUid !== undefined && App.connectedUserDataBase?.ListContratsUid !== null){
+        this.tousMesContrats = []
+        for (let contratUid of App.connectedUserDataBase.ListContratsUid) {
+          const contrat = await this.handlerContract.obtenirUnContrat(undefined,contratUid);
+          const contratExist= this.tousMesContrats.find(contrat => contrat.Id === contrat.Id);
+          if(!contratExist ){
+            this.tousMesContrats.push(contrat!);
+          }          
+        }
+      }
+    }    
   }
 
   displayedDashboard(data: string | { page: string, discussion: Discussion }) {

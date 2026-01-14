@@ -26,6 +26,7 @@ export class FormulaireContratComponent implements OnChanges {
       studentName: ['', Validators.required],
       studentClasse: ['', Validators.required],
       sessionTime: ['', [Validators.required, Validators.min(1)]],
+      datePaiement: ['', [Validators.required, Validators.min(1), Validators.max(30)]],
       prix: ['', [Validators.required, Validators.min(1000)]],
       matieres: this.fb.array([], Validators.required),
       courseDays: this.fb.array([], Validators.required)
@@ -87,7 +88,7 @@ export class FormulaireContratComponent implements OnChanges {
         formValue.sessionTime,
         formValue.studentClasse,
         formValue.prix,
-        (this.contract && this.contract.datePaiement) ? this.contract.datePaiement : new Date(),
+        formValue.datePaiement,
         formValue.matieres
       );
 

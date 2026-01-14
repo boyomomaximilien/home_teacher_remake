@@ -7,6 +7,7 @@ import { Contract } from '../Models/contract';
 import { Database, ref, get } from '@angular/fire/database';
 import { HandlerContract } from '../Handlers/handler-contract';
 import { HandlerTeacher } from '../Handlers/handler-teacher';
+import { Dashboard } from '../dashboard/dashboard';
 
 @Component({
   selector: 'app-offres',
@@ -27,7 +28,8 @@ export class Offres {
 
   }
 
-  async ngOnInit() {
+  async ngOnInit() { 
+    debugger
     if (App.connectedUserDataBase?.Nature === 'teacher') {
       this.isTeacher = true;
       this.contratsAffiche = await this.tableContrat.obtenirTousLesContratsDisponibles()
@@ -38,6 +40,8 @@ export class Offres {
     }
     this.cdr.detectChanges();
   }
+
+  
 
 
 }

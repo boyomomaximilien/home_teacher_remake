@@ -9,13 +9,14 @@ export class Contract {
     public courseDay!: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[];
     public sessionTime!: 1 | 2 | 3 | 4 | 5 | 6;
     public Prix!: number;
-    public datePaiement !: Date;
+    public datePaiement !: number;
     public matieres!: string[];
     public parentName?: string = '-----';
     public IdAttributedTo: string = '';
+    public isAccepted: boolean = false;
 
 
-    constructor(student_Name: string, student_Picture: string, course_Day: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[], session_Time: 1 | 2 | 3 | 4 | 5 | 6, classe: string, prix: number, date: Date, matieres: string[]) {
+    constructor(student_Name: string, student_Picture: string, course_Day: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[], session_Time: 1 | 2 | 3 | 4 | 5 | 6, classe: string, prix: number, date: number, matieres: string[]) {
 
         this.studentName = student_Name;
         this.studentClasse = classe;

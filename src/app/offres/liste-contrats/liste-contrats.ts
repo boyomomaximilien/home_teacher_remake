@@ -6,6 +6,7 @@ import { App } from '../../app';
 import { HandlerTeacher } from '../../Handlers/handler-teacher';
 import { Teacher } from '../../Models/teacher';
 import { HandlerClient } from '../../Handlers/handler-client';
+import { Dashboard } from '../../dashboard/dashboard';
 
 @Component({
   selector: 'app-liste-contrats',
@@ -29,33 +30,49 @@ export class ListeContrats {
 
 
   async contacterClient(IdClient: string) {
-    const clientValue = await this.client.getClientInfo(IdClient)
-    const laDiscussion = new Discussion(`${IdClient}`)
-    laDiscussion.NomInterlocuteur = clientValue.Name
-    laDiscussion.IdCreateur = App.connectedUserUid
-    laDiscussion.NomCreateur = `${App.connectedUserDataBase?.Name}`
-    const discussion = await this.discussion.sauvegarderDiscussion(laDiscussion)
+    if (!this.verificationDiscussionExistante(IdClient)) {
 
-    if (clientValue.ListDiscussionsUid === undefined) {
-      clientValue.ListDiscussionsUid = []
-    }
-    if (!clientValue.ListDiscussionsUid.find(i => i === discussion.Id)) {
-      clientValue.ListDiscussionsUid.push(discussion.Id)
-    }
+      const clientValue = await this.client.getClientInfo(IdClient)
+      const laDiscussion = new Discussion(`${IdClient}`)
+      laDiscussion.NomInterlocuteur = clientValue.Name
+      laDiscussion.IdCreateur = App.connectedUserUid
+      laDiscussion.NomCreateur = `${App.connectedUserDataBase?.Name}`
+      const discussion = await this.discussion.sauvegarderDiscussion(laDiscussion)
 
-    this.client.updateClient(clientValue)
-
-    if (App.connectedUserDataBase) {
-      if (App.connectedUserDataBase.ListDiscussionsUid === undefined) {
-        App.connectedUserDataBase.ListDiscussionsUid = []
+      if (clientValue.ListDiscussionsUid === undefined) {
+        clientValue.ListDiscussionsUid = []
       }
-      const listDiscussions = App.connectedUserDataBase as Teacher
-      if (!listDiscussions.ListDiscussionsUid.find(i => i === discussion.Id)) {
-        listDiscussions.ListDiscussionsUid.push(discussion.Id)
+      if (!clientValue.ListDiscussionsUid.find(i => i === discussion.Id)) {
+        clientValue.ListDiscussionsUid.push(discussion.Id)
       }
 
-      this.teacher.saveTeacher(listDiscussions)
-      App.connectedUserDataBase = listDiscussions
+      this.client.updateClient(clientValue)
+
+      if (App.connectedUserDataBase) {
+        if (App.connectedUserDataBase.ListDiscussionsUid === undefined) {
+          App.connectedUserDataBase.ListDiscussionsUid = []
+        }
+        const listDiscussions = App.connectedUserDataBase as Teacher
+        if (!listDiscussions.ListDiscussionsUid.find(i => i === discussion.Id)) {
+          listDiscussions.ListDiscussionsUid.push(discussion.Id)
+        }
+
+        this.teacher.saveTeacher(listDiscussions)
+        App.connectedUserDataBase = listDiscussions
+      }
     }
+    else{
+      console.log("La discussion existe déjà");
+    }
+    
+  }
+
+  verificationDiscussionExistante(clientUid: string): boolean {
+      const discussionExiste = Dashboard.touteMesDiscussionGlobal.find(discussion => discussion.IdInterlocuteur === clientUid || discussion.IdCreateur === clientUid);
+      if(discussionExiste){
+        return true;
+      } else {
+        return false;
+      }
   }
 }

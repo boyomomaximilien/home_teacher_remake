@@ -32,7 +32,7 @@
     </div>
     <div class="chat-messages defilement px-2 py-3">
         <!-- Exemple de messages, à remplacer par une boucle Angular -->
-        @for(element of discussionSelect.Messages; track element.Id){
+        @for(element of discussionSelect.Messages; track $index){
         <div class="">
             <div [class]="{
                  'justify-content-end':element.SenderId === utilisateurConnecte?.Id,

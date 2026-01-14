@@ -33,13 +33,18 @@
       <div class="col-md-6 mb-3 form-group-animated">
         <label for="sessionTime" class="form-label"><i class="bi bi-clock-fill"></i> Heures par
           séance</label>
-        <input type="number" id="sessionTime" class="form-control" formControlName="sessionTime">
+        <input type="number" max="24" min="1" id="sessionTime" class="form-control" formControlName="sessionTime">
+      </div>
+      <!-- Date de paiement -->
+      <div class="col-md-6 mb-3 form-group-animated">
+        <label for="sessionTime" class="form-label"><i class="bi bi-calendar-check me-1"></i>Date de paiement (Ex : le 15 de chaque mois)</label>
+        <input type="number" max="30" min="1" id="sessionTime" class="form-control" formControlName="datePaiement">
       </div>
 
       <!-- Prix -->
       <div class="col-md-12 mb-3 form-group-animated">
         <label for="prix" class="form-label"><i class="bi bi-cash-coin"></i> Prix (XAF)</label>
-        <input type="number" id="prix" class="form-control" formControlName="prix">
+        <input type="number" min="10000" id="prix" class="form-control" formControlName="prix">
       </div>
 
       <!-- Jours de cours -->

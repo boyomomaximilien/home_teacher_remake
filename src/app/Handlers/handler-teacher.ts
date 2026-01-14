@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { App } from '../app';
 import { Teacher } from '../Models/teacher';
-import { Database, ref, get, set } from '@angular/fire/database';
+import { Database, ref, get, set, update } from '@angular/fire/database';
 import { Contract } from '../Models/contract';
 
 @Injectable({
@@ -20,8 +20,13 @@ export class HandlerTeacher {
 
     }
 
-    initialiserTableTeacher() {
-        this.pathTeacher = `enseignants/${App.connectedUserUid}`;
+    initialiserTableTeacher(id?: string) {
+        if (id) {
+            this.pathTeacher = `enseignants/${id}`;
+        } else {
+            this.pathTeacher = `enseignants/${App.connectedUserUid}`;
+        }
+
         this.refTeacherDatabase = ref(this.teacherData, this.pathTeacher);
     }
 
@@ -34,6 +39,17 @@ export class HandlerTeacher {
         }
         catch (error) {
             console.error('Erreur lors de la sauvegarde du client :', error);
+        }
+    }
+
+    async updateTeacher(enseignant: Teacher) {
+        this.initialiserTableTeacher(enseignant.Id)
+        try {
+            await update(this.refTeacherDatabase, enseignant);
+            console.log(`Enseignant mis à jouravec succès : ${enseignant.Name}`);
+        }
+        catch (error) {
+            console.error('Erreur lors de la sauvegarde de l \' enseignant :', error);
         }
     }
 
