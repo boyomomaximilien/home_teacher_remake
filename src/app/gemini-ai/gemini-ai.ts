@@ -23,6 +23,7 @@ export class GeminiAI {
     this.conversationLog.push(`User : ${this.prompt}`);
     const response = await this.geminiService.run(this.prompt);
     this.conversationLog.push(`Assistant : ${response}`);
+    this.prompt = '';
   }
 
 }

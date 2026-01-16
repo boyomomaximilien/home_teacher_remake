@@ -1,7 +1,11 @@
 <div class="container border rounded p-3" style="max-width: 300px;">
-    @for(message of conversationLog; track $index) {
+    <div class="defilement">
+        @for(message of conversationLog; track $index) {
         <p class="border rounded bg-primary bg-opacity-50 p-3">{{message}}</p>
     }
+
+    </div>
+    
    <div class="form-floating  mb-2">
     <textarea class="form-control" placeholder="" [(ngModel)]="prompt"></textarea>
     <label>parler avec Assistant AI</label>
