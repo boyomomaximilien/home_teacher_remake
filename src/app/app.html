@@ -1,3 +1,8 @@
 <app-navbar></app-navbar>
+<button class="btn btn-primary m-3 rounded-circle button-gemini" (click)="openGeminiAI()"><i class="bi bi-robot h1 my-1"></i></button>
+@if(geminiVisible){
+    <app-gemini-ai class="geminiApp"></app-gemini-ai>
+}
+
 <router-outlet></router-outlet>
 <app-myfooter></app-myfooter>

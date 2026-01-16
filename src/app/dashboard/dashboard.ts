@@ -56,8 +56,6 @@ export class Dashboard {
   }
 
   async recupererContrat() {
-    // 
-    debugger
     if (App.connectedUserDataBase?.Nature=== 'client') {
       this.tousMesContrats = await this.handlerContract.obtenirContrats()
     }
@@ -66,7 +64,7 @@ export class Dashboard {
         this.tousMesContrats = []
         for (let contratUid of App.connectedUserDataBase.ListContratsUid) {
           const contrat = await this.handlerContract.obtenirUnContrat(undefined,contratUid);
-          const contratExist= this.tousMesContrats.find(contrat => contrat.Id === contrat.Id);
+          const contratExist= this.tousMesContrats.find(c => c.Id === contrat!.Id);
           if(!contratExist ){
             this.tousMesContrats.push(contrat!);
           }          
@@ -91,6 +89,10 @@ export class Dashboard {
 
   showAlert(name: string) {
     alert(name)
+  }
+
+  removeContractFromList(deletedContract: Contract) {
+    this.tousMesContrats = this.tousMesContrats.filter(contract => contract.Id !== deletedContract.Id);
   }
 
 

@@ -1,0 +1,14 @@
+<div class="container border rounded p-3" style="max-width: 300px;">
+    @for(message of conversationLog; track $index) {
+        <p class="border rounded bg-primary bg-opacity-50 p-3">{{message}}</p>
+    }
+   <div class="form-floating  mb-2">
+    <textarea class="form-control" placeholder="" [(ngModel)]="prompt"></textarea>
+    <label>parler avec Assistant AI</label>
+</div> 
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-warning ms-1" (click)="envoyerPrompt()">envoyer</button>
+        <button class="btn btn-danger me-1" >fermer</button>
+    </div>
+</div>
+

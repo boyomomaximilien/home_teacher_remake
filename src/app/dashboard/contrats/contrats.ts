@@ -1,4 +1,4 @@
-import { Component, inject, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Contract } from '../../Models/contract';
 import { CommonModule } from '@angular/common';
 import { App } from '../../app';
@@ -22,6 +22,7 @@ export class Contrats {
   private cdr = inject(ChangeDetectorRef);
   private contratSubscription: Subscription;
   @Input() tousMesContrats!: Contract[];
+  @Output() contractDeleted = new EventEmitter<Contract>();
 
   public Nature = App.connectedUserDataBase?.Nature;
 
@@ -42,7 +43,7 @@ export class Contrats {
   constructor() {
     this.handlerContract = inject(HandlerContract);
     this.handlerEnseignant = inject(HandlerTeacher);
-    this.contratSubscription = timer(0, 10000).subscribe(() => {this.recupererContrat(); console.log('Contrats mis à jour'); });
+    this.contratSubscription = timer(0, 10000).subscribe(() => {this.recupererContrat(); });
   }
 
   async ngOnInit() {
@@ -63,7 +64,8 @@ export class Contrats {
           }          
         }
       }
-    }    
+    } 
+    this.cdr.detectChanges();   
   }
 
 
@@ -174,6 +176,7 @@ export class Contrats {
   }
 
   async RefuserContrat(contrat: Contract) {
+    debugger
     contrat.IdAttributedTo = '';
     contrat.isAccepted = false;
     const indexContrat =App.connectedUserDataBase?.ListContratsUid.findIndex(c=> c === `${contrat.IdCreator}/${contrat.Id}`);
@@ -181,7 +184,9 @@ export class Contrats {
     await this.handlerContract.updateContrat(contrat,`${contrat.IdCreator}/${contrat.Id}`);
     await this.handlerEnseignant.updateTeacher(App.connectedUserDataBase! as Teacher);
     this.tousMesContrats = this.tousMesContrats.filter(c => c.Id !== contrat.Id);
-    
+    this.contractDeleted.emit(contrat);
+    this.cdr.detectChanges();
+        
   }
 
   ngOnDestroy() {

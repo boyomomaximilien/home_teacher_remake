@@ -25,7 +25,7 @@ export class AfficherMessages {
 
   constructor( private cdr: ChangeDetectorRef) {
     this.tableDiscussion = inject(HandlerDiscussion)
-    this.discussionSubscription = timer(0, 5000).subscribe(() => {this.actualiserMessages(); console.log('les messages sont mises à jour');this.cdr.detectChanges() ;});
+    this.discussionSubscription = timer(0, 5000).subscribe(() => {this.actualiserMessages();this.cdr.detectChanges() ;});
     
   }
 

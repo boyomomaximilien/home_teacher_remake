@@ -40,7 +40,7 @@
 <div class="container">
     @if(this.pageAffichee == 'contrat'){
 
-    <app-contrats [tousMesContrats]="tousMesContrats"></app-contrats>
+    <app-contrats [tousMesContrats]="tousMesContrats" (contractDeleted)="removeContractFromList($event)"></app-contrats>
 
     }
     @else if(this.pageAffichee == 'discussion'){

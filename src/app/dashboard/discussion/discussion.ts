@@ -21,7 +21,7 @@ export class DiscussionTemplate implements OnDestroy {
   private discussionSubscription: Subscription;
 
   constructor() {
-    this.discussionSubscription = timer(0, 5000).subscribe(() => {this.recupererMesDiscussions(); console.log('Discussions mises à jour'); });
+    this.discussionSubscription = timer(0, 5000).subscribe(() => {this.recupererMesDiscussions();});
   }
 
   async ngOnInit() {

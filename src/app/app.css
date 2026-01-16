@@ -1,0 +1,21 @@
+.geminiApp{
+    position: fixed;
+    bottom: 25%;
+    right: 10px;
+    z-index: 5;
+}
+
+.button-gemini{
+    position: fixed;
+    bottom: 10%;
+    right: 20px;
+    z-index: 10;
+    border-width: 0;
+    background: linear-gradient(45deg, #4b707f 70%, #e9dec3);
+}
+
+.button-gemini:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
