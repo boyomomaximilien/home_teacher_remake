@@ -1,13 +1,13 @@
 export const environment = {
   production: true,
   firebaseConfig: {
-    apiKey: "YOUR_PROD_API_KEY",
-    authDomain: "YOUR_PROD_AUTH_DOMAIN",
-    databaseURL: "YOUR_PROD_DATABASE_URL",
-    projectId: "YOUR_PROD_PROJECT_ID",
-    storageBucket: "YOUR_PROD_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_PROD_MESSAGING_SENDER_ID",
-    appId: "YOUR_PROD_APP_ID",
-    measurementId: "YOUR_PROD_MEASUREMENT_ID"
+    apiKey: "AIzaSyCWYTNzRZHVVSsgl6z2Hlzskgz8lS5uX5Q",
+    authDomain: "home-teacher-5a007.firebaseapp.com",
+    databaseURL: "https://home-teacher-5a007-default-rtdb.firebaseio.com",
+    projectId: "home-teacher-5a007",
+    storageBucket: "home-teacher-5a007.firebasestorage.app",
+    messagingSenderId: "1077402966645",
+    appId: "1:1077402966645:web:a3ec307be13c3c8c69f63c",
+    measurementId: "G-9WMLR057L8"
   }
 };

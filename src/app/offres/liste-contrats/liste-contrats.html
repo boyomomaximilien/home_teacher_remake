@@ -34,9 +34,19 @@
                                 <span class="h5 text-success i4fw-bold"><i class="bi bi-cash-coin"></i> {{contrat.Prix}}
                                     XAF</span>
                             </div>
-                            <button class="btn btn-outline-primary w-100 mt-3 animate-btn"
-                                (click)="contacterClient(contrat.IdCreator)">Voir le
-                                détail</button>
+                            <div class="container d-flex justify-content-between align-items-center mt-3 ">
+                                <span class="text-secondary">Nombre de postulants : {{contrat.nombrePostulants}}</span>
+                                <button class="btn mt-3 animate-btn  text-white" 
+                                    (click)="contacterClient(contrat.IdCreator)">
+                                    <i class="bi-basket"></i>
+                                    Accepter                                
+                                </button>
+                            </div>
+                            @if(contrat.nombrePostulants >= 20){
+                                <div class="container d-flex justify-content-center align-items-center mt-3 ">
+                                    <p class="text-danger text-center opacity-50">La liste de postulants est deja pleine pour ce contrat.</p>
+                                </div>                                    
+                            }                            
                         </div>
                     </div>
                 </div>

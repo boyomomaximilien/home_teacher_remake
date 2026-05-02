@@ -1,6 +1,8 @@
 .geminiApp{
     position: fixed;
-    bottom: 25%;
+    border-color: red;
+    border-width: 1px;
+    bottom: 15%;
     right: 10px;
     z-index: 5;
 }

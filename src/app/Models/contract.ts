@@ -14,6 +14,7 @@ export class Contract {
     public parentName?: string = '-----';
     public IdAttributedTo: string = '';
     public isAccepted: boolean = false;
+    public nombrePostulants: number = 0; // 0: pas encore traité, 1: accepté, 2: refusé
 
 
     constructor(student_Name: string, student_Picture: string, course_Day: ('lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche')[], session_Time: 1 | 2 | 3 | 4 | 5 | 6, classe: string, prix: number, date: number, matieres: string[]) {

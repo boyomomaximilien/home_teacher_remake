@@ -14,6 +14,7 @@ export class FormulaireContratComponent implements OnChanges {
   @Input() contract: Contract | null = null;
   @Output() save = new EventEmitter<Contract>();
   @Output() cancel = new EventEmitter<void>();
+  oneClick = 0
 
   contractForm: FormGroup;
   subjects = ['Mathématiques', 'Physique', 'Chimie', 'Français', 'Anglais', 'Histoire', 'Géographie', 'Suivi general'];
@@ -78,7 +79,8 @@ export class FormulaireContratComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    if (this.contractForm.valid) {
+    if (this.contractForm.valid && this.oneClick === 0) {
+      this.oneClick = 1
       const formValue = this.contractForm.value;
       
       const contract = new Contract(
@@ -101,6 +103,8 @@ export class FormulaireContratComponent implements OnChanges {
 
       this.save.emit(contract);
     }
+
+
   }
 
   onCancel(): void {

@@ -74,6 +74,7 @@
 
 .animate-btn {
     transition: transform 0.2s, box-shadow 0.2s;
+    background: linear-gradient(135deg, #6a11cb 0%, #1f5566 100%);
     animation: btnAppear 0.9s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
