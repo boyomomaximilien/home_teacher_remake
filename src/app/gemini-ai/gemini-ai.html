@@ -1,26 +1,55 @@
-<section class="ga-shell">
-    <header class="ga-header">
-        <div class="ga-title">
-            <span class="ga-badge">COOL MODE</span>
-            <h2 class="ga-name">AI Assiatant</h2>
-            <p class="ga-sub">poser vos questions a l'assiatant.</p>
+<section class="ai-shell">
+
+    <header class="ai-header">
+
+        <div>
+            <span class="ai-badge">AI ASSISTANT</span>
+
+            <h2 class="ai-title">Assistant</h2>
+
+            <p class="ai-sub">
+                Pose tes questions simplement
+            </p>
         </div>
-        <div class="ga-orb d-none d-md-inline" aria-hidden="true"></div>
+
+        <div class="ai-icon d-none d-md-block"></div>
+
     </header>
 
-    <div class="ga-log">
+    <div class="ai-log">
+
         @for(message of conversationLog; track $index) {
-            <p class="ga-line" [class.is-assistant]="message.startsWith('Assistant')">{{message}}</p>
+
+            <div class="ai-message"
+                 [class.user]="!message.startsWith('Assistant')"
+                 [class.bot]="message.startsWith('Assistant')">
+
+                {{ message }}
+
+            </div>
+
         }
+
     </div>
 
-    <div class="ga-input">
-        <label class="ga-label" for="ga-prompt">Parler avec l’Assistant</label>
-        <textarea id="ga-prompt" class="ga-textarea" placeholder="saisissez votre demande…"
-            [(ngModel)]="prompt"></textarea>
-        <div class="ga-actions">
-            <button class="ga-send" (click)="envoyerPrompt()">Envoyer</button>
+    <div class="ai-input">
+
+        <label class="ai-label">Message</label>
+
+        <textarea
+            class="ai-textarea"
+            placeholder="Écris ton message..."
+            [(ngModel)]="prompt">
+        </textarea>
+
+        <div class="ai-actions">
+
+            <button class="ai-send" (click)="envoyerPrompt()">
+                Envoyer
+            </button>
+
         </div>
-    </div>
-</section>
 
+    </div>
+
+</section>

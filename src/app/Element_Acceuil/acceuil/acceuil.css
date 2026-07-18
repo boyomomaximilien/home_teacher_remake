@@ -1,64 +1,435 @@
+:host {
+    display: block;
+    background: #f7fafc;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+.home-page {
+    max-width: 1400px;
+    margin: auto;
+    padding: 30px 20px 80px;
+}
+
+.section-spacing {
+    margin-top: 90px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title {
+    color: #23759e;
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    color: #6c7a86;
+    font-size: 1.05rem;
+    max-width: 700px;
+    margin: auto;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(35, 117, 158, 0.1);
+    color: #23759e;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #25273f;
+    margin-bottom: 25px;
+}
+
+.hero-description {
+    font-size: 1.15rem;
+    color: #667788;
+    line-height: 1.8;
+}
+
+.hero-image-container {
+    position: relative;
+}
+
+.hero-image {
+    width: 100%;
+    border-radius: 28px;
+    box-shadow:
+        0 25px 60px rgba(35, 117, 158, .18);
+    border: 5px solid #23759e;
+}
+
+/* =========================
+   ETAPES
+========================= */
+
+.feature-card {
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .05);
+    transition: .35s;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(
+        90deg,
+        #23759e,
+        #4fa8d3
+    );
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow:
+        0 25px 50px rgba(35, 117, 158, .15);
+}
+
+.feature-number {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        #23759e,
+        #4fa8d3
+    );
+
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 25px;
+}
+
+.feature-title {
+    color: #23759e;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    padding-left: 18px;
+}
+
+.feature-list li {
+    margin-bottom: 12px;
+    color: #556270;
+    line-height: 1.7;
+}
+
+/* =========================
+   MATIERES
+========================= */
+
+.subjects-container {
+    position: relative;
+}
+
 .scroll-x {
     display: flex;
-    gap: 12px;
-    /* espace entre les items */
+    gap: 25px;
     overflow-x: auto;
-    /* défilement horizontal */
-    padding: 12px;
     scroll-behavior: smooth;
+    padding: 10px 5px 20px;
     scrollbar-width: none;
-    -ms-overflow-style: none;
-    /* défilement fluide */
 }
 
 .scroll-x::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, Edge moderne */
 }
 
-
-img {
-    max-height: 500px;
+.focusMatiere {
+    flex-shrink: 0;
 }
 
-p {
-    text-align: justify;
+.subject-card {
+    width: 260px;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, .08);
+
+    transition: .35s;
 }
 
-.Myborder {
-    padding: 0;
-    border-left: 1px #23759e solid;
-    border-right: 1px #23759e solid;
-    transition: 0.5s;
-}
-
-.Myborder:hover {
+.subject-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0px -2px 5px rgb(158, 157, 157);
+    box-shadow:
+        0 20px 40px rgba(35, 117, 158, .18);
 }
 
-.focusMatiere:hover {
-    transition: 0.5s;
-    transform: scale(1.05);
+.subject-image-wrapper {
+    height: 240px;
+    overflow: hidden;
+}
+
+.subject-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .5s;
+}
+
+.subject-card:hover .subject-image {
+    transform: scale(1.08);
+}
+
+.subject-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.subject-title {
+    color: #23759e;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* =========================
+   CAROUSEL BUTTONS
+========================= */
+
+.carousel-btn {
+    position: absolute;
+    top: 45%;
+    z-index: 2;
+
+    width: 55px;
+    height: 55px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: white;
+    color: #23759e;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.12);
+
+    transition: .3s;
+}
+
+.carousel-btn:hover {
+    background: #23759e;
+    color: white;
+}
+
+.carousel-left {
+    left: -10px;
+}
+
+.carousel-right {
+    right: -10px;
+}
+
+/* =========================
+   AUTRES MATIERES
+========================= */
+
+.other-subjects {
+    background: linear-gradient(
+        135deg,
+        #23759e,
+        #4fa8d3
+    );
+
+    border-radius: 28px;
+    padding: 60px 20px;
+    text-align: center;
+    color: white;
+}
+
+.other-subjects h2 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.loading-points {
+    font-size: 5rem;
+    font-weight: 700;
 }
 
 .chargingpoint {
-    display: inline;
-    animation: animationPoints 2s linear infinite;
+    display: inline-block;
+    animation: animationPoints 1.5s infinite;
 }
 
-
 @keyframes animationPoints {
+
     0% {
-        opacity: 100%;
+        opacity: 1;
     }
 
     50% {
-        opacity: 0%;
+        opacity: .15;
     }
 
     100% {
-        opacity: 100%;
+        opacity: 1;
     }
 
+}
+
+/* =========================
+   AVANTAGES
+========================= */
+
+.advantage-card {
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    text-align: center;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.05);
+
+    transition: .35s;
+}
+
+.advantage-card:hover {
+    transform: translateY(-10px);
+}
+
+.advantage-icon {
+    font-size: 3rem;
+    color: #23759e;
+    margin-bottom: 20px;
+}
+
+.advantage-card h4 {
+    color: #23759e;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.advantage-card p {
+    color: #667788;
+    line-height: 1.8;
+}
+
+/* =========================
+   OUTILS
+========================= */
+
+.tool-card {
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    text-align: center;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.05);
+
+    transition: .35s;
+}
+
+.tool-card:hover {
+    transform: translateY(-10px);
+    box-shadow:
+        0 20px 40px rgba(35,117,158,.12);
+}
+
+.tool-icon {
+    font-size: 3rem;
+    color: #23759e;
+    margin-bottom: 20px;
+}
+
+.tool-card h5 {
+    color: #23759e;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.tool-card p {
+    color: #667788;
+    line-height: 1.8;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 992px) {
+
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    .hero-section {
+        min-height: auto;
+    }
+
+    .section-spacing {
+        margin-top: 60px;
+    }
+
+    .carousel-btn {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .home-page {
+        padding: 20px 15px 50px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .subject-card {
+        width: 220px;
+    }
+
+    .feature-card,
+    .tool-card,
+    .advantage-card {
+        padding: 25px;
+    }
 }

@@ -1,0 +1,285 @@
+<main class="admin-dashboard">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Administration Home Teacher</p>
+      <h1>Tableau de bord</h1>
+      <p class="hero-text">
+        Vue simple pour suivre l'activite de la plateforme, reperer les dossiers a verifier et
+        garder un oeil sur les contrats.
+      </p>
+    </div>
+
+    <button class="refresh-button" type="button" (click)="chargerDashboard()">
+      Actualiser
+    </button>
+  </section>
+
+  @if (erreurAcces) {
+  <section class="empty-state error-state">
+    <strong>Acces aux donnees refuse</strong>
+    <p>{{ erreurAcces }}</p>
+  </section>
+  } @else if (chargement) {
+  <section class="empty-state">
+    <span class="loader"></span>
+    <p>Chargement du dashboard...</p>
+  </section>
+  } @else {
+  <section class="stats-grid">
+    <article class="stat-card">
+      <span class="stat-icon clients">C</span>
+      <p>Clients</p>
+      <strong>{{ clients.length }}</strong>
+      <small>{{ profilsIncomplets }} profil(s) a completer</small>
+    </article>
+
+    <article class="stat-card">
+      <span class="stat-icon teachers">E</span>
+      <p>Enseignants</p>
+      <strong>{{ enseignants.length }}</strong>
+      <small>{{ discussionsActives.length }} discussion(s) active(s)</small>
+    </article>
+
+    <article class="stat-card">
+      <span class="stat-icon contracts">K</span>
+      <p>Contrats</p>
+      <strong>{{ contrats.length }}</strong>
+      <small>{{ contratsEnAttente.length }} en attente</small>
+    </article>
+
+    <article class="stat-card highlight">
+      <span class="stat-icon money">F</span>
+      <p>Revenus prevus</p>
+      <strong>{{ revenuPrevisionnel }} XAF</strong>
+      <small>{{ contratsActifs.length }} contrat(s) accepte(s)</small>
+    </article>
+  </section>
+
+  <nav class="tabs" aria-label="Navigation admin">
+    <button type="button" [class.active]="pageActive === 'vue'" (click)="ouvrirPage('vue')">
+      Vue globale
+    </button>
+    <button type="button" [class.active]="pageActive === 'clients'" (click)="ouvrirPage('clients')">
+      Clients
+    </button>
+    <button
+      type="button"
+      [class.active]="pageActive === 'enseignants'"
+      (click)="ouvrirPage('enseignants')"
+    >
+      Enseignants
+    </button>
+    <button type="button" [class.active]="pageActive === 'contrats'" (click)="ouvrirPage('contrats')">
+      Contrats
+    </button>
+    <button type="button" [class.active]="pageActive === 'messages'" (click)="ouvrirPage('messages')">
+      Discussions
+    </button>
+  </nav>
+
+  @if (pageActive === 'vue') {
+  <section class="dashboard-grid">
+    <article class="panel large">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">Priorites</p>
+          <h2>Points a surveiller</h2>
+        </div>
+        <span>{{ profilsIncomplets + contratsUrgents.length }}</span>
+      </div>
+
+      <div class="alert-list">
+        <div class="alert-item warning">
+          <strong>Profils incomplets</strong>
+          <p>{{ profilsIncomplets }} compte(s) doivent encore renseigner leurs informations.</p>
+        </div>
+        <div class="alert-item info">
+          <strong>Contrats tres demandes</strong>
+          <p>{{ contratsUrgents.length }} contrat(s) ont deja au moins 10 postulants.</p>
+        </div>
+        <div class="alert-item success">
+          <strong>Contrats actifs</strong>
+          <p>{{ contratsActifs.length }} contrat(s) sont actuellement acceptes.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">Contrats</p>
+          <h2>Dernieres offres</h2>
+        </div>
+      </div>
+
+      @for (contrat of derniersContrats; track contrat.Id) {
+      <div class="compact-row">
+        <span class="avatar">{{ initiales(contrat.studentName) }}</span>
+        <div>
+          <strong>{{ contrat.studentName }}</strong>
+          <p>{{ contrat.studentClasse }} - {{ contrat.Prix }} XAF</p>
+        </div>
+        <small [class.ok]="contrat.isAccepted">{{ contrat.isAccepted ? 'Actif' : 'Attente' }}</small>
+      </div>
+      } @empty {
+      <p class="muted">Aucun contrat pour le moment.</p>
+      }
+    </article>
+
+    <article class="panel">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">Messages</p>
+          <h2>Activite recente</h2>
+        </div>
+      </div>
+
+      @for (discussion of dernieresDiscussions; track discussion.Id) {
+      <div class="compact-row">
+        <span class="avatar soft">{{ initiales(discussion.NomInterlocuteur) }}</span>
+        <div>
+          <strong>{{ discussion.NomCreateur || 'Utilisateur' }}</strong>
+          <p>Avec {{ discussion.NomInterlocuteur || 'interlocuteur' }}</p>
+        </div>
+        <small>{{ nombreMessages(discussion) }}</small>
+      </div>
+      } @empty {
+      <p class="muted">Aucune discussion pour le moment.</p>
+      }
+    </article>
+  </section>
+  }
+
+  @if (pageActive === 'clients') {
+  <section class="table-panel">
+    <div class="panel-title">
+      <div>
+        <p class="eyebrow">Suivi</p>
+        <h2>Clients</h2>
+      </div>
+      <span>{{ clients.length }}</span>
+    </div>
+
+    <div class="responsive-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Contact</th>
+            <th>Quartier</th>
+            <th>Contrats</th>
+            <th>Discussions</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (client of clients; track client.Id) {
+          <tr>
+            <td>
+              <strong>{{ client.Name }}</strong>
+              <small>{{ client.Email }}</small>
+            </td>
+            <td>{{ client.Contact || '---' }}</td>
+            <td>{{ client.Quartier || '---' }}</td>
+            <td>{{ client.ListContratsUid.length }}</td>
+            <td>{{ client.ListDiscussionsUid.length }}</td>
+            <td>
+              <span class="badge" [class.badge-warning]="!client.Quartier || !client.NumeroCNI">
+                {{ client.Quartier && client.NumeroCNI ? 'Complet' : 'A verifier' }}
+              </span>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6" class="muted">Aucun client trouve.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+  }
+
+  @if (pageActive === 'enseignants') {
+  <section class="cards-list">
+    @for (enseignant of enseignants; track enseignant.Id) {
+    <article class="profile-card">
+      <span class="avatar large-avatar">{{ initiales(enseignant.Name) }}</span>
+      <div>
+        <h3>{{ enseignant.Name }}</h3>
+        <p>{{ enseignant.Ville || 'Ville non renseignee' }} - {{ enseignant.Experience }} an(s)</p>
+        <div class="chips">
+          @for (matiere of enseignant.ListMatiereDePredilection; track $index) {
+          <span>{{ matiere }}</span>
+          } @empty {
+          <span>Aucune matiere</span>
+          }
+        </div>
+      </div>
+      <strong>{{ enseignant.ListContratsUid.length }} contrat(s)</strong>
+    </article>
+    } @empty {
+    <section class="empty-state">
+      <p>Aucun enseignant trouve.</p>
+    </section>
+    }
+  </section>
+  }
+
+  @if (pageActive === 'contrats') {
+  <section class="cards-list">
+    @for (contrat of contrats; track contrat.Id) {
+    <article class="contract-card">
+      <div>
+        <span class="badge" [class.badge-success]="contrat.isAccepted">
+          {{ contrat.isAccepted ? 'Accepte' : 'En attente' }}
+        </span>
+        <h3>{{ contrat.studentName }}</h3>
+        <p>{{ contrat.studentClasse }} - {{ contrat.sessionTime }}H par seance</p>
+      </div>
+      <div class="chips">
+        @for (matiere of contrat.matieres; track $index) {
+        <span>{{ matiere }}</span>
+        }
+      </div>
+      <div class="contract-footer">
+        <strong>{{ contrat.Prix }} XAF</strong>
+        <small>{{ contrat.nombrePostulants }} postulant(s)</small>
+      </div>
+    </article>
+    } @empty {
+    <section class="empty-state">
+      <p>Aucun contrat trouve.</p>
+    </section>
+    }
+  </section>
+  }
+
+  @if (pageActive === 'messages') {
+  <section class="table-panel">
+    <div class="panel-title">
+      <div>
+        <p class="eyebrow">Suivi</p>
+        <h2>Discussions</h2>
+      </div>
+      <span>{{ discussions.length }}</span>
+    </div>
+
+    <div class="message-list">
+      @for (discussion of discussions; track discussion.Id) {
+      <article class="message-row">
+        <span class="avatar">{{ initiales(discussion.NomCreateur) }}</span>
+        <div>
+          <strong>{{ discussion.NomCreateur || 'Createur inconnu' }}</strong>
+          <p>Interlocuteur: {{ discussion.NomInterlocuteur || 'non renseigne' }}</p>
+        </div>
+        <span class="badge">{{ nombreMessages(discussion) }} message(s)</span>
+      </article>
+      } @empty {
+      <p class="muted">Aucune discussion trouvee.</p>
+      }
+    </div>
+  </section>
+  }
+  }
+</main>

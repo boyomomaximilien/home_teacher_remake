@@ -1,8 +1,8 @@
-<app-navbar></app-navbar>
-<button class="btn btn-primary m-3 rounded-circle button-gemini" (click)="openGeminiAI()"><i class="bi bi-robot h1 my-1"></i></button>
+<app-navbar style="z-index: 10;"></app-navbar>
+<button class="btn btn-primary m-3 rounded-circle button-gemini d-none" (click)="openGeminiAI()"><i class="bi bi-robot h1 my-1"></i></button>
 @if(geminiVisible){
     <app-gemini-ai class="geminiApp"></app-gemini-ai>
 }
-
-<router-outlet></router-outlet>
-<app-myfooter></app-myfooter>
+<router-outlet class="mb-5 mb-lg-4 pb-5"></router-outlet>
+<div class="d-block d-lg-none bg-transparent" style="height: 100px;"></div>
+<app-myfooter class="d-lg-block d-none mt-5"></app-myfooter>

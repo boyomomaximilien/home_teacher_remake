@@ -1,110 +1,173 @@
-<div class="container d-flex align-items-center border rounded mt-5 my-3 line-back py-3" style="max-width: 400px;">
-    <div class="container p-3 ">
-        @if(formConnection){
-        <p class="h3 text-center mb-lg-5 mb-3 ">
-            <b class="me-2"><b>Connexion</b></b>
-            <img src="connection_logo.svg" style="max-height: 20px;">
-        </p>
+<div class="login-page">
 
-        <div class="form-floating mb-lg-5 mb-3">
-            <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="mailLogin">
+    <div class="auth-card customSpinner">
+
+        @if(formConnection){
+
+        <div class="text-center mb-4">
+            <img src="connection_logo.svg" class="auth-logo">
+            <h2 class="auth-title">Connexion</h2>
+            <p class="auth-subtitle">Accédez à votre espace personnel</p>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input class="form-control custom-input" placeholder="" [maxLength]="50" [(ngModel)]="mailLogin">
             <label>E-mail</label>
         </div>
+
         <div class="form-floating mb-3">
-            <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="passwordLogin" type="password">
-            <label>mot de passe</label>
+            <input class="form-control custom-input" placeholder="" [maxLength]="50"
+                [(ngModel)]="passwordLogin" type="password">
+            <label>Mot de passe</label>
         </div>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" [(ngModel)]="keepConnected" id="keepConnected" >
+
+        <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox"
+                [(ngModel)]="keepConnected"
+                id="keepConnected">
             <label class="form-check-label" for="keepConnected">
-                Me maintenir connecte
+                Me maintenir connecté
             </label>
         </div>
 
         @if(afficherErreurConnexion()){
-        <div class="text-danger text-center h6 py-3">nom d'utilisateur ou mot de passe incorrecte</div>
-        }
-
-        <div class="p-3 d-flex justify-content-center ">
-            <button class="btn opacity-75 text-white  d-flex justify-content-center align-items-center"
-                (click)="logIn(mailLogin, passwordLogin)">
-
-                @if(afficherSpinner()){
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                }
-                <b class="d-inline ms-1 p-0 ">connecter</b>
-            </button>
-        </div>
-        <div class="d-flex flex-row-reverse" (click)="alternerConnectionInscription()">
-            <a class="opacity-50">inscription</a>
+        <div class="alert alert-danger text-center py-2">
+            Nom d'utilisateur ou mot de passe incorrect
         </div>
         }
+
+        <button class="btn auth-btn w-100"
+            (click)="logIn(mailLogin, passwordLogin)">
+
+            @if(afficherSpinner()){
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            }
+
+            Se connecter
+        </button>
+
+        <div class="switch-link mt-4"
+            (click)="alternerConnectionInscription()">
+            Créer un compte
+        </div>
+
+        }
+
         @else {
-        <p class="h3 text-center mb-lg-5 mb-3">
-            <b class="me-2"><b>Inscription</b></b>
-            <img src="add_logo.svg" style="max-height: 20px;">
-        </p>
+
+        <div class="text-center mb-4">
+            <img src="add_logo.svg" class="auth-logo">
+            <h2 class="auth-title">Inscription</h2>
+            <p class="auth-subtitle">Rejoignez notre plateforme</p>
+        </div>
 
         <div class="form-floating mb-3">
-            <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="nomUser">
-            <label>nom </label>
+            <input class="form-control custom-input"
+                placeholder=""
+                [maxLength]="50"
+                [(ngModel)]="nomUser">
+            <label>Nom</label>
         </div>
+
         <div class="form-floating mb-3">
-            <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="prenomUser">
-            <label>Prenoms</label>
+            <input class="form-control custom-input"
+                placeholder=""
+                [maxLength]="50"
+                [(ngModel)]="prenomUser">
+            <label>Prénoms</label>
         </div>
+
         <div class="form-floating mb-3">
-            <input class="form-control" placeholder="" [maxLength]="50" [(ngModel)]="mailSignUp">
+            <input class="form-control custom-input"
+                placeholder=""
+                [maxLength]="50"
+                [(ngModel)]="mailSignUp">
             <label>Adresse mail</label>
         </div>
-        <div class="container d-flex align-items-center justify-content-between">
-            <p class="text-secondary me-2  p-2 border rounded">+237</p>
-            <div class="form-floating mb-3">
-                <input class="form-control" placeholder="" [maxLength]="9" [(ngModel)]="contactUser">
-                <label>Numero de telephone </label>
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+
+            <div class="country-code">
+                +237
             </div>
+
+            <div class="form-floating flex-grow-1">
+                <input class="form-control custom-input"
+                    placeholder=""
+                    [maxLength]="9"
+                    [(ngModel)]="contactUser">
+                <label>Téléphone</label>
+            </div>
+
         </div>
 
         <div class="form-floating mb-3">
-            <input class="form-control" type="password" placeholder="" [maxLength]="50"
+            <input class="form-control custom-input"
+                type="password"
+                placeholder=""
+                [maxLength]="50"
                 [(ngModel)]="passwordSignUpFirst">
-            <label>mot de passe</label>
+
+            <label>Mot de passe</label>
         </div>
+
         <div class="form-floating mb-3">
-            <input class="form-control" type="password" placeholder="" [maxLength]="50" [(ngModel)]="passwordSignUp">
-            <label>confirmer mot de passe</label>
+            <input class="form-control custom-input"
+                type="password"
+                placeholder=""
+                [maxLength]="50"
+                [(ngModel)]="passwordSignUp">
+
+            <label>Confirmer le mot de passe</label>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="choix" value="enseignant" [(ngModel)]="natureUser"
-                style="background-color: #23759e; border-width: 0;"> Donner cours
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="choix" value="client" [(ngModel)]="natureUser"
-                style="background-color: #23759e; border-width: 0;">
-            Besoin d'un Enseignant
+
+        <div class="role-card mb-3">
+
+            <div class="form-check">
+                <input class="form-check-input"
+                    type="radio"
+                    name="choix"
+                    value="enseignant"
+                    [(ngModel)]="natureUser">
+
+                Donner cours
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input"
+                    type="radio"
+                    name="choix"
+                    value="client"
+                    [(ngModel)]="natureUser">
+
+                Besoin d'un enseignant
+            </div>
+
         </div>
 
         @if(afficherErreurInscription()){
-        <div class="text-danger text-center h6 py-3">veuillez remplir tous les champs</div>
+        <div class="alert alert-danger text-center py-2">
+            Veuillez remplir correctement tous les champs
+        </div>
         }
 
-        <div class="p-3 d-flex justify-content-center ">
-            <button class="btn opacity-75 text-white d-flex justify-content-center align-items-center"
-                (click)="signUp(mailSignUp, passwordSignUp)">
-                @if(afficherSpinner()){
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                }
-                <b class="d-inline ms-1 p-0 ">Enregistrer</b>
-            </button>
+        <button class="btn auth-btn w-100"
+            (click)="signUp(mailSignUp, passwordSignUp)">
+
+            @if(afficherSpinner()){
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            }
+
+            S'inscrire
+        </button>
+
+        <div class="switch-link mt-4"
+            (click)="alternerConnectionInscription()">
+            Déjà un compte ? Connexion
         </div>
-        <div class="d-flex flex-row-reverse" (click)="alternerConnectionInscription()">
-            <a class="opacity-50">connexion</a>
-        </div>
+
         }
 
     </div>
+
 </div>

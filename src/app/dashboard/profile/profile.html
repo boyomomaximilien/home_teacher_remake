@@ -1,106 +1,118 @@
-<div class="profile-container container my-4 py-4 shadow-lg rounded"
-    style="background:linear-gradient(120deg,#25273f 60%,#aeb2b4 100%); max-width:700px; color:#e8eef8;">
+<div class="profile-wrapper">
 
-    <form class="profile-form">
-        <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" disabled [(ngModel)]="Nom"
-                style="background:#2b2e4a;color:#e8eef8;" [ngModelOptions]="{standalone: true}">
-            <label>Nom et prénom</label>
-        </div>
-        <div class="form-floating mb-4">
-            <input class="form-control" placeholder="YYYY/MM/DD" [disabled]="!isActivate" [(ngModel)]="DateNaissance"
-                [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
-            <label>Date de naissance</label>
-        </div>
-        <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="MotDePasse"
-                [ngModelOptions]="{standalone: true}" type="password" style="background:#2b2e4a;color:#e8eef8;">
-            <label>Mot de passe</label>
-        </div>
-        <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" [disabled]="!isActivate" type="password"
-                style="background:#2b2e4a;color:#e8eef8;">
-            <label>Confirmer mot de passe</label>
-        </div>
-        <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="NumeroCNI"
-                [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
-            <label>Nº CNI</label>
-        </div>
-        <div class="form-floating mb-4">
-            <select class="form-select" [disabled]="!isActivate" [(ngModel)]="Ville" [ngModelOptions]="{standalone: true}"
-                style="background:#2b2e4a;color:#e8eef8;">
-                <option value="">Sélectionnez</option>
-                <option value="Douala">Douala</option>
-                <option value="Yaounde">Yaounde</option>
-                <option value="Autre">Autre</option>
-            </select>
-            <label>Ville</label>
-        </div>
-        <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="Quartier"
-                [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
-            <label>Quartier</label>
-        </div>
-        <div class="form-floating mb-4">
-            <input class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="Contact"
-                [ngModelOptions]="{standalone: true}" style="background:#2b2e4a;color:#e8eef8;">
-            <label>Contact (s)</label>
-        </div>
+    <div class="profile-card">
 
-        @if(currentUser?.Nature==='teacher'){
-        <div class="form-floating mb-4">
-            <textarea class="form-control" placeholder="" [disabled]="!isActivate" [(ngModel)]="Description"
-                [ngModelOptions]="{standalone: true}"
-                style="background:#2b2e4a;color:#e8eef8; height: 120px;"></textarea>
-            <label>Description</label>
-        </div>
-        
-        <div class="form-floating mb-4">
-            <input class="form-control" type="number" placeholder="" [disabled]="!isActivate"
-                [(ngModel)]="anneesExperience" [ngModelOptions]="{standalone: true}"
-                style="background:#2b2e4a;color:#e8eef8;">
-            <label>Experience professionnelle (en Annee)</label>
-        </div>
-        }
+        <h2 class="profile-title">Mon Profil</h2>
 
-        
+        <form class="profile-form">
 
-        <div class="d-flex justify-content-center gap-3 mt-4">
-            <button class="btn btn-info px-4 py-2 fw-bold" (click)="SauvegarderModifications()" type="button">
-                <span class="d-none d-lg-inline">Sauvegarder</span>
-                <img src="images/menu/sauvegarder.png" class="ms-lg-1" alt="sauvegarder" style="max-height: 20px;">
-            </button>
-            <button class="btn btn-outline-info px-4 py-2 fw-bold" type="button" (click)="activeModification()">
-                <span class="d-none d-lg-inline">Modifier</span>
-                <img src="images/menu/modifier.png" class="ms-lg-1" alt="modifier" style="max-height: 20px;">
-            </button>
-        </div>
-    </form>
-</div>
+            <div class="row g-3">
 
-<!-- Confirmation Modal -->
-@if(showConfirmationModal){
-<div class="modal-overlay ">
-    <div class="modal-content">
-        <p>Voulez-vous vraiment sauvegarder les modifications ?</p>
-        <div class="d-flex justify-content-center gap-3 mt-4">
-            <button class="btn btn-success" (click)="confirmSaveChanges()">Confirmer</button>
-            <button class="btn btn-danger" (click)="cancelSaveChanges()">Annuler</button>
-        </div>
+                <div class="col-12">
+                    <label>Nom et prénom</label>
+                    <input class="form-control"
+                           disabled
+                           [(ngModel)]="Nom"
+                           [ngModelOptions]="{standalone:true}">
+                </div>
+
+                <div class="col-md-6">
+                    <label>Date de naissance</label>
+                    <input class="form-control"
+                           [disabled]="!isActivate"
+                           [(ngModel)]="DateNaissance"
+                           [ngModelOptions]="{standalone:true}">
+                </div>
+
+                <div class="col-md-6">
+                    <label>Mot de passe</label>
+                    <input type="password"
+                           class="form-control"
+                           [disabled]="!isActivate"
+                           [(ngModel)]="MotDePasse"
+                           [ngModelOptions]="{standalone:true}">
+                </div>
+
+                <div class="col-md-6">
+                    <label>Ville</label>
+                    <select class="form-select"
+                            [disabled]="!isActivate"
+                            [(ngModel)]="Ville"
+                            [ngModelOptions]="{standalone:true}">
+                        <option value="">Choisir</option>
+                        <option value="Douala">Douala</option>
+                        <option value="Yaounde">Yaounde</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Quartier</label>
+                    <input class="form-control"
+                           [disabled]="!isActivate"
+                           [(ngModel)]="Quartier"
+                           [ngModelOptions]="{standalone:true}">
+                </div>
+
+                <div class="col-md-6">
+                    <label>Contact</label>
+                    <input class="form-control"
+                           [disabled]="!isActivate"
+                           [(ngModel)]="Contact"
+                           [ngModelOptions]="{standalone:true}">
+                </div>
+
+                <div class="col-md-6">
+                    <label>CNI</label>
+                    <input class="form-control"
+                           [disabled]="!isActivate"
+                           [(ngModel)]="NumeroCNI"
+                           [ngModelOptions]="{standalone:true}">
+                </div>
+
+                @if(currentUser?.Nature === 'teacher') {
+
+                <div class="col-12">
+                    <label>Description</label>
+                    <textarea class="form-control"
+                              [disabled]="!isActivate"
+                              [(ngModel)]="Description"
+                              [ngModelOptions]="{standalone:true}">
+                    </textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Expérience (années)</label>
+                    <input type="number"
+                           class="form-control"
+                           [disabled]="!isActivate"
+                           [(ngModel)]="anneesExperience"
+                           [ngModelOptions]="{standalone:true}">
+                </div>
+
+                }
+
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="profile-actions">
+
+                <button type="button"
+                        class="btn btn-primary"
+                        (click)="SauvegarderModifications()">
+                    Sauvegarder
+                </button>
+
+                <button type="button"
+                        class="btn btn-outline-primary"
+                        (click)="activeModification()">
+                    Modifier
+                </button>
+
+            </div>
+
+        </form>
+
     </div>
-</div>
-}
 
-
-<!-- Success Modal -->
-@if(showSuccessModal){
-<div class="modal-overlay ">
-    <div class="modal-content">
-        <p class="text-center">Modifications sauvegardées avec succès !</p>
-        <div class="d-flex justify-content-center gap-3 mt-4">
-            <button class="btn btn-primary" (click)="closeSuccessModal()">OK</button>
-        </div>
-    </div>
 </div>
-}

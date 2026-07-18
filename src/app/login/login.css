@@ -1,60 +1,165 @@
-button {
-    background: linear-gradient(145deg, #478fb4 45%, #3f99c7);
-    border-width: 0;
-    transition: 0.5s;
+:host {
+    display: block;
+    min-height: 100vh;
 }
 
-button:hover {
-    transform: scale(1.1);
-    background: linear-gradient(145deg, #23759e 45%, #094969);
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    background:
+        radial-gradient(circle at top left, #dceef8, transparent 40%),
+        radial-gradient(circle at bottom right, #e9f5fb, transparent 40%),
+        #f7fafc;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow:
+        0 15px 35px rgba(35,117,158,0.15),
+        0 5px 15px rgba(0,0,0,0.05);
+}
+
+.auth-logo {
+    height: 55px;
+    margin-bottom: 15px;
+}
+
+.auth-title {
+    color: #23759e;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.auth-subtitle {
+    color: #7a8b97;
+    font-size: 0.95rem;
+}
+
+.custom-input {
+    border-radius: 14px;
+    border: 2px solid #edf2f7;
+    transition: all .3s ease;
+}
+
+.custom-input:focus {
+    border-color: #23759e;
+    box-shadow: 0 0 0 4px rgba(35,117,158,0.12);
 }
 
 label {
     color: #408bb0;
 }
 
-
-
-.line-back {
-    background: linear-gradient(45deg, transparent 75%, #23759e 75% 85%, transparent 85%);
+.auth-btn {
+    height: 55px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(
+        135deg,
+        #23759e,
+        #3f99c7
+    );
+    transition: .3s ease;
 }
 
-/*---------------------------------- spinner autour des objets---------------------------------*/
+.auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(35,117,158,0.25);
+}
+
+.country-code {
+    background: #eef7fc;
+    color: #23759e;
+    border-radius: 12px;
+    padding: 16px;
+    font-weight: 600;
+    border: 1px solid #d6e8f2;
+}
+
+.role-card {
+    padding: 15px;
+    border-radius: 14px;
+    background: #f8fbfd;
+    border: 1px solid #e6eef3;
+}
+
+.form-check-input:checked {
+    background-color: #23759e;
+    border-color: #23759e;
+}
+
+.switch-link {
+    text-align: center;
+    color: #23759e;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.switch-link:hover {
+    opacity: .8;
+}
+
+.alert {
+    border-radius: 12px;
+    border: none;
+}
 
 .customSpinner {
     position: relative;
+    z-index: 1;
 }
 
 @property --angle {
     syntax: "<angle>";
     initial-value: 0deg;
     inherits: false;
-
 }
 
-.customSpinner::before {
+/*.customSpinner::before {
     content: '';
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: absolute;
+    inset: -2px;
+    border-radius: 25px;
     z-index: -1;
-    top: -1%;
-    left: -2%;
-    width: 104%;
-    height: 102%;
-    border-radius: 5px;
-    background: conic-gradient(from var(--angle), transparent 0deg 310deg, #23759e 357deg);
-    animation: rotateColor 3s infinite linear;
-}
+    background:
+        conic-gradient(
+            from var(--angle),
+            transparent 0deg 280deg,
+            #23759e 360deg
+        );
+
+    animation: rotateColor 4s linear infinite;
+}*/
 
 @keyframes rotateColor {
-    0% {
+    from {
         --angle: 0deg;
     }
 
-    100% {
+    to {
         --angle: 360deg;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .auth-card {
+        padding: 25px;
+    }
+
+    .auth-title {
+        font-size: 1.7rem;
     }
 
 }

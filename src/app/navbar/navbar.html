@@ -1,102 +1,240 @@
-<!-- Desktop Navigation -->
-<nav class="p-3 mb-lg-5 mb-3 d-none d-lg-block">
-    <div class="row d-flex justify-content-lg-between align-items-center">
-        <div class="col-12 col-lg-3 d-flex align-items-center">
-            <img src="site_logo.svg" alt="" class="img-fluid m-2" style="max-height: 50px;">
-            <p class="display-6 d-lg-inline text-white text-center"><b><b>Home Teacher</b></b></p>
+<nav class="navbar-container d-none d-lg-block">
+
+    <div class="container-fluid px-4">
+
+        <div class="navbar-content">
+
+            <div class="brand-section">
+
+                <img src="site_logo.svg"
+                    alt="Home Teacher"
+                    class="brand-logo">
+
+                <div class="brand-text">
+                    Home Teacher
+                </div>
+
+            </div>
+
+            <div class="navigation-section">
+
+                <button class="nav-btn"
+                    routerLinkActive="active-nav"
+                    routerLink="accueil">
+
+                    Home
+
+                </button>
+
+                <button class="nav-btn contact-btn"
+                    (click)="toggleContactDropdown()">
+
+                    Nous contacter
+
+                    @if(showContactDropdown){
+
+                    <div class="contact-dropdown">
+
+                        <div class="dropdown-block">
+
+                            <div class="dropdown-title">
+                                Équipe technique
+                            </div>
+
+                            <div class="dropdown-item">
+                                <i class="bi bi-envelope"></i>
+                                hometeacher@gmail.com
+                            </div>
+
+                            <div class="dropdown-item">
+                                <i class="bi bi-telephone"></i>
+                                +237 6 56 23 05 06
+                            </div>
+
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <div class="dropdown-block">
+
+                            <div class="dropdown-title danger-title">
+                                Signaler un compte
+                            </div>
+
+                            <p class="dropdown-description">
+                                Signalez tout comportement dangereux ou suspect.
+                            </p>
+
+                            <button class="report-btn"
+                                (click)="reportAccount()">
+
+                                Signaler
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                </button>
+
+                @if(estConnecte){
+
+                <button class="nav-btn"
+                    routerLinkActive="active-nav"
+                    routerLink="/offres">
+
+                    @if(laNature){
+                    Enseignants
+                    }
+                    @else {
+                    Contrats
+                    }
+
+                </button>
+
+                <button class="nav-btn"
+                    routerLinkActive="active-nav"
+                    routerLink="profile">
+
+                    Dashboard
+
+                </button>
+
+                <button class="logout-btn"
+                    (click)="deconnexion()">
+
+                    Déconnexion
+
+                </button>
+
+                }
+
+                @else {
+
+                <button class="primary-btn"
+                    routerLinkActive="active-nav"
+                    routerLink="login">
+
+                    Connexion
+
+                </button>
+
+                }
+
+            </div>
+
         </div>
 
-        <div
-            class="col-12 col-lg-8 d-flex flex-lg-row-reverse justify-content-center justify-content-lg-start align-items-center">
-            @if(estConnecte){
-            <button class="ms-lg-4 ms-3 " (click)="deconnexion()"
-                style="background: linear-gradient(120deg, #e12d2d 60%, #3f2525 100%);">Deconnexion</button>
-            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="profile">Dashboard</button>
-            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="/offres">
-                @if(laNature){
-                Enseignants
-                }
-                @else {
-                Contrats
-                }
-            </button>
-            } @else {
-            <button class="ms-lg-4 ms-3" routerLinkActive="active" routerLink="login">Connexion</button>
-            }
-            <button class="ms-lg-4 ms-3 position-relative contact-btn" (click)="toggleContactDropdown()">Nous Contacter
-                @if(showContactDropdown){
-                <div class="contact-dropdown animate-dropdown">
-                    <div class="dropdown-section">
-                        <h6 class="dropdown-title">Contacter l'équipe technique</h6>
-                        <p class="dropdown-info"><i class="bi bi-envelope"></i> hometeacher@gmail.com</p>
-                        <p class="dropdown-info"><i class="bi bi-telephone"></i> +237 6 56 23 05 06</p>
-                    </div>
-                    <hr class="dropdown-separator">
-                    <div class="dropdown-section">
-                        <h6 class="dropdown-title">Signaler un compte dangereux</h6>
-                        <p class="dropdown-info"><i class="bi bi-exclamation-triangle"></i> Envoyez un email à
-                            <b>report@hometeacher.com</b> ou contactez le support.
-                        </p>
-                        <button class="btn report-btn animate-report" (click)="reportAccount()">Signaler</button>
-                    </div>
-                </div>
-                }
-            </button>
-            <button class="ms-lg-4 ms-3 " routerLinkActive="active" routerLink="accueil">Home</button>
-        </div>
     </div>
+
 </nav>
 
-<!-- Mobile Bottom Tab Bar -->
-<div class="bottom-nav d-block d-lg-none d-flex justify-content-center">
-    <button class="bottom-nav-item" routerLinkActive="active" routerLink="accueil">
-        <i class="bi bi-house-fill"></i>
-        <span>Home</span>
+<!-- MOBILE -->
+
+<div class="mobile-navbar d-lg-none">
+
+    <button class="mobile-nav-item"
+        routerLinkActive="mobile-active"
+        routerLink="accueil">
+
+        <i class="bi bi-house-door-fill"></i>
+        <span>Accueil</span>
+
     </button>
-    <button class="bottom-nav-item" (click)="toggleContactDropdown()">
-        <i class="bi bi-telephone-fill"></i>
+
+    <button class="mobile-nav-item"
+        (click)="toggleContactDropdown()">
+
+        <i class="bi bi-headset"></i>
         <span>Contact</span>
+
     </button>
+
     @if(estConnecte){
-    <button class="bottom-nav-item" routerLinkActive="active" routerLink="/offres">
-        <i class="bi bi-file-text-fill"></i>
+
+    <button class="mobile-nav-item"
+        routerLinkActive="mobile-active"
+        routerLink="/offres">
+
+        <i class="bi bi-journal-text"></i>
+
         @if(laNature){
-        <span>Enseignants</span>
+        <span>Profs</span>
         }
         @else {
         <span>Contrats</span>
         }
+
     </button>
-    <button class="bottom-nav-item" routerLinkActive="active" routerLink="profile">
+
+    <button class="mobile-nav-item"
+        routerLinkActive="mobile-active"
+        routerLink="profile">
+
         <i class="bi bi-person-fill"></i>
-        <span>Dashboard</span>
+        <span>Profil</span>
+
     </button>
-    <button class="bottom-nav-item bg-danger bg-opacity-75" (click)="deconnexion()">
-        <i class="bi bi-box-arrow-right "></i>
-        <span>Logout</span>
+
+    <button class="mobile-nav-item logout-mobile"
+        (click)="deconnexion()">
+
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Quitter</span>
+
     </button>
-    } @else {
-    <button class="bottom-nav-item" routerLinkActive="active" routerLink="login">
+
+    }
+
+    @else {
+
+    <button class="mobile-nav-item"
+        routerLinkActive="mobile-active"
+        routerLink="login">
+
         <i class="bi bi-box-arrow-in-right"></i>
         <span>Login</span>
+
     </button>
+
     }
 
 </div>
+
 @if(showContactDropdown){
-<div class="contact-dropdown-mobile">
-    <div class="dropdown-section">
-        <h6 class="dropdown-title">Contacter l'équipe technique</h6>
-        <p class="dropdown-info"><i class="bi bi-envelope"></i> hometeacher@gmail.com</p>
-        <p class="dropdown-info"><i class="bi bi-telephone"></i> +237 6 56 23 05 06</p>
+
+<div class="mobile-contact-popup d-lg-none">
+
+    <div class="popup-card">
+
+        <div class="dropdown-title">
+            Équipe technique
+        </div>
+
+        <div class="dropdown-item">
+            <i class="bi bi-envelope"></i>
+            hometeacher@gmail.com
+        </div>
+
+        <div class="dropdown-item">
+            <i class="bi bi-telephone"></i>
+            +237 6 56 23 05 06
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <button class="report-btn w-100"
+            (click)="reportAccount()">
+
+            Signaler un compte
+
+        </button>
+
     </div>
-    <hr class="dropdown-separator">
-    <div class="dropdown-section">
-        <h6 class="dropdown-title">Signaler un compte dangereux</h6>
-        <p class="dropdown-info"><i class="bi bi-exclamation-triangle"></i> Envoyez un email à
-            <b>report@hometeacher.com</b> ou contactez le support.
-        </p>
-        <button class="btn report-btn animate-report" (click)="reportAccount()">Signaler</button>
-    </div>
+
 </div>
+
 }
