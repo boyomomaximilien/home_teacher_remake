@@ -16,6 +16,10 @@ export class AuthFirebaseService {
   }
 
   async getUserState(): Promise<User | null> {
+    if (this.auth.currentUser) {
+      return this.auth.currentUser;
+    }
+
     return new Promise((resolve) => {
       const unsubscribe = onAuthStateChanged(this.auth, (user: User | null) => {
         unsubscribe();

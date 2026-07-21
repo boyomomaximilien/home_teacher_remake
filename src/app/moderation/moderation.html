@@ -1,0 +1,692 @@
+<div class="moderation-wrapper container py-4">
+  
+  <!-- En-tête principal Ultra-Class -->
+  <div class="header-card rounded-4 p-4 mb-4 text-white shadow-lg d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <div class="d-flex align-items-center gap-2 mb-1">
+        <span class="badge bg-gold-subtle text-gold rounded-pill px-3 py-2 fs-7 text-uppercase tracking-wider border border-warning">
+          <i class="bi bi-shield-lock-fill me-1"></i> Modération Admin
+        </span>
+        <span class="text-white-50">Home Teacher Platform</span>
+      </div>
+      <h2 class="fw-bold mb-0 text-white">Tableau de Bord Modérateur</h2>
+      <p class="text-white-50 mb-0 small">Supervisez les utilisateurs, gérez les contrats et attribuez les offres aux enseignants</p>
+    </div>
+    
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2 shadow-sm d-flex align-items-center gap-2" (click)="ouvrirModalCreation()">
+        <i class="bi bi-plus-circle-fill"></i>
+        <span>Nouveau Contrat</span>
+      </button>
+      <button class="btn btn-outline-light btn-sm rounded-pill px-3 d-flex align-items-center gap-2" (click)="chargerDonnees()" [disabled]="loading">
+        <i class="bi bi-arrow-clockwise" [class.spin]="loading"></i>
+        <span>{{ loading ? 'Actualisation...' : 'Rafraîchir' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Banner de Notification -->
+  @if (notificationMessage) {
+    <div class="alert alert-warning alert-dismissible fade show rounded-4 shadow-sm border-0 mb-4 text-dark fw-medium" role="alert">
+      <i class="bi bi-check-circle-fill text-warning me-2 fs-5"></i> {{ notificationMessage }}
+      <button type="button" class="btn-close" (click)="notificationMessage = null"></button>
+    </div>
+  }
+
+  <!-- KPIs / Statistiques Clés -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card card border-0 rounded-4 shadow-sm p-3 h-100 position-relative overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="text-muted small fw-semibold text-uppercase">Total Utilisateurs</span>
+            <h3 class="fw-bold my-1 text-dark">{{ totalClientsCount + totalEnseignantsCount }}</h3>
+            <span class="badge bg-primary-subtle text-primary rounded-pill">
+              {{ totalClientsCount }} Clients | {{ totalEnseignantsCount }} Profs
+            </span>
+          </div>
+          <div class="kpi-icon bg-primary-subtle text-primary rounded-circle p-3">
+            <i class="bi bi-people-fill fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card card border-0 rounded-4 shadow-sm p-3 h-100 position-relative overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="text-muted small fw-semibold text-uppercase">Total Contrats</span>
+            <h3 class="fw-bold my-1 text-dark">{{ totalContratsCount }}</h3>
+            <span class="badge bg-success-subtle text-success rounded-pill">
+              {{ contratsAcceptesCount }} Attribués
+            </span>
+          </div>
+          <div class="kpi-icon bg-success-subtle text-success rounded-circle p-3">
+            <i class="bi bi-file-earmark-text-fill fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card card border-0 rounded-4 shadow-sm p-3 h-100 position-relative overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="text-muted small fw-semibold text-uppercase">Taux d'attribution</span>
+            <h3 class="fw-bold my-1 text-dark">
+              {{ totalContratsCount > 0 ? ((contratsAcceptesCount / totalContratsCount) * 100 | number:'1.0-0') : 0 }}%
+            </h3>
+            <span class="text-muted small">Contrats validés</span>
+          </div>
+          <div class="kpi-icon bg-info-subtle text-info rounded-circle p-3">
+            <i class="bi bi-pie-chart-fill fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card card border-0 rounded-4 shadow-sm p-3 h-100 position-relative overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="text-muted small fw-semibold text-uppercase">Volume Financier</span>
+            <h3 class="fw-bold my-1 text-dark">{{ totalVolumeFinancier | number }} FCFA</h3>
+            <span class="text-muted small">Cumul des mensualités</span>
+          </div>
+          <div class="kpi-icon bg-warning-subtle text-warning rounded-circle p-3">
+            <i class="bi bi-cash-stack fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de Navigation Modérateur (Tabs) -->
+  <div class="moderator-nav-bar rounded-4 shadow-sm p-2 mb-4 d-flex justify-content-center justify-content-md-start gap-2 flex-wrap">
+    <button class="nav-tab-btn btn rounded-pill px-4 py-2" [class.active]="activeTab === 'overview'" (click)="activeTab = 'overview'">
+      <i class="bi bi-grid-1x2-fill me-2"></i>Vue d'ensemble
+    </button>
+    <button class="nav-tab-btn btn rounded-pill px-4 py-2" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">
+      <i class="bi bi-person-badge-fill me-2"></i>Gestion Utilisateurs ({{ tousLesUtilisateurs.length }})
+    </button>
+    <button class="nav-tab-btn btn rounded-pill px-4 py-2" [class.active]="activeTab === 'contracts'" (click)="activeTab = 'contracts'">
+      <i class="bi bi-journal-check me-2"></i>Gestion Contrats ({{ tousLesContrats.length }})
+    </button>
+  </div>
+
+  <!-- Spinner de Chargement -->
+  @if (loading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+      <p class="text-muted mt-2 fw-medium">Chargement des données en cours...</p>
+    </div>
+  } @else {
+
+    <!-- TAB 1: VUE D'ENSEMBLE -->
+    @if (activeTab === 'overview') {
+      <div class="row g-4">
+        <!-- Derniers Contrats Publiés -->
+        <div class="col-12 col-lg-7">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 p-4 pb-0 d-flex justify-content-between align-items-center">
+              <h5 class="fw-bold mb-0"><i class="bi bi-clock-history me-2 text-warning"></i>Derniers Contrats Publiés</h5>
+              <button class="btn btn-sm btn-link text-decoration-none fw-semibold text-warning" (click)="activeTab = 'contracts'">Voir tout</button>
+            </div>
+            <div class="card-body p-4">
+              @if (tousLesContrats.length === 0) {
+                <p class="text-muted text-center py-4">Aucun contrat disponible sur la plateforme.</p>
+              } @else {
+                <div class="table-responsive">
+                  <table class="table align-middle table-hover">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Élève</th>
+                        <th>Classe</th>
+                        <th>Prix</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (c of tousLesContrats.slice(0, 5); track c.Id || $index) {
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center gap-2">
+                              <img [src]="c.studentPicture || 'personne_icone.png'" alt="Student" class="rounded-circle border" width="36" height="36" style="object-fit: cover;">
+                              <span class="fw-semibold">{{ c.studentName }}</span>
+                            </div>
+                          </td>
+                          <td><span class="badge bg-secondary-subtle text-dark">{{ c.studentClasse }}</span></td>
+                          <td class="fw-bold text-success">{{ c.Prix | number }} FCFA</td>
+                          <td>
+                            @if (c.isAccepted) {
+                              <span class="badge bg-success-subtle text-success border border-success rounded-pill px-3">Attribué</span>
+                            } @else {
+                              <span class="badge bg-warning-subtle text-dark border border-warning rounded-pill px-3">En attente</span>
+                            }
+                          </td>
+                          <td>
+                            <div class="d-flex gap-1">
+                              <button class="btn btn-sm btn-outline-dark rounded-circle" (click)="voirDetailsContrat(c)" title="Voir détails">
+                                <i class="bi bi-eye"></i>
+                              </button>
+                              <button class="btn btn-sm btn-outline-warning text-dark rounded-circle" (click)="ouvrirModalEdition(c)" title="Éditer">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Derniers Utilisateurs Inscrits -->
+        <div class="col-12 col-lg-5">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 p-4 pb-0 d-flex justify-content-between align-items-center">
+              <h5 class="fw-bold mb-0"><i class="bi bi-people me-2 text-warning"></i>Utilisateurs Récents</h5>
+              <button class="btn btn-sm btn-link text-decoration-none fw-semibold text-warning" (click)="activeTab = 'users'">Voir tout</button>
+            </div>
+            <div class="card-body p-4">
+              @if (tousLesUtilisateurs.length === 0) {
+                <p class="text-muted text-center py-4">Aucun utilisateur enregistré.</p>
+              } @else {
+                <div class="list-group list-group-flush gap-2">
+                  @for (u of tousLesUtilisateurs.slice(0, 5); track u.id || $index) {
+                    <div class="list-group-item border rounded-3 p-3 d-flex justify-content-between align-items-center hover-bg">
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="avatar-circle" [class.bg-client]="u.nature === 'client'" [class.bg-teacher]="u.nature === 'teacher'">
+                          <i class="bi" [class.bi-person-fill]="u.nature === 'client'" [class.bi-mortarboard-fill]="u.nature === 'teacher'"></i>
+                        </div>
+                        <div>
+                          <h6 class="mb-0 fw-bold">{{ u.name }}</h6>
+                          <small class="text-muted">{{ u.contact || u.email }}</small>
+                        </div>
+                      </div>
+                      <span class="badge rounded-pill px-3 py-2" [class.bg-primary]="u.nature === 'client'" [class.bg-dark]="u.nature === 'teacher'">
+                        {{ u.nature === 'client' ? 'Client' : 'Prof' }}
+                      </span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- TAB 2: GESTION DES UTILISATEURS -->
+    @if (activeTab === 'users') {
+      <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-header bg-transparent border-0 p-4">
+          <div class="row g-3 align-items-center">
+            <div class="col-12 col-md-6 col-lg-5">
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 rounded-start-pill text-muted"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0 rounded-end-pill ps-0" placeholder="Rechercher par nom, email, quartier..." [(ngModel)]="searchQuery">
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-7 d-flex justify-content-md-end gap-2 flex-wrap">
+              <div class="btn-group rounded-pill p-1 bg-light border" role="group">
+                <button type="button" class="btn btn-sm rounded-pill px-3" [class.btn-dark]="userRoleFilter === 'all'" [class.btn-light]="userRoleFilter !== 'all'" (click)="userRoleFilter = 'all'">Tous</button>
+                <button type="button" class="btn btn-sm rounded-pill px-3" [class.btn-dark]="userRoleFilter === 'client'" [class.btn-light]="userRoleFilter !== 'client'" (click)="userRoleFilter = 'client'">Clients</button>
+                <button type="button" class="btn btn-sm rounded-pill px-3" [class.btn-dark]="userRoleFilter === 'teacher'" [class.btn-light]="userRoleFilter !== 'teacher'" (click)="userRoleFilter = 'teacher'">Enseignants</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4 pt-0">
+          @if (utilisateursFiltres.length === 0) {
+            <div class="text-center py-5">
+              <i class="bi bi-person-x fs-1 text-muted"></i>
+              <p class="text-muted mt-2">Aucun utilisateur ne correspond à votre recherche.</p>
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table align-middle table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Utilisateur</th>
+                    <th>Rôle</th>
+                    <th>Contact</th>
+                    <th>Localisation</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (u of utilisateursFiltres; track u.id || $index) {
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center gap-3">
+                          <div class="avatar-circle" [class.bg-client]="u.nature === 'client'" [class.bg-teacher]="u.nature === 'teacher'">
+                            <i class="bi" [class.bi-person-fill]="u.nature === 'client'" [class.bi-mortarboard-fill]="u.nature === 'teacher'"></i>
+                          </div>
+                          <div>
+                            <div class="fw-bold">{{ u.name }}</div>
+                            <div class="text-muted small">ID: {{ u.id }}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        @if (u.nature === 'client') {
+                          <span class="badge bg-info-subtle text-info border border-info rounded-pill px-3 py-1">Client</span>
+                        } @else {
+                          <span class="badge bg-dark text-white rounded-pill px-3 py-1">
+                            Enseignant {{ u.isAdmin ? '(Admin)' : '' }}
+                          </span>
+                        }
+                      </td>
+                      <td>
+                        <div><i class="bi bi-telephone text-secondary me-1"></i> {{ u.contact }}</div>
+                        <div class="text-muted small"><i class="bi bi-envelope text-secondary me-1"></i> {{ u.email }}</div>
+                      </td>
+                      <td>
+                        <span class="text-dark">{{ u.quartier || 'Non précisé' }}</span>
+                        @if (u.ville) { <small class="text-muted"> ({{ u.ville }})</small> }
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1" (click)="voirDetailsUtilisateur(u)">
+                          <i class="bi bi-info-circle me-1"></i> Détails
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- TAB 3: GESTION DES CONTRATS -->
+    @if (activeTab === 'contracts') {
+      <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-header bg-transparent border-0 p-4">
+          <div class="row g-3 align-items-center">
+            <div class="col-12 col-md-5">
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 rounded-start-pill text-muted"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0 rounded-end-pill ps-0" placeholder="Rechercher par élève, classe, matière..." [(ngModel)]="searchQuery">
+              </div>
+            </div>
+            <div class="col-12 col-md-7 d-flex justify-content-md-end gap-2 flex-wrap">
+              <button class="btn btn-warning text-dark fw-bold rounded-pill px-3" (click)="ouvrirModalCreation()">
+                <i class="bi bi-plus-circle me-1"></i> Créer Contrat
+              </button>
+
+              <div class="btn-group rounded-pill p-1 bg-light border" role="group">
+                <button type="button" class="btn btn-sm rounded-pill px-3" [class.btn-dark]="contractStatusFilter === 'all'" [class.btn-light]="contractStatusFilter !== 'all'" (click)="contractStatusFilter = 'all'">Tous</button>
+                <button type="button" class="btn btn-sm rounded-pill px-3" [class.btn-dark]="contractStatusFilter === 'accepted'" [class.btn-light]="contractStatusFilter !== 'accepted'" (click)="contractStatusFilter = 'accepted'">Attribués</button>
+                <button type="button" class="btn btn-sm rounded-pill px-3" [class.btn-dark]="contractStatusFilter === 'pending'" [class.btn-light]="contractStatusFilter !== 'pending'" (click)="contractStatusFilter = 'pending'">En attente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4 pt-0">
+          @if (contratsFiltres.length === 0) {
+            <div class="text-center py-5">
+              <i class="bi bi-file-earmark-x fs-1 text-muted"></i>
+              <p class="text-muted mt-2">Aucun contrat ne correspond à vos critères de recherche.</p>
+            </div>
+          } @else {
+            <div class="row g-3">
+              @for (c of contratsFiltres; track c.Id || $index) {
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="contract-card card border rounded-4 h-100 shadow-sm p-3 hover-lift">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                      <div class="d-flex align-items-center gap-2">
+                        <img [src]="c.studentPicture || 'personne_icone.png'" alt="Student" class="rounded-circle border" width="48" height="48" style="object-fit: cover;">
+                        <div>
+                          <h6 class="fw-bold mb-0 text-dark">{{ c.studentName }}</h6>
+                          <span class="badge bg-secondary-subtle text-dark">{{ c.studentClasse }}</span>
+                        </div>
+                      </div>
+                      <span class="badge rounded-pill px-3 py-1" [class.bg-success]="c.isAccepted" [class.bg-warning]="!c.isAccepted" [class.text-dark]="!c.isAccepted">
+                        {{ c.isAccepted ? 'Attribué' : 'En attente' }}
+                      </span>
+                    </div>
+
+                    <div class="contract-details bg-light rounded-3 p-3 mb-3">
+                      <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">Prix Mensuel:</span>
+                        <span class="fw-bold text-success">{{ c.Prix | number }} FCFA</span>
+                      </div>
+                      <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">Séances / Semaine:</span>
+                        <span class="fw-medium text-dark">{{ c.sessionTime }} h/séance</span>
+                      </div>
+                      <div class="mb-2">
+                        <span class="text-muted small d-block">Matières:</span>
+                        <div class="d-flex flex-wrap gap-1 mt-1">
+                          @for (m of c.matieres; track m) {
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">{{ m }}</span>
+                          }
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Badge Postulants -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+                      <span class="text-muted small"><i class="bi bi-people-fill text-warning me-1"></i>Candidats :</span>
+                      <button class="btn btn-sm btn-outline-warning text-dark rounded-pill px-3" (click)="voirPostulants(c)">
+                        <i class="bi bi-person-check-fill me-1"></i> {{ c.listePostulantsId?.length || 0 }} Postulant(s)
+                      </button>
+                    </div>
+
+                    <!-- Actions Contrat -->
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top gap-1">
+                      <button class="btn btn-sm btn-outline-dark rounded-pill px-2" (click)="voirDetailsContrat(c)" title="Voir détails">
+                        <i class="bi bi-eye me-1"></i> Aperçu
+                      </button>
+                      <button class="btn btn-sm btn-warning text-dark rounded-pill px-2 fw-semibold" (click)="ouvrirModalEdition(c)" title="Modifier le contrat">
+                        <i class="bi bi-pencil me-1"></i> Éditer
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger rounded-circle" (click)="supprimerContrat(c)" title="Supprimer le contrat">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+  }
+
+  <!-- MODALE CRÉATION / ÉDITION CONTRAT -->
+  @if (isFormModalOpen) {
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal d-block fade show" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-header modal-header-gold text-white rounded-top-4 p-4">
+            <h5 class="modal-title fw-bold">
+              <i class="bi me-2" [class.bi-plus-circle]="!isEditingForm" [class.bi-pencil-square]="isEditingForm"></i>
+              {{ isEditingForm ? 'Modifier le Contrat' : 'Créer un Nouveau Contrat' }}
+            </h5>
+            <button type="button" class="btn-close btn-close-white" (click)="fermerModalForm()"></button>
+          </div>
+          
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-bold">Nom de l'Élève <span class="text-danger">*</span></label>
+                <input type="text" class="form-control rounded-3" placeholder="ex: Jean Dupont" [(ngModel)]="contractForm.studentName">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-bold">Classe de l'Élève</label>
+                <select class="form-select rounded-3" [(ngModel)]="contractForm.studentClasse">
+                  @for (cls of classesDisponibles; track cls) {
+                    <option [value]="cls">{{ cls }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-bold">Prix Mensuel (FCFA)</label>
+                <input type="number" class="form-control rounded-3" placeholder="ex: 35000" [(ngModel)]="contractForm.Prix">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-bold">Durée par Séance (Heures)</label>
+                <select class="form-select rounded-3" [(ngModel)]="contractForm.sessionTime">
+                  <option [ngValue]="1">1 heure</option>
+                  <option [ngValue]="2">2 heures</option>
+                  <option [ngValue]="3">3 heures</option>
+                  <option [ngValue]="4">4 heures</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-bold">Matières à enseigner (séparées par une virgule)</label>
+                <input type="text" class="form-control rounded-3" placeholder="ex: Mathématiques, Physique, Chimie" [(ngModel)]="contractForm.matieresInput">
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-bold">Nom du Parent / Client</label>
+                <input type="text" class="form-control rounded-3" placeholder="ex: M. Dupont" [(ngModel)]="contractForm.parentName">
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-bold mb-2">Jours de Cours Sélectionnés :</label>
+                <div class="d-flex flex-wrap gap-2">
+                  @for (j of joursDisponibles; track j) {
+                    <span 
+                      class="day-chip badge rounded-pill px-3 py-2 text-capitalize" 
+                      [class.bg-warning]="isJourSelected(j)"
+                      [class.text-dark]="isJourSelected(j)"
+                      [class.bg-light]="!isJourSelected(j)"
+                      [class.text-muted]="!isJourSelected(j)"
+                      [class.border]="!isJourSelected(j)"
+                      (click)="toggleJour(j)">
+                      <i class="bi" [class.bi-check-circle-fill]="isJourSelected(j)" [class.bi-circle]="!isJourSelected(j)"></i> {{ j }}
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0 p-4 pt-0 d-flex gap-2">
+            <button type="button" class="btn btn-light rounded-pill px-4" (click)="fermerModalForm()">Annuler</button>
+            <button type="button" class="btn btn-warning text-dark fw-bold rounded-pill px-4 flex-grow-1" (click)="sauvegarderContratForm()">
+              <i class="bi bi-save me-1"></i> {{ isEditingForm ? 'Enregistrer les modifications' : 'Créer le Contrat' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODALE POSTULANTS ET ATTRIBUTION -->
+  @if (isPostulantsModalOpen && selectedContractForPostulants) {
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal d-block fade show" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-header modal-header-classy text-white rounded-top-4 p-4">
+            <div>
+              <h5 class="modal-title fw-bold mb-0">
+                <i class="bi bi-people-fill me-2 text-warning"></i>Candidats pour le contrat de {{ selectedContractForPostulants.studentName }}
+              </h5>
+              <small class="text-white-50">Classe: {{ selectedContractForPostulants.studentClasse }} | Tarif: {{ selectedContractForPostulants.Prix | number }} FCFA</small>
+            </div>
+            <button type="button" class="btn-close btn-close-white" (click)="fermerModalPostulants()"></button>
+          </div>
+
+          <div class="modal-body p-4">
+            @if (postulantsEnseignants.length === 0) {
+              <div class="text-center py-5">
+                <i class="bi bi-inbox fs-1 text-muted"></i>
+                <p class="text-muted mt-2">Aucun enseignant n'a encore postulé à ce contrat.</p>
+              </div>
+            } @else {
+              <div class="list-group gap-3">
+                @for (prof of postulantsEnseignants; track prof.Id || $index) {
+                  <div class="list-group-item border rounded-4 p-3 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="avatar-circle bg-teacher">
+                        <i class="bi bi-mortarboard-fill"></i>
+                      </div>
+                      <div>
+                        <h6 class="fw-bold mb-1">{{ prof.Name }}</h6>
+                        <div class="text-muted small">
+                          <i class="bi bi-telephone text-secondary me-1"></i> {{ prof.Contact }} | 
+                          <i class="bi bi-star-fill text-warning ms-1 me-1"></i> Exp: {{ prof.Experience || 0 }} an(s)
+                        </div>
+                        <div class="text-muted small">
+                          <i class="bi bi-geo-alt text-secondary me-1"></i> {{ prof.Quartier || 'N/A' }} ({{ prof.Ville || 'Douala' }})
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      @if (selectedContractForPostulants.IdAttributedTo === prof.Id) {
+                        <span class="badge bg-success rounded-pill px-4 py-2">
+                          <i class="bi bi-check-circle-fill me-1"></i> Attribué à cet enseignant
+                        </span>
+                      } @else {
+                        <button class="btn btn-warning text-dark fw-bold rounded-pill px-3 py-2 shadow-sm" (click)="attribuerContratAEnseignant(selectedContractForPostulants, prof)">
+                          <i class="bi bi-award-fill me-1"></i> Attribuer le contrat
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="modal-footer border-0 p-4 pt-0">
+            <button type="button" class="btn btn-secondary rounded-pill px-4 w-100" (click)="fermerModalPostulants()">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL DETAILS UTILISATEUR -->
+  @if (selectedUser) {
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal d-block fade show" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-header border-0 bg-dark text-white rounded-top-4 p-4">
+            <h5 class="modal-title fw-bold">
+              <i class="bi me-2" [class.bi-person-fill]="selectedUser.nature === 'client'" [class.bi-mortarboard-fill]="selectedUser.nature === 'teacher'"></i>
+              Détails de l'utilisateur
+            </h5>
+            <button type="button" class="btn-close btn-close-white" (click)="fermerModalUtilisateur()"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="text-center mb-4">
+              <div class="avatar-circle mx-auto mb-2" style="width:70px; height:70px; font-size:2rem;" [class.bg-client]="selectedUser.nature === 'client'" [class.bg-teacher]="selectedUser.nature === 'teacher'">
+                <i class="bi" [class.bi-person-fill]="selectedUser.nature === 'client'" [class.bi-mortarboard-fill]="selectedUser.nature === 'teacher'"></i>
+              </div>
+              <h4 class="fw-bold mb-1">{{ selectedUser.name }}</h4>
+              <span class="badge rounded-pill px-3 py-1" [class.bg-primary]="selectedUser.nature === 'client'" [class.bg-dark]="selectedUser.nature === 'teacher'">
+                {{ selectedUser.nature === 'client' ? 'Client / Parent d\'élève' : 'Enseignant' }}
+              </span>
+            </div>
+
+            <ul class="list-group list-group-flush rounded-3 border">
+              <li class="list-group-item d-flex justify-content-between">
+                <span class="text-muted">Identifiant UID:</span>
+                <span class="fw-mono text-dark">{{ selectedUser.id }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span class="text-muted">Téléphone / Contact:</span>
+                <span class="fw-bold text-dark">{{ selectedUser.contact }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span class="text-muted">Email:</span>
+                <span class="fw-medium text-dark">{{ selectedUser.email }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span class="text-muted">Quartier:</span>
+                <span class="text-dark">{{ selectedUser.quartier || 'Non renseigné' }}</span>
+              </li>
+              @if (selectedUser.nature === 'teacher') {
+                <li class="list-group-item d-flex justify-content-between">
+                  <span class="text-muted">Expérience:</span>
+                  <span class="fw-bold text-primary">{{ selectedUser.experience || 0 }} an(s)</span>
+                </li>
+              }
+            </ul>
+          </div>
+          <div class="modal-footer border-0 p-4 pt-0">
+            <button type="button" class="btn btn-secondary rounded-pill px-4 w-100" (click)="fermerModalUtilisateur()">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL DETAILS CONTRAT -->
+  @if (selectedContract) {
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal d-block fade show" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-header border-0 modal-header-classy text-white rounded-top-4 p-4">
+            <h5 class="modal-title fw-bold">
+              <i class="bi bi-file-earmark-text text-warning me-2"></i>Détails du Contrat
+            </h5>
+            <button type="button" class="btn-close btn-close-white" (click)="fermerModalContrat()"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-light rounded-3">
+              <img [src]="selectedContract.studentPicture || 'personne_icone.png'" class="rounded-circle border" width="60" height="60" style="object-fit:cover;">
+              <div>
+                <h5 class="fw-bold mb-0">{{ selectedContract.studentName }}</h5>
+                <span class="badge bg-secondary-subtle text-dark">Classe: {{ selectedContract.studentClasse }}</span>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="p-3 bg-light rounded-3 text-center">
+                  <small class="text-muted d-block">Tarif proposé</small>
+                  <strong class="text-success fs-5">{{ selectedContract.Prix | number }} FCFA</strong>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="p-3 bg-light rounded-3 text-center">
+                  <small class="text-muted d-block">Durée séance</small>
+                  <strong class="text-dark fs-5">{{ selectedContract.sessionTime }} h</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <h6>Matières à enseigner :</h6>
+              <div class="d-flex flex-wrap gap-1">
+                @for (m of selectedContract.matieres; track m) {
+                  <span class="badge bg-primary rounded-pill px-3 py-2">{{ m }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <h6>Jours de cours prévus :</h6>
+              <div class="d-flex flex-wrap gap-1">
+                @for (j of selectedContract.courseDay; track j) {
+                  <span class="badge bg-secondary text-capitalize rounded-pill px-3 py-1">{{ j }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="mt-3 text-muted small">
+              <div>Créateur UID: {{ selectedContract.IdCreator || 'N/A' }}</div>
+              <div>Parent: {{ selectedContract.parentName || 'Non spécifié' }}</div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 p-4 pt-0 d-flex gap-2">
+            <button type="button" class="btn btn-warning text-dark fw-bold rounded-pill px-3" (click)="ouvrirModalEdition(selectedContract)">
+              <i class="bi bi-pencil me-1"></i> Modifier
+            </button>
+            <button type="button" class="btn btn-outline-danger rounded-pill px-3" (click)="supprimerContrat(selectedContract)">Supprimer</button>
+            <button type="button" class="btn btn-secondary rounded-pill px-4 flex-grow-1" (click)="fermerModalContrat()">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

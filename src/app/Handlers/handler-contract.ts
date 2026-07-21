@@ -36,6 +36,13 @@ export class HandlerContract {
 
     }
 
+    async getAllContrats() : Promise<Contract[]>{
+        this.refTableContrat = ref(this.tableContrat,'contrats');
+        const result1 = await( await get(this.refTableContrat)).val() as Record<string,Record<string,Contract>>
+        const contrats = Object.values(result1).flatMap(inner => Object.values(inner));        
+        return contrats
+    }
+
     async sauvegarderContrat(contrat: Contract) {
         this.InitialiserTable();
         try {

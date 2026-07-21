@@ -7,6 +7,7 @@ import { HandlerTeacher } from '../../Handlers/handler-teacher';
 import { Teacher } from '../../Models/teacher';
 import { HandlerClient } from '../../Handlers/handler-client';
 import { Dashboard } from '../../dashboard/dashboard';
+import { HandlerContract} from '../../Handlers/handler-contract'
 
 @Component({
   selector: 'app-liste-contrats',
@@ -20,11 +21,13 @@ export class ListeContrats {
   discussion;
   teacher;
   client;
+  contratsHandler;
 
   constructor() {
     this.discussion = inject(HandlerDiscussion);
     this.teacher = inject(HandlerTeacher);
-    this.client = inject(HandlerClient)
+    this.client = inject(HandlerClient);
+    this.contratsHandler = inject(HandlerContract)
 
   }
 
@@ -74,5 +77,22 @@ export class ListeContrats {
       } else {
         return false;
       }
+  }
+
+  accepterContrat(contrat:Contract){
+    if(contrat.listePostulantsId == undefined){
+      contrat.listePostulantsId = []
+    }
+
+    if(!contrat.listePostulantsId.includes(`${App.connectedUserUid}`) && contrat.listePostulantsId.length< 21){
+      const absolutePath = `${contrat.IdCreator}/${contrat.Id}`
+      contrat.nombrePostulants += 1      
+      contrat.listePostulantsId?.push(App.connectedUserUid)
+      this.contratsHandler.updateContrat(contrat, absolutePath)
+    }
+    else{
+      console.log('vous etes deja dans la liste des postulants')
+    }
+    
   }
 }

@@ -14,6 +14,7 @@ export class Contract {
     public parentName?: string = '-----';
     public IdAttributedTo: string = '';
     public isAccepted: boolean = false;
+    public listePostulantsId? : string[]
     public nombrePostulants: number = 0; // 0: pas encore traité, 1: accepté, 2: refusé
 
 

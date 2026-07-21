@@ -1,0 +1,202 @@
+/* ==========================================================================
+   DESIGN SYSTEM PREMIUM - ESPACE MODÉRATEUR HOME TEACHER
+   Variables de Couleurs Centralisées pour Modification Facile
+   ========================================================================== */
+
+:host {
+  /* Couleurs Fond & Sombre (Header, Navbar, Badges Enseignant) */
+  --mod-bg-deep: #0b1329;
+  --mod-bg-indigo: #1e1b4b;
+  --mod-bg-slate: #0f172a;
+
+  /* Couleurs Dorées / Amber (Accents, Boutons Principaux, Onglet Actif) */
+  --mod-gold-primary: #f59e0b;
+  --mod-gold-dark: #d97706;
+  --mod-gold-deeper: #b45309;
+  --mod-gold-subtle: rgba(245, 158, 11, 0.15);
+  --mod-gold-shadow: rgba(245, 158, 11, 0.35);
+
+  /* Couleurs Bleues (Clients, Icônes, Accents secondaires) */
+  --mod-blue-primary: #3b82f6;
+  --mod-blue-dark: #1d4ed8;
+
+  /* Couleurs de Texte */
+  --mod-text-dark: #1e293b;
+  --mod-text-muted: #94a3b8;
+
+  /* Cartes, Bordures & Effets */
+  --mod-card-bg: #ffffff;
+  --mod-card-border: #e2e8f0;
+  --mod-card-hover-border: #cbd5e1;
+  --mod-card-details-border: #f1f5f9;
+  --mod-hover-bg: #f8fafc;
+  --mod-backdrop: rgba(11, 19, 41, 0.75);
+}
+
+.moderation-wrapper {
+  font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--mod-text-dark);
+}
+
+/* En-tête principal Ultra-Class */
+.header-card {
+  background: linear-gradient(135deg, var(--mod-bg-deep) 0%, var(--mod-bg-indigo) 55%, var(--mod-bg-slate) 100%);
+  position: relative;
+  overflow: hidden;
+  border-left: 5px solid var(--mod-gold-primary);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
+}
+
+.header-card::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  right: -15%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(59, 130, 246, 0.08) 40%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+}
+
+.bg-gold-subtle {
+  background: var(--mod-gold-subtle);
+}
+
+.text-gold {
+  color: var(--mod-gold-primary) !important;
+}
+
+/* Navigation Modérateur */
+.moderator-nav-bar {
+  background: linear-gradient(135deg, var(--mod-bg-deep) 0%, var(--mod-bg-indigo) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-tab-btn {
+  color: var(--mod-text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-tab-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.nav-tab-btn.active {
+  background: linear-gradient(135deg, var(--mod-gold-primary) 0%, var(--mod-gold-dark) 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 18px var(--mod-gold-shadow);
+}
+
+/* Cartes KPI */
+.kpi-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  background: var(--mod-card-bg);
+  border: 1px solid var(--mod-card-border);
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--mod-card-hover-border);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
+.kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+}
+
+/* Badges & Avatars */
+.avatar-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bg-client {
+  background: linear-gradient(135deg, var(--mod-blue-primary) 0%, var(--mod-blue-dark) 100%);
+}
+
+.bg-teacher {
+  background: linear-gradient(135deg, var(--mod-bg-deep) 0%, var(--mod-bg-indigo) 100%);
+}
+
+/* Cartes de Contrats Premium */
+.contract-card {
+  background: var(--mod-card-bg);
+  border: 1px solid var(--mod-card-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contract-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1) !important;
+  border-color: var(--mod-card-hover-border);
+}
+
+.contract-details {
+  border: 1px solid var(--mod-card-details-border);
+}
+
+/* Animation d'actualisation */
+.spin {
+  animation: spinRotate 1s linear infinite;
+}
+
+@keyframes spinRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hover-bg:hover {
+  background-color: var(--mod-hover-bg);
+  cursor: pointer;
+}
+
+/* Formulaires & Modales */
+.modal-backdrop {
+  background-color: var(--mod-backdrop);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header-classy {
+  background: linear-gradient(135deg, var(--mod-bg-deep) 0%, var(--mod-bg-indigo) 100%);
+}
+
+.modal-header-gold {
+  background: linear-gradient(135deg, var(--mod-gold-dark) 0%, var(--mod-gold-deeper) 100%);
+}
+
+.fw-mono {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.85rem;
+}
+
+/* Tag selector style pour jours et matières */
+.day-chip {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.day-chip:hover {
+  transform: scale(1.05);
+}

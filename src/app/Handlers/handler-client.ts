@@ -29,6 +29,13 @@ export class HandlerClient {
 
     }
 
+    async getAllClient(): Promise<Client[]>{
+        this.pathClient = `clients`;
+        this.clientRef = ref(this.clientTable, this.pathClient);
+        const clients = await (await get(this.clientRef)).val() as Client[]
+        return clients
+    }
+
     //Sauvegarder client
     async saveClient(client: Client) {
         this.initialiserTable()

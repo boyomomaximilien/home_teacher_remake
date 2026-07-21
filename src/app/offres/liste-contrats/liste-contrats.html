@@ -1,4 +1,4 @@
-<h2 class="mb-4 text-center fw-bold" style="color:#23759e;">Offres de Contrats</h2>
+<h2 class="mb-4 mt-5 text-center fw-bold" style="color:#23759e;">Offres de Contrats</h2>
 
 @if(listeContrat !== undefined ){
 <div class="container py-4">
@@ -20,7 +20,7 @@
                                 <b>{{contrat.parentName}}</b>
                             </p>
                             <p class="mb-1 animate-fade-in"><i class="bi bi-clock"></i> {{contrat.sessionTime}}H par séance.</p>
-                            <p class="mb-1 animate-fade-in"><i class="bi bi-calendar-event"></i> Jours :
+                            <p class="mb-1 animate-fade-in"><i class="bi bi-calendar-event"></i> Jours (modulables) :
                                 @for(day of contrat.courseDay; track $index){
                                 <span class="badge bg-info text-dark mx-1 animate-badge">{{day}}</span>
                                 }
@@ -37,7 +37,7 @@
                             <div class="container d-flex justify-content-between align-items-center mt-3 ">
                                 <span class="text-secondary">Nombre de postulants : {{contrat.nombrePostulants}}</span>
                                 <button class="btn mt-3 animate-btn  text-white" 
-                                    (click)="contacterClient(contrat.IdCreator)">
+                                    (click)="accepterContrat(contrat)">
                                     <i class="bi-basket"></i>
                                     Accepter                                
                                 </button>
